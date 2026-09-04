@@ -291,6 +291,34 @@ footer.ft{padding:0 0 60px}
 @media(prefers-reduced-motion:reduce){ *{transition:none!important} }
 </style>
 <style>
+/* ── links & icons ── */
+.ico{width:32px;height:30px;display:inline-flex;align-items:center;justify-content:center;
+  border:1px solid var(--edge-2);background:transparent;color:var(--ink-2);text-decoration:none;padding:0}
+.ico:hover{border-color:var(--ink);color:var(--ink)}
+.ico svg{width:14px;height:14px;display:block;fill:currentColor}
+.ca{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--edge-2);padding:5px 10px;
+  font-family:var(--f-m);font-size:11px;color:var(--ink-2);letter-spacing:.06em}
+.ca .k{color:var(--ink-3);letter-spacing:.16em;text-transform:uppercase;font-size:9.5px}
+.ca.empty{border-style:dashed;color:var(--ink-3)}
+.ca button{background:transparent;border:0;color:var(--vio);padding:0 0 0 2px;font-family:var(--f-m);font-size:10.5px}
+.ca button:hover{color:var(--ink)}
+.ftico{display:flex;gap:8px;margin-top:14px}
+/* ── cluster chrome ── */
+.hudl,.hudr{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.hbrand{background:transparent;border:0;padding:0 4px 0 0;font-family:var(--f-d);font-weight:800;
+  font-size:19px;letter-spacing:-.04em;font-variation-settings:'wdth' 84;color:var(--ink)}
+.hbrand:hover{color:var(--vio)}
+.ticker{position:absolute;left:0;right:0;bottom:0;display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+  padding:11px 18px;background:linear-gradient(0deg,var(--void) 30%,rgba(0,0,0,0));
+  font-family:var(--f-m);font-size:11px;color:var(--ink-3);letter-spacing:.1em;text-transform:uppercase;
+  pointer-events:none;z-index:2}
+.ticker b{color:var(--ink);font-weight:500}
+.ticker b.v{color:var(--vio)}
+.ticker .dot{width:6px;height:6px;border-radius:50%;background:var(--vio);animation:beat 2.2s ease-in-out infinite}
+.tag.fire{border-color:var(--vio);color:var(--vio);transform:translate(-50%,-50%) scale(1.14)}
+#stage .vig{position:absolute;inset:0;pointer-events:none;z-index:1;
+  background:radial-gradient(135% 95% at 50% 46%,rgba(0,0,0,0) 52%,var(--void) 100%);opacity:.45}
+
 /* ── motion ── */
 .iris{background-size:220% 100%;animation:drift 22s linear infinite}
 @keyframes drift{to{background-position:220% 0}}
@@ -360,6 +388,9 @@ details.q p{padding:0 24px 22px;font-size:16px;color:var(--ink-2);max-width:70ch
           <button class="nl" data-view="about">About</button>
           <button class="nl" data-open="intake">Cluster</button>
         </span>
+        <span class="ca empty" id="caChip"></span>
+        <a class="ico" id="xLink" target="_blank" rel="noopener" title="X" aria-label="X"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+        <a class="ico" id="ghLink" target="_blank" rel="noopener" title="Source on GitHub" aria-label="GitHub"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5C5.73.5.99 5.24.99 11.5c0 4.86 3.15 8.98 7.52 10.44.55.1.75-.24.75-.53v-1.9c-3.06.66-3.7-1.3-3.7-1.3-.5-1.28-1.23-1.62-1.23-1.62-1-.68.08-.67.08-.67 1.1.08 1.68 1.13 1.68 1.13.98 1.68 2.58 1.2 3.2.92.1-.71.39-1.2.7-1.47-2.44-.28-5.01-1.22-5.01-5.44 0-1.2.43-2.18 1.13-2.95-.11-.28-.49-1.4.11-2.92 0 0 .92-.3 3.02 1.13a10.4 10.4 0 0 1 5.5 0c2.1-1.43 3.02-1.13 3.02-1.13.6 1.52.22 2.64.11 2.92.7.77 1.13 1.75 1.13 2.95 0 4.23-2.58 5.16-5.03 5.43.4.34.75 1.02.75 2.06v3.05c0 .29.2.64.76.53A11.02 11.02 0 0 0 23.01 11.5C23.01 5.24 18.27.5 12 .5z"/></svg></a>
         <button class="tgl" id="themeBtn" title="Switch theme" aria-label="Switch between light and dark"></button>
         <button class="chip w" id="wbtn"><i></i>Connect</button>
       </div>
@@ -709,6 +740,8 @@ details.q p{padding:0 24px 22px;font-size:16px;color:var(--ink-2);max-width:70ch
     <div>
       <div class="ftbrand">WARP</div>
       <p>Trading fees, converted into time on an RTX 5090. On Robinhood Chain, paired against tokenised NVDA.</p>
+      <div class="ftico"><a class="ico" href="https://x.com/warponrh" target="_blank" rel="noopener" aria-label="X"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a><a class="ico" id="ghLink2" target="_blank" rel="noopener" aria-label="GitHub"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5C5.73.5.99 5.24.99 11.5c0 4.86 3.15 8.98 7.52 10.44.55.1.75-.24.75-.53v-1.9c-3.06.66-3.7-1.3-3.7-1.3-.5-1.28-1.23-1.62-1.23-1.62-1-.68.08-.67.08-.67 1.1.08 1.68 1.13 1.68 1.13.98 1.68 2.58 1.2 3.2.92.1-.71.39-1.2.7-1.47-2.44-.28-5.01-1.22-5.01-5.44 0-1.2.43-2.18 1.13-2.95-.11-.28-.49-1.4.11-2.92 0 0 .92-.3 3.02 1.13a10.4 10.4 0 0 1 5.5 0c2.1-1.43 3.02-1.13 3.02-1.13.6 1.52.22 2.64.11 2.92.7.77 1.13 1.75 1.13 2.95 0 4.23-2.58 5.16-5.03 5.43.4.34.75 1.02.75 2.06v3.05c0 .29.2.64.76.53A11.02 11.02 0 0 0 23.01 11.5C23.01 5.24 18.27.5 12 .5z"/></svg></a></div>
+      <div class="mono-box" id="caFoot" style="margin-top:14px"></div>
     </div>
     <div><h5>Product</h5>
       <a href="#" data-view="home">Overview</a>
@@ -727,7 +760,9 @@ details.q p{padding:0 24px 22px;font-size:16px;color:var(--ink-2);max-width:70ch
       <a href="#" data-view="about" data-jump="stands">Where this stands</a>
       <span class="li">Robinhood Chain · 4663</span>
       <span class="li">Paired against NVDA</span>
-      <span class="li">Chainlink NVDA feed</span></div>
+      <span class="li">Chainlink NVDA feed</span>
+      <a href="https://x.com/warponrh" target="_blank" rel="noopener">X · @warponrh</a>
+      <a id="ghLink3" target="_blank" rel="noopener">Source on GitHub</a></div>
   </div>
   <div class="ftbot">
     <span>Warp — Robinhood Chain 4663 · paired against tokenised NVDA</span>
@@ -738,9 +773,25 @@ details.q p{padding:0 24px 22px;font-size:16px;color:var(--ink-2);max-width:70ch
 <div id="stage" role="dialog" aria-modal="true" aria-label="The cluster">
   <div id="stageSlot"></div>
   <div id="tags"></div>
+  <div class="vig"></div>
   <div class="hud">
-    <div class="hstat" id="hud"></div>
-    <button class="xb" id="close">Exit ✕</button>
+    <div class="hudl">
+      <button class="hbrand" id="hbrand" title="Back to the site">WARP</button>
+      <div class="hstat" id="hud"></div>
+    </div>
+    <div class="hudr">
+      <a class="ico" href="https://x.com/warponrh" target="_blank" rel="noopener" aria-label="X"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+      <a class="ico" id="ghLink4" target="_blank" rel="noopener" aria-label="GitHub"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5C5.73.5.99 5.24.99 11.5c0 4.86 3.15 8.98 7.52 10.44.55.1.75-.24.75-.53v-1.9c-3.06.66-3.7-1.3-3.7-1.3-.5-1.28-1.23-1.62-1.23-1.62-1-.68.08-.67.08-.67 1.1.08 1.68 1.13 1.68 1.13.98 1.68 2.58 1.2 3.2.92.1-.71.39-1.2.7-1.47-2.44-.28-5.01-1.22-5.01-5.44 0-1.2.43-2.18 1.13-2.95-.11-.28-.49-1.4.11-2.92 0 0 .92-.3 3.02 1.13a10.4 10.4 0 0 1 5.5 0c2.1-1.43 3.02-1.13 3.02-1.13.6 1.52.22 2.64.11 2.92.7.77 1.13 1.75 1.13 2.95 0 4.23-2.58 5.16-5.03 5.43.4.34.75 1.02.75 2.06v3.05c0 .29.2.64.76.53A11.02 11.02 0 0 0 23.01 11.5C23.01 5.24 18.27.5 12 .5z"/></svg></a>
+      <button class="xb" id="close">Back to the site ✕</button>
+    </div>
+  </div>
+  <div class="ticker">
+    <span class="dot"></span>
+    <span>next settlement <b class="v" id="tkNext">—</b></span><span>·</span>
+    <span>this hour buys <b id="tkHrs">—</b></span><span>·</span>
+    <span>5090 <b id="tkPrice">—</b></span><span>·</span>
+    <span>30d volume <b id="tkVol">—</b></span><span>·</span>
+    <span>drag to look · scroll to zoom · click a card</span>
   </div>
   <aside id="panel">
     <div class="ph"><h3 id="ptitle">—</h3><button class="xb" id="pclose">Close</button></div>
@@ -757,6 +808,17 @@ const $ = s => document.querySelector(s);
 const $$ = s => [...document.querySelectorAll(s)];
 
 /* the protocol's fixed parameters */
+/* ─────────────────────────────────────────────────────────────
+   Everything project-specific lives here. Paste the contract
+   address into LINKS.ca when it launches — the header chip, the
+   footer and the explorer link all read from it.
+   ───────────────────────────────────────────────────────────── */
+const LINKS = {
+  x:        "https://x.com/warponrh",
+  github:   "https://github.com/izyxg/warp",
+  ca:       "",                                              // ← contract address
+  explorer: "https://robinhoodchain.blockscout.com/address/"
+};
 const FEE = 0.03, TO_COMPUTE = 2/3, MIN_HOLD = 1000, KEY_CAP = 40, CHAIN = 4663;
 
 const usd = v => v >= 1e6 ? "$"+(v/1e6).toFixed(2)+"m" : v >= 1e3 ? "$"+(v/1e3).toFixed(v>=1e4?0:1)+"k"
@@ -1320,14 +1382,22 @@ function tick(){
   const rows = $("#mrows");
   if(rows && cur) rows.innerHTML = LIVE[cur]().map(r=>`<div class="mr"><span>${r[0]}</span><b class="${r[2]}">${r[1]}</b></div>`).join("");
 }
-if(typeof HALL !== "undefined" && HALL) HALL.onSnap(()=> tick());
+if(typeof HALL !== "undefined" && HALL) HALL.onSnap(()=>{
+  tick();
+  for(const el of tagsEl.children){ el.classList.add("fire"); }
+  setTimeout(()=>{ for(const el of tagsEl.children) el.classList.remove("fire"); }, 420);
+});
 setInterval(tick, 800);
 
 /* ════════ enter / exit ════════ */
 function openStage(k){
   stage.classList.add("open"); document.body.classList.add("locked");
   stageSlot.appendChild(glhost);
-  if(HALL){ HALL.running(true); HALL.setMode("stage"); }
+  if(HALL){
+    HALL.running(true); HALL.setMode("stage");
+    if(!reduce){ HALL.K.dist = 52; HALL.K.pol = .55; }   // dolly in from above the hall
+  }
+  clockTick();
   if(k) openPanel(k); else tick();
 }
 function closeStage(){
@@ -1335,8 +1405,10 @@ function closeStage(){
   panel.classList.remove("open"); cur = null;
   heroSlot.appendChild(glhost);
   if(HALL) HALL.setMode("hero");
+  show("home");
 }
 $("#close").onclick = closeStage;
+$("#hbrand").onclick = closeStage;
 addEventListener("keydown", e=>{
   if(e.key !== "Escape" || !stage.classList.contains("open")) return;
   if(panel.classList.contains("open")) $("#pclose").click(); else closeStage();
@@ -1395,6 +1467,31 @@ $("#themeBtn").addEventListener("click", ()=> TH.apply(TH.isDark() ? "light" : "
 matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ()=>{ if(!TH.read()) TH.apply(null); });
 TH.apply(TH.read());
 
+/* ════════ links & the contract slot ════════ */
+function paintLinks(){
+  ["#ghLink","#ghLink2","#ghLink3","#ghLink4"].forEach(q=>{ const e = $(q); if(e) e.href = LINKS.github; });
+  const x = $("#xLink"); if(x) x.href = LINKS.x;
+  const chip = $("#caChip"), foot = $("#caFoot");
+  if(LINKS.ca){
+    const shortCa = LINKS.ca.slice(0,6)+"…"+LINKS.ca.slice(-4);
+    chip.className = "ca";
+    chip.innerHTML = `<span class="k">CA</span><span id="caVal">${shortCa}</span>`
+      + `<button id="caCopy" title="Copy the address">copy</button>`
+      + `<a href="${LINKS.explorer}${LINKS.ca}" target="_blank" rel="noopener" style="color:var(--vio);text-decoration:none">↗</a>`;
+    $("#caCopy").onclick = async ()=>{
+      try{ await navigator.clipboard.writeText(LINKS.ca); }catch(e){}
+      const b = $("#caCopy"); b.textContent = "copied"; setTimeout(()=> b.textContent = "copy", 1400);
+    };
+    if(foot) foot.textContent = LINKS.ca;
+  }else{
+    chip.className = "ca empty";
+    chip.innerHTML = `<span class="k">CA</span><span>not live yet</span>`;
+    chip.title = "The contract address appears here at launch, and nowhere else.";
+    if(foot){ foot.className = "mono-box warn"; foot.textContent = "Contract address published here at launch — check the address, never the ticker."; }
+  }
+}
+paintLinks();
+
 /* ════════ rolling counters ════════ */
 function roll(el, to, fmtFn, ms){
   if(!el) return;
@@ -1418,9 +1515,13 @@ function clockTick(){
   const m = Math.floor(left/60), sec = left%60;
   const n = $("#lbNext"); if(n) n.textContent = m+"m "+String(sec).padStart(2,"0")+"s";
   const p = $("#lbPrice"); if(p) p.textContent = "$"+E.price.toFixed(2)+"/h";
-  const h = $("#lbHrs");
-  if(h){ const b = E.price>0 ? E.vol*FEE*TO_COMPUTE/E.price/720 : 0;
-    h.textContent = b >= 1 ? b.toFixed(1)+" h" : (b*60).toFixed(0)+" min"; }
+  const b = E.price>0 ? E.vol*FEE*TO_COMPUTE/E.price/720 : 0;
+  const hrs = b >= 1 ? b.toFixed(1)+" h" : (b*60).toFixed(0)+" min";
+  const h = $("#lbHrs"); if(h) h.textContent = hrs;
+  const t1 = $("#tkNext");  if(t1) t1.textContent = m+"m "+String(sec).padStart(2,"0")+"s";
+  const t2 = $("#tkHrs");   if(t2) t2.textContent = hrs;
+  const t3 = $("#tkPrice"); if(t3) t3.textContent = "$"+E.price.toFixed(2)+"/h";
+  const t4 = $("#tkVol");   if(t4) t4.textContent = usd(E.vol);
 }
 setInterval(clockTick, 1000);
 
