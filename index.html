@@ -298,6 +298,41 @@ footer.ft{padding:0 0 60px}
 @media(prefers-reduced-motion:reduce){ *{transition:none!important} }
 </style>
 <style>
+/* ── fluidity ── */
+@media(prefers-reduced-motion:no-preference){
+  html{scroll-behavior:smooth}
+  .view.on{animation:viewin .32s cubic-bezier(.22,.61,.36,1)}
+  @keyframes viewin{from{opacity:.35;transform:translateY(10px)}to{opacity:1;transform:none}}
+  .rv{animation:rise .55s cubic-bezier(.22,.61,.36,1) both}
+  @keyframes rise{from{opacity:.35;transform:translateY(16px)}to{opacity:1;transform:none}}
+}
+::selection{background:var(--vio);color:var(--void)}
+:focus-visible{outline:2px solid var(--vio);outline-offset:3px;border-radius:2px}
+a,button,summary,input{-webkit-tap-highlight-color:transparent}
+
+/* hovers that were missing */
+.tier,.hf,.cellb,.swx .s,.cards4 figure{transition:background .18s ease,border-color .18s ease,transform .18s ease}
+.tier:hover,.hf:hover{background:var(--sunk)}
+.swx .s:hover{border-color:var(--vio)}
+.tb tr{transition:background .14s ease}
+.tb tbody tr:hover td,.tb tr:hover td{background:var(--sunk);color:var(--ink)}
+.ftg a{transition:color .16s ease,transform .16s ease}
+.ftg a:hover{transform:translateX(3px)}
+.orow{transition:color .16s ease}
+.est .in .fld input[type=range]{cursor:ew-resize}
+.fld input[type=number]{transition:border-color .16s ease}
+.fld input[type=number]:focus{border-color:var(--vio);outline:none}
+
+/* the docs sommaire follows you down the page */
+.toc a[aria-current="true"]{color:var(--vio);border-left-color:var(--vio);background:var(--panel)}
+@media(max-width:900px){ .toc a[aria-current="true"]{border-color:var(--vio)} }
+
+/* the accordion opens instead of snapping */
+@media(prefers-reduced-motion:no-preference){
+  details.q[open] p{animation:fadein .28s ease both}
+  @keyframes fadein{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+}
+
 /* -- brand page -- */
 .bench{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
 .cellb{border:1px solid var(--edge);background:var(--panel);padding:30px;display:flex;flex-direction:column;
@@ -431,7 +466,6 @@ details.q p{padding:0 24px 22px;font-size:16px;color:var(--ink-2);max-width:70ch
           <button class="nl" data-view="docs">Docs</button>
           <button class="nl" data-view="about">About</button>
           <button class="nl" data-open="intake">Cluster</button>
-          <button class="nl" data-view="brand">Brand</button>
         </span>
         <span class="ca empty" id="caChip"></span>
         <a class="ico" id="xLink" target="_blank" rel="noopener" title="X" aria-label="X"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
@@ -822,28 +856,15 @@ details.q p{padding:0 24px 22px;font-size:16px;color:var(--ink-2);max-width:70ch
       <div class="t"><span class="n">Rule</span><span class="u">If it is a figure, it is monospaced. No exceptions anywhere on the site.</span></div>
     </div>
 
-    <span class="lb">04 &middot; Social</span>
-    <p class="sub" style="margin:12px 0 18px">1600 &times; 900, exported at 2&times;. Each one carries a real number and a real panel &mdash; no stock imagery and nothing rendered for decoration.</p>
-    <div class="cards4">
-      <figure><img src="brand/out/warp-card-01.png" alt="Fees in. Hours out. The fee split per trade." loading="lazy">
-        <figcaption><b>01 &middot; The fee</b>The 3% split, and the zero that is minted.</figcaption></figure>
-      <figure><img src="brand/out/warp-card-02.png" alt="$100 traded equals 2 hours 14 minutes of RTX 5090." loading="lazy">
-        <figcaption><b>02 &middot; The arithmetic</b>$100 traded, worked all the way down to 2h 14m.</figcaption></figure>
-      <figure><img src="brand/out/warp-card-03.png" alt="Hourly settlement table with wallet shares." loading="lazy">
-        <figcaption><b>03 &middot; Settlement</b>A snapshot table, including a wallet under the threshold.</figcaption></figure>
-      <figure><img src="brand/out/warp-card-04.png" alt="Gateway terminal showing the base URL change." loading="lazy">
-        <figcaption><b>04 &middot; The gateway</b>Two exports and a curl. That is the integration.</figcaption></figure>
-    </div>
-    <div class="dl">
+    <span class="lb">04 &middot; Files</span>
+    <div class="dl" style="margin-top:14px">
       <a href="brand/mark.svg" download>mark.svg</a>
       <a href="brand/mark-mono.svg" download>mark-mono.svg</a>
       <a href="brand/favicon.svg" download>favicon.svg</a>
-      <a href="brand/out/warp-card-01.png" download>card-01.png</a>
-      <a href="brand/out/warp-card-02.png" download>card-02.png</a>
-      <a href="brand/out/warp-card-03.png" download>card-03.png</a>
-      <a href="brand/out/warp-card-04.png" download>card-04.png</a>
-      <a href="brand/card.html">card renderer &#8599;</a>
+      <a href="brand/README.md">usage notes &#8599;</a>
     </div>
+    <p class="sub" style="margin-top:16px">The mono cut takes <code style="font-family:var(--f-m);font-size:.86em;color:var(--vio)">currentColor</code>, so it inherits from whatever it sits inside. Do not recolour the fans by hand &mdash; they are the only part that is ever violet.</p>
+
   </div>
 </section>
 </div>
@@ -1500,6 +1521,35 @@ if(typeof HALL !== "undefined" && HALL) HALL.onSnap(()=>{
   setTimeout(()=>{ for(const el of tagsEl.children) el.classList.remove("fire"); }, 420);
 });
 setInterval(tick, 800);
+
+
+/* ════════ fluidity ════════ */
+if(!reduce){
+  // sections ease in the first time they are reached; they are visible without this
+  const rv = new IntersectionObserver((es)=>{
+    es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("rv"); rv.unobserve(e.target); } });
+  }, {rootMargin:"0px 0px -12% 0px", threshold:.06});
+  $$("section.bd").forEach((el,i)=>{ if(i > 0) rv.observe(el); });
+}
+
+// the docs contents marks where you are
+(function(){
+  const links = $$(".toc a");
+  if(!links.length) return;
+  const byId = {};
+  links.forEach(a=>{ byId[a.getAttribute("href").slice(1)] = a; });
+  const secs = Object.keys(byId).map(id=>document.getElementById(id)).filter(Boolean);
+  if(!secs.length) return;
+  const spy = new IntersectionObserver(es=>{
+    es.forEach(e=>{
+      if(!e.isIntersecting) return;
+      links.forEach(a=> a.removeAttribute("aria-current"));
+      const a = byId[e.target.id];
+      if(a) a.setAttribute("aria-current", "true");
+    });
+  }, {rootMargin:"-84px 0px -68% 0px", threshold:0});
+  secs.forEach(x=> spy.observe(x));
+})();
 
 /* ════════ enter / exit ════════ */
 function openStage(k){
