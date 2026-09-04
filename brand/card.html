@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Warp card</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,500;12..96,75..100,700;12..96,75..100,800&family=Public+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+:root{
+  --void:#0A0A0E; --panel:#13131A; --sunk:#08080B; --edge:#242430; --edge-2:#3A3B48;
+  --ink:#F7F7FA; --ink-2:#A3A3B2; --ink-3:#6C6C7A;
+  --vio:#9B80FF; --cyan:#3FDCEA; --gold:#F5BB4E; --ok:#4BE3A6;
+  --f-d:'Bricolage Grotesque','Helvetica Neue',Arial,sans-serif;
+  --f-u:'Public Sans',system-ui,sans-serif;
+  --f-m:'JetBrains Mono',ui-monospace,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--void)}
+.card{width:1600px;height:900px;position:relative;background:var(--void);overflow:hidden;
+  display:grid;grid-template-columns:1fr 760px;gap:76px;align-items:center;
+  padding:88px 88px 88px 96px;font-family:var(--f-u)}
+.grid{position:absolute;inset:0;opacity:.55;
+  background-image:linear-gradient(var(--edge) 1px,transparent 1px),linear-gradient(90deg,var(--edge) 1px,transparent 1px);
+  background-size:80px 80px}
+.rule{position:absolute;left:0;right:0;top:0;height:3px;
+  background:linear-gradient(90deg,var(--vio),#5C86FF 24%,var(--cyan) 48%,var(--ok) 66%,var(--gold) 84%,var(--vio))}
+.l{position:relative;z-index:2;align-self:center}
+.kick{font-family:var(--f-m);font-size:20px;letter-spacing:.24em;text-transform:uppercase;color:var(--vio);
+  display:flex;align-items:center;gap:14px}
+.kick::before{content:"";width:34px;height:2px;background:var(--vio)}
+h1{font-family:var(--f-d);font-size:96px;line-height:.96;font-weight:800;font-variation-settings:'wdth' 86;
+  letter-spacing:-.028em;margin:34px 0 0;color:var(--ink);word-spacing:.04em}
+h1.sm{font-size:74px;letter-spacing:-.022em}
+h1 .mut{color:var(--ink-3)}
+h1 em{font-style:normal;color:var(--vio)}
+.sub{font-size:27px;color:var(--ink-2);margin-top:32px;max-width:23ch;line-height:1.5}
+.sub b{color:var(--ink);font-weight:500}
+.foot{position:absolute;left:96px;bottom:70px;display:flex;align-items:center;gap:18px;z-index:3}
+.foot svg{width:44px;height:44px}
+.foot .wm{font-family:var(--f-d);font-weight:800;font-size:40px;letter-spacing:-.05em;
+  font-variation-settings:'wdth' 82;line-height:1;color:var(--ink)}
+.foot .h{font-family:var(--f-m);font-size:19px;color:var(--ink-3);letter-spacing:.06em;margin-left:4px}
+
+/* right-hand panel */
+.r{position:relative;z-index:2}
+.pan{border:1px solid var(--edge-2);background:var(--panel)}
+.pan .ph{display:flex;justify-content:space-between;gap:20px;padding:20px 26px;border-bottom:1px solid var(--edge-2);
+  font-family:var(--f-m);font-size:16px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3)}
+.pan .row{display:flex;justify-content:space-between;gap:24px;padding:21px 26px;border-bottom:1px solid var(--edge);
+  font-family:var(--f-m);font-size:24px;color:var(--ink-2)}
+.pan .row:last-child{border-bottom:0}
+.pan .row b{color:var(--ink);font-weight:500;font-variant-numeric:tabular-nums}
+.pan .row b.v{color:var(--vio)} .pan .row b.o{color:var(--ok)} .pan .row b.d{color:var(--ink-3)}
+.pan .row.big{padding:26px;background:var(--sunk)}
+.pan .row.big b{font-size:34px}
+.pre{font-family:var(--f-m);font-size:21px;line-height:1.9;padding:28px 26px;color:var(--ink-2);white-space:pre;
+  overflow:hidden}
+.pre .k{color:var(--vio)} .pre .s{color:var(--ok)} .pre .c{color:var(--ink-3)} .pre .n{color:var(--cyan)}
+table{width:100%;border-collapse:collapse;font-family:var(--f-m);font-size:21px}
+th{text-align:left;padding:16px 26px;border-bottom:1px solid var(--edge-2);color:var(--ink-3);
+  font-size:15px;letter-spacing:.16em;text-transform:uppercase;font-weight:500}
+td{padding:17px 26px;border-bottom:1px solid var(--edge);color:var(--ink-2);font-variant-numeric:tabular-nums}
+tr:last-child td{border-bottom:0}
+td.hi{color:var(--ink)} td.v{color:var(--vio)} td.d{color:var(--ink-3)}
+.eq{display:flex;flex-direction:column;gap:0}
+.eq .st{display:flex;align-items:baseline;gap:20px;padding:24px 26px;border-bottom:1px solid var(--edge);
+  font-family:var(--f-m);font-size:27px;color:var(--ink)}
+.eq .st:last-child{border-bottom:0}
+.eq .st .op{color:var(--ink-3);font-size:21px;width:120px;flex:none;letter-spacing:.1em;text-transform:uppercase}
+.eq .st .out{margin-left:auto;color:var(--vio)}
+.eq .st.f{background:var(--sunk)} .eq .st.f .out{font-size:36px}
+</style>
+</head>
+<body>
+<div class="card" id="card"><div class="grid"></div><div class="rule"></div>
+  <div class="l">
+    <span class="kick" id="k"></span>
+    <h1 id="h"></h1>
+    <p class="sub" id="s"></p>
+  </div>
+  <div class="r" id="a"></div>
+  <div class="foot">
+    <svg viewBox="0 0 32 32" aria-hidden="true">
+      <rect x="3" y="8" width="26" height="16" rx="1" fill="none" stroke="#F7F7FA" stroke-width="1.7"/>
+      <circle cx="11" cy="16" r="3.6" fill="none" stroke="#9B80FF" stroke-width="1.7"/>
+      <circle cx="21" cy="16" r="3.6" fill="none" stroke="#9B80FF" stroke-width="1.7"/>
+      <path d="M7 24v4M25 24v4" stroke="#F7F7FA" stroke-width="1.7" stroke-linecap="round"/>
+      <path d="M3 11H1M3 16H1M3 21H1" stroke="#F7F7FA" stroke-width="1.7" stroke-linecap="round"/>
+    </svg>
+    <span class="wm">WARP</span><span class="h">@warponrh</span>
+  </div>
+</div>
+<script>
+const CARDS = [
+{
+  k:"The fee",
+  h:'Fees in.<br>Hours out.',
+  s:'3% a trade. Two thirds of it buys <b>RTX 5090</b> time at spot.',
+  a:`<div class="pan">
+      <div class="ph"><span>Per trade</span><span>NVDA pair · Pons</span></div>
+      <div class="row"><span>trading fee</span><b>3.00%</b></div>
+      <div class="row"><span>creator tax → compute</span><b class="v">2.00%</b></div>
+      <div class="row"><span>pons + operations</span><b class="d">1.00%</b></div>
+      <div class="row"><span>minted for rewards</span><b class="o">0</b></div>
+      <div class="row big"><span>inflow to compute</span><b class="v">the tax, and nothing else</b></div>
+    </div>`
+},
+{
+  k:"The arithmetic",
+  h:'$100 traded.<br><em>2h&nbsp;14m</em> of 5090.',
+  s:'Priced off the Chainlink NVDA feed. Both inputs float.',
+  a:`<div class="pan eq">
+      <div class="st"><span class="op">traded</span>$100.00</div>
+      <div class="st"><span class="op">× 3%</span>fee<span class="out">$3.00</span></div>
+      <div class="st"><span class="op">× 2/3</span>creator tax<span class="out">$2.00</span></div>
+      <div class="st"><span class="op">÷ $0.89</span>per GPU-hour<span class="out">2.25 h</span></div>
+      <div class="st f"><span class="op">=</span>on one 5090<span class="out">2h 14m</span></div>
+    </div>`
+},
+{
+  k:"Settlement",
+  h:'Every hour,<br>on the hour.',
+  s:'Split by share of <b>eligible</b> supply. Nothing is staked.',
+  a:`<div class="pan">
+      <div class="ph"><span>Snapshot · block 7 000 611</span><span>2 697 h</span></div>
+      <table>
+        <tr><th>wallet</th><th>balance</th><th>share</th><th>hours</th></tr>
+        <tr><td class="hi">0x76a3…d784</td><td>12,400,000</td><td class="v">1.240%</td><td class="hi">33.44</td></tr>
+        <tr><td class="hi">0x00e3…ff12</td><td>3,150,000</td><td class="v">0.315%</td><td class="hi">8.49</td></tr>
+        <tr><td class="hi">0x9e8e…5535</td><td>250,000</td><td class="v">0.025%</td><td class="hi">0.67</td></tr>
+        <tr><td class="d">0x4c11…a0b8</td><td class="d">840</td><td class="d">—</td><td class="d">under 1,000</td></tr>
+      </table>
+    </div>`
+},
+{
+  k:"The gateway",
+  h:'Change the base URL.<br><span class="mut">That is the integration.</span>',
+  s:'OpenAI-compatible. Your SDK never knows.',
+  cls:"sm",
+  a:`<div class="pan">
+      <div class="ph"><span>terminal</span><span>credits · 40 h per key</span></div>
+      <div class="pre"><span class="c">$</span> <span class="k">export</span> OPENAI_BASE_URL=<span class="s">"https://gateway.warp…/v1"</span>
+<span class="c">$</span> <span class="k">export</span> OPENAI_API_KEY=<span class="s">"wk_live_…"</span>
+<span class="c">$</span> <span class="k">curl</span> $OPENAI_BASE_URL/chat/completions
+
+<span class="c">→</span> 200 OK  <span class="n">gpu_seconds: 1.84</span>
+<span class="c">→</span> remaining <span class="n">39.94 h</span>
+
+<span class="c">#</span> or take the whole card
+<span class="c">$</span> <span class="k">warp</span> pod create --gpu 5090</div>
+    </div>`
+}
+];
+const i = Math.max(0, Math.min(3, +(new URLSearchParams(location.search).get("i") || 0)));
+const c = CARDS[i];
+document.getElementById("k").textContent = c.k;
+document.getElementById("h").innerHTML = c.h;
+document.getElementById("h").className = c.cls || "";
+document.getElementById("s").innerHTML = c.s;
+document.getElementById("a").innerHTML = c.a;
+document.title = "warp-card-0" + (i+1);
+</script>
+</body>
+</html>

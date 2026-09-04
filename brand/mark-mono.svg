@@ -1,10 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Warp">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" role="img" aria-label="Warp">
   <title>Warp</title>
-  <g fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round">
-    <path d="M6 14 H58"/>
-    <path d="M6 25 C24 25 26 21 34 21 C44 21 50 25 58 25"/>
-    <path d="M6 39 C24 39 26 43 34 43 C44 43 50 39 58 39"/>
-    <path d="M6 50 H58"/>
-  </g>
-  <circle cx="34" cy="32" r="6.5" fill="currentColor"/>
+  <rect x="3" y="8" width="26" height="16" rx="1" fill="none" stroke="currentColor" stroke-width="1.7"/>
+  <circle cx="11" cy="16" r="3.6" fill="none" stroke="currentColor" stroke-width="1.7"/>
+  <circle cx="21" cy="16" r="3.6" fill="none" stroke="currentColor" stroke-width="1.7"/>
+  <path d="M7 24v4M25 24v4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+  <path d="M3 11H1M3 16H1M3 21H1" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
 </svg>
