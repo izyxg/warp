@@ -564,13 +564,13 @@ details.q p{padding:0 24px 22px;font-size:16px;color:var(--ink-2);max-width:70ch
 <section class="bd" id="est">
   <div class="wrap">
     <div class="hd"><span class="lb">02 · The estimate</span><h2>Work out your own share.</h2></div>
-    <p class="sub">Arithmetic on numbers you type. Not a rate, not a projection, and not read from anywhere — put in a balance and a market and it tells you exactly what the rule produces, including when that is close to nothing.</p>
+    <p class="sub">Arithmetic on numbers you type. Not a rate, not a projection, and not read from anywhere. It opens at zero because nothing has traded yet — move the sliders and it works the rule through, including when the answer is close to nothing.</p>
     <div class="est">
       <div class="in">
         <div class="fld"><label for="eBal">Your balance · WARP</label>
-          <input type="number" id="eBal" value="250000" min="0" step="1000"></div>
+          <input type="number" id="eBal" value="0" min="0" step="1000"></div>
         <div class="fld"><label for="eVol">30-day trading volume · USD</label>
-          <div class="row"><input type="range" id="eVol" min="0" max="1000000" step="5000" value="120000">
+          <div class="row"><input type="range" id="eVol" min="0" max="1000000" step="5000" value="0">
             <span class="rd" id="eVolR">$120k</span></div></div>
         <div class="fld"><label for="ePrice">RTX 5090 · USD per hour</label>
           <div class="row"><input type="range" id="ePrice" min="0.2" max="2.5" step="0.01" value="0.89">
@@ -588,6 +588,7 @@ details.q p{padding:0 24px 22px;font-size:16px;color:var(--ink-2);max-width:70ch
         <div class="orow"><span>Your share of eligible supply</span><b class="v" id="oShare">0%</b></div>
         <div class="orow"><span>Per hourly settlement</span><b id="oPer">0.000 h</b></div>
         <div class="orow"><span>Per 1,000,000 WARP held</span><b class="v" id="oPerM">0.00 h</b></div>
+        <p class="caveat" id="eZero" style="border-left-color:var(--vio);color:var(--ink-2)">Nothing has traded yet, so the estimate starts at zero. Put in a balance and a market above and it works the rule through for you. The $0.89 is the going rate for a 5090 hour, not a figure of ours.</p>
         <p class="caveat" id="eNote"></p>
         <p class="caveat">An estimate, not a fixed rate. What you actually receive depends on trading volume, on eligible supply at each snapshot, and on the 5090 price at the hour you are credited. Credits are access to compute — not cash, and no amount is guaranteed.</p>
       </div>
@@ -1017,7 +1018,7 @@ function paintWallet(){
 $("#wbtn").addEventListener("click", connect);
 
 /* ════════ estimator ════════ */
-const E = {bal:250000, vol:120000, price:0.89, supply:1e9};
+const E = {bal:0, vol:0, price:0.89, supply:1e9};
 function calc(){
   E.bal    = Math.max(0, +$("#eBal").value || 0);
   E.vol    = +$("#eVol").value;
@@ -1040,6 +1041,8 @@ function calc(){
   roll($("#oTax"), toBuy, usd);
   roll($("#oBought"), bought, v=> num(v)+" h");
   $("#oShare").textContent  = E.bal < MIN_HOLD ? "below 1,000 — not eligible" : (share*100).toFixed(4)+"%";
+  const z = $("#eZero");
+  if(z) z.hidden = !(E.vol === 0 && E.bal === 0);
   $("#oShare").className    = E.bal < MIN_HOLD ? "" : "v";
   $("#oPer").textContent    = (yours/720).toFixed(4)+" h";
   roll($("#oPerM"), perM, v=> v.toFixed(2)+" h");
@@ -1662,12 +1665,15 @@ function roll(el, to, fmtFn, ms){
   if(reduce || from === to){ el.textContent = fmtFn(to); return; }
   const t0 = performance.now(), d = ms || 380;
   cancelAnimationFrame(el._raf);
+  clearTimeout(el._settle);
   const step = t=>{
     const k = Math.min(1, (t-t0)/d), e = 1-Math.pow(1-k,3);
     el.textContent = fmtFn(from + (to-from)*e);
     if(k < 1) el._raf = requestAnimationFrame(step);
   };
   el._raf = requestAnimationFrame(step);
+  // rAF is throttled in a background tab; land on the real figure regardless
+  el._settle = setTimeout(()=>{ cancelAnimationFrame(el._raf); el.textContent = fmtFn(to); }, d + 80);
 }
 
 /* ════════ the settlement clock ════════ */
