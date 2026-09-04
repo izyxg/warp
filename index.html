@@ -333,6 +333,27 @@ a,button,summary,input{-webkit-tap-highlight-color:transparent}
   @keyframes fadein{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
 }
 
+/* -- hero contract slot -- */
+.caslot{display:none;margin-top:30px;border:1px solid var(--vio);background:var(--panel);max-width:640px}
+.caslot.on{display:block;animation:caIn .5s cubic-bezier(.22,.61,.36,1) both}
+@keyframes caIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.caslot .cah{display:flex;align-items:center;justify-content:space-between;gap:14px;
+  padding:11px 18px;border-bottom:1px solid var(--edge);background:var(--vio-soft)}
+.caslot .cah .k{font-family:var(--f-m);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--vio);display:inline-flex;align-items:center;gap:9px}
+.caslot .cah .k i{width:7px;height:7px;border-radius:50%;background:var(--vio);
+  animation:beat 2.2s ease-in-out infinite}
+.caslot .cah .net{font-family:var(--f-m);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+.caslot .addr{display:block;padding:20px 18px 6px;font-family:var(--f-m);
+  font-size:clamp(13px,1.85vw,21px);letter-spacing:-.01em;color:var(--ink);word-break:break-all;line-height:1.35}
+.caslot .acts{display:flex;gap:9px;flex-wrap:wrap;padding:12px 18px 18px}
+.caslot .acts button,.caslot .acts a{font-family:var(--f-m);font-size:11.5px;letter-spacing:.1em;
+  text-transform:uppercase;border:1px solid var(--edge-2);background:transparent;color:var(--ink-2);
+  padding:9px 15px;text-decoration:none;transition:border-color .16s ease,color .16s ease}
+.caslot .acts button:hover,.caslot .acts a:hover{border-color:var(--vio);color:var(--vio)}
+.caslot .acts button.done{border-color:var(--ok);color:var(--ok)}
+.caslot .cawarn{padding:0 18px 16px;font-size:12.5px;color:var(--ink-3);max-width:52ch}
+
 /* -- ledger -- */
 .ldhead{display:flex;align-items:baseline;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-bottom:22px}
 .ldnext{font-family:var(--f-m);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);
@@ -518,6 +539,7 @@ details.q p{padding:0 24px 22px;font-size:16px;color:var(--ink-2);max-width:70ch
       <span class="kick">Robinhood Chain · paired against tokenised NVDA</span>
       <h1 class="hh">Fees in.<br>Hours out.</h1>
       <p class="lede">Every WARP buy and sell pays a 3% fee. Two thirds of it — the creator tax — is priced in dollars off the Chainlink NVDA feed and spent on RTX&nbsp;5090 capacity. Once an hour that capacity is divided among holders as compute credits, measured in 5090&nbsp;hours and fixed at the price of the hour they were credited.</p>
+      <div class="caslot" id="caSlot"></div>
       <div class="cta">
         <button class="b1" data-open="intake">Enter the cluster</button>
         <a class="bx" id="xHero" target="_blank" rel="noopener">
@@ -1268,6 +1290,22 @@ const HALL = (function(){
   const grid = new THREE.GridHelper(120,120, C.edge.getHex(), C.edge.getHex());
   grid.material.transparent = true; grid.material.opacity = .10; grid.position.y = .01; scene.add(grid);
 
+  // dust in the light, drifting on the aisle draught
+  const DUST = 700;
+  const dpos = new Float32Array(DUST*3), dvel = new Float32Array(DUST);
+  for(let i=0;i<DUST;i++){
+    dpos[i*3]   = (Math.random()-.5)*46;
+    dpos[i*3+1] = Math.random()*7.2;
+    dpos[i*3+2] = (Math.random()-.5)*30;
+    dvel[i] = .12 + Math.random()*.5;
+  }
+  const dgeo = new THREE.BufferGeometry();
+  dgeo.setAttribute("position", new THREE.BufferAttribute(dpos, 3));
+  const dmat = new THREE.PointsMaterial({size:.055, sizeAttenuation:true, transparent:true,
+    opacity:.5, depthWrite:false, blending:THREE.AdditiveBlending, toneMapped:false});
+  const dust = new THREE.Points(dgeo, dmat);
+  scene.add(dust);
+
   const hemi = new THREE.HemisphereLight(C.ink.getHex(), C.void.getHex(), C.dark ? .5 : .32); scene.add(hemi);
   const key = new THREE.DirectionalLight(0xffffff, C.dark ? .72 : .42);
   key.position.set(12,22,14); key.castShadow = true; key.shadow.mapSize.set(1024,1024);
@@ -1344,6 +1382,27 @@ const HALL = (function(){
     m.material.color = (i%3===0 ? C.cyan : C.vio).clone(); m.material.opacity = .0;
     scene.add(m); PULSE.push({m, t:i/9});
   }
+  // the strips throw a soft shaft down onto the aisle
+  const SHAFT = [];
+  for(let row=0; row<NROW; row++){
+    const z = row ? AISLE : -AISLE;
+    const sh = new THREE.Mesh(new THREE.PlaneGeometry(NRACK*RACK_GAP+2.0, 5.0), M.halo.clone());
+    sh.material.color = C.ink.clone(); sh.material.opacity = .05;
+    sh.position.set(0, 2.8, z); scene.add(sh); SHAFT.push(sh);
+  }
+
+  // a dim mirror of the lit fronts, read as a polished floor
+  const refl = new THREE.InstancedMesh(new THREE.PlaneGeometry(1.9, 1.5), M.halo.clone(), NCARD);
+  refl.material.color = C.vio.clone(); refl.material.opacity = .16;
+  scene.add(refl);
+  for(let i=0;i<CARD.length;i++){
+    const c = CARD[i];
+    dm.position.set(c.x, .015, c.z + c.fwd*1.15);
+    dm.rotation.set(-Math.PI/2, 0, 0); dm.updateMatrix();
+    refl.setMatrixAt(i, dm.matrix);
+  }
+  refl.instanceMatrix.needsUpdate = true;
+
   const spine = new THREE.Mesh(new THREE.BoxGeometry(.42,.14, AISLE*2+1.2), M.metal);
   spine.position.set(0,5.3,0); scene.add(spine);
   for(let i=-3;i<=3;i++){
@@ -1397,6 +1456,7 @@ const HALL = (function(){
   const K = {az:AISLE_AZ, pol:.20, dist:18.5, ty:2.2, tAz:AISLE_AZ, tPol:.20, tDist:18.5};
   const tgt = new THREE.Vector3();
   function pose(){
+    if(!reduce) K.ty = 2.2 + Math.sin(performance.now()*.00022)*.10;
     K.az += (K.tAz-K.az)*.11; K.pol += (K.tPol-K.pol)*.11; K.dist += (K.tDist-K.dist)*.11;
     tgt.set(0, K.ty, 0);
     cam.position.set(tgt.x + K.dist*Math.cos(K.pol)*Math.sin(K.az),
@@ -1446,6 +1506,13 @@ const HALL = (function(){
       strips.setColorAt(i, cc);
       glows.setColorAt(i, c2.copy(cc).multiplyScalar(.10 + .30*a + w*.5));
     }
+    for(let i=0;i<CARD.length;i++){
+      const c = CARD[i];
+      if(c.off){ c2.setRGB(0,0,0); refl.setColorAt(i, c2); continue; }
+      const a = .22 + .55*busy*(.55 + .45*Math.sin(t*.0013 + c.phase));
+      refl.setColorAt(i, c2.copy(C.vio).lerp(C.cyan, .3).multiplyScalar(a*.6));
+    }
+    if(refl.instanceColor) refl.instanceColor.needsUpdate = true;
     if(strips.instanceColor) strips.instanceColor.needsUpdate = true;
     if(glows.instanceColor) glows.instanceColor.needsUpdate = true;
 
@@ -1467,6 +1534,17 @@ const HALL = (function(){
       q.m.lookAt(cam.position);
       q.m.material.opacity = (.30 + .45*busy) * Math.sin(u*Math.PI);
     }
+    // dust drifts down the aisle and wraps around
+    const dp = dgeo.attributes.position.array;
+    for(let i=0;i<DUST;i++){
+      dp[i*3] += dvel[i]*dt*.0016*(.4+busy);
+      dp[i*3+1] += Math.sin(t*.0004 + i)*.0012;
+      if(dp[i*3] > 23) dp[i*3] = -23;
+    }
+    dgeo.attributes.position.needsUpdate = true;
+    dmat.color.copy(C.ink); dmat.opacity = (C.dark ? .5 : .2) * (.5 + .5*busy);
+    SHAFT.forEach(sh=>{ sh.lookAt(cam.position); sh.material.opacity = .03 + .05*busy; });
+
     shutterRing.material.color.copy(C.vio).lerp(C.ink, pulse*.9);
     shutterDisc.material.opacity = pulse*.55;
     shutterDisc.scale.setScalar(1 + (1-pulse)*.9);
@@ -1476,6 +1554,12 @@ const HALL = (function(){
     ports.forEach((p,k)=> p.material.color.copy(((t*.004+k)%7) < 3 ? C.cyan : C.edge));
     podLamp.material.color.copy(C.ok);
 
+    if(focused && FOCUS[focused]){
+      const k = .5 + .5*Math.sin(t*.006);
+      FOCUS[focused].forEach(o=>{
+        if(o && o.material && o.material.color) o.material.color.copy(C.vio).lerp(C.ink, k*.55);
+      });
+    }
     pose(); R.render(scene, cam); placeTags();
   }
   let onSnap = null;
@@ -1492,6 +1576,8 @@ const HALL = (function(){
     M.deck.color.copy(C.sunk); M.metal.color.copy(C.metal); M.dark.color.copy(C.void);
     grid.material.color.copy(C.edge); hemi.color.copy(C.ink); hemi.groundColor.copy(C.void);
     rim.color.copy(C.vio);
+    refl.material.color.copy(C.vio); dmat.color.copy(C.ink);
+    SHAFT.forEach(sh=> sh.material.color.copy(C.ink));
     hemi.intensity = C.dark ? .5 : .32; key.intensity = C.dark ? .72 : .42;
     rim.intensity = C.dark ? .75 : .55;
   }
@@ -1509,7 +1595,12 @@ const HALL = (function(){
     const h = ray.intersectObject(cards, false)[0];
     return h && h.instanceId !== undefined ? h.instanceId : -1;
   }
-  return {K, setMode, resize, pickCard, nCards:NCARD, applyTheme,
+  // each label lights the object it names — keys match SPOT
+  const FOCUS = {intake:busbars, desk:[deskBoard], shutter:[shutterRing],
+                 ledger:[ledgerBoard], gateway:ports, pod:[podLamp]};
+  let focused = null;
+  function focus(k){ focused = k; }
+  return {K, setMode, resize, pickCard, nCards:NCARD, applyTheme, focus,
           setBusy:v=>{busy = .18 + .82*v;}, onSnap:f=>{onSnap = f;}, snaps:()=>snaps,
           running:b=>{running = b;}};
 })();
@@ -1569,6 +1660,8 @@ Object.entries(SPOT).forEach(([k,sp])=>{
   const b = document.createElement("button");
   b.className = "tag"; b.dataset.k = k; b.innerHTML = "<i></i>"+sp.tag;
   b.onclick = ()=> openPanel(k);
+  b.onmouseenter = ()=> HALL && HALL.focus(k);
+  b.onmouseleave = ()=> HALL && HALL.focus(null);
   tagsEl.appendChild(b);
 });
 let cur = null;
@@ -1757,7 +1850,27 @@ TH.apply(TH.read());
 function paintLinks(){
   ["#ghLink","#ghLink2","#ghLink3","#ghLink4"].forEach(q=>{ const e = $(q); if(e) e.href = LINKS.github; });
   ["#xLink","#xHero"].forEach(q=>{ const e = $(q); if(e) e.href = LINKS.x; });
-  const chip = $("#caChip"), foot = $("#caFoot");
+  const chip = $("#caChip"), foot = $("#caFoot"), slot = $("#caSlot");
+  if(slot){
+    if(LINKS.ca){
+      slot.className = "caslot on";
+      slot.innerHTML =
+        `<div class="cah"><span class="k"><i></i>Contract address</span>`
+      + `<span class="net">Robinhood Chain &middot; 4663</span></div>`
+      + `<code class="addr">${LINKS.ca}</code>`
+      + `<div class="acts"><button id="caBigCopy">Copy address</button>`
+      + `<a href="${LINKS.explorer}${LINKS.ca}" target="_blank" rel="noopener">Explorer &#8599;</a></div>`
+      + `<p class="cawarn">Check the address, not the ticker. This is the only place it is published.</p>`;
+      $("#caBigCopy").onclick = async ()=>{
+        try{ await navigator.clipboard.writeText(LINKS.ca); }catch(e){}
+        const b = $("#caBigCopy"); b.textContent = "Copied"; b.className = "done";
+        setTimeout(()=>{ b.textContent = "Copy address"; b.className = ""; }, 1600);
+      };
+    }else{
+      slot.className = "caslot";     // nothing at all until an address exists
+      slot.innerHTML = "";
+    }
+  }
   if(LINKS.ca){
     const shortCa = LINKS.ca.slice(0,6)+"…"+LINKS.ca.slice(-4);
     chip.className = "ca";
