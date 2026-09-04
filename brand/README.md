@@ -36,3 +36,25 @@ On Windows the `--screenshot` path must be absolute and backslashed.
 - If it is a figure, it is monospaced. No exceptions.
 - Every card carries a real number and a real panel. No stock imagery, nothing
   rendered for decoration.
+
+## Twitter / X assets
+
+| File | Size | Where |
+|---|---|---|
+| `out/warp-avatar.png` | 1000 × 1000 | Profile picture — X renders it at 400 |
+| `out/warp-banner.png` | 3000 × 1000 | Header — a 1500 × 500 at 2× |
+| `out/warp-card-0*.png` | 3200 × 1800 | Post images — 1600 × 900 at 2× |
+
+The banner keeps its bottom-left corner empty on purpose: that is where X
+overlays the profile picture, and anything placed there is lost.
+
+```bash
+CHROME="/c/Program Files/Google/Chrome/Application/chrome.exe"
+OUT="C:\path\to\warp\brand\out"
+"$CHROME" --headless=new --disable-gpu --hide-scrollbars \
+  --window-size=1000,1000 --virtual-time-budget=7000 \
+  --screenshot="$OUT\warp-avatar.png" "http://localhost:5173/brand/avatar.html"
+"$CHROME" --headless=new --disable-gpu --hide-scrollbars \
+  --window-size=1500,500 --force-device-scale-factor=2 --virtual-time-budget=8000 \
+  --screenshot="$OUT\warp-banner.png" "http://localhost:5173/brand/banner.html"
+```

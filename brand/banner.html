@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>warp-banner</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,700;12..96,75..100,800&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--void:#0A0A0E;--panel:#13131A;--edge:#1E1E28;--edge2:#31323E;
+  --ink:#F7F7FA;--ink2:#A3A3B2;--ink3:#6C6C7A;--vio:#9B80FF;--cyan:#3FDCEA;--gold:#F5BB4E;--ok:#4BE3A6}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--void)}
+.b{width:1500px;height:500px;position:relative;background:var(--void);overflow:hidden}
+.g{position:absolute;inset:0;opacity:.5;
+  background-image:linear-gradient(var(--edge) 1px,transparent 1px),linear-gradient(90deg,var(--edge) 1px,transparent 1px);
+  background-size:60px 60px}
+.rule{position:absolute;left:0;right:0;top:0;height:3px;
+  background:linear-gradient(90deg,var(--vio),#5C86FF 24%,var(--cyan) 48%,var(--ok) 66%,var(--gold) 84%,var(--vio))}
+.glow{position:absolute;right:-140px;top:-180px;width:820px;height:820px;
+  background:radial-gradient(circle,rgba(155,128,255,.20),rgba(0,0,0,0) 62%)}
+
+/* the profile picture sits over the bottom-left, so nothing lives there */
+.in{position:absolute;left:392px;top:50%;transform:translateY(-50%);z-index:3}
+h1{font-family:'Bricolage Grotesque',Arial,sans-serif;font-weight:800;font-variation-settings:'wdth' 84;
+  font-size:76px;line-height:.95;letter-spacing:-.04em;color:var(--ink);margin:0}
+.sub{font-family:'JetBrains Mono',monospace;font-size:17px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--vio);margin-top:18px}
+.line{font-family:'JetBrains Mono',monospace;font-size:16px;color:var(--ink3);margin-top:11px;letter-spacing:.05em}
+
+/* a slice of the rack, right side */
+.rack{position:absolute;right:70px;top:50%;transform:translateY(-50%);display:flex;gap:14px;z-index:2}
+.col{display:flex;flex-direction:column;gap:9px;border:1px solid var(--edge2);background:var(--panel);padding:12px 10px}
+.card{width:66px;height:26px;background:#0E0E14;border:1px solid var(--edge2);position:relative;display:flex;
+  align-items:center;justify-content:center;gap:5px}
+.card i{width:11px;height:11px;border-radius:50%;border:1.6px solid var(--vio);display:block}
+.card::after{content:"";position:absolute;left:5px;right:5px;top:3px;height:2px;background:var(--vio);opacity:.85}
+.card.off i{border-color:#3A3A46}
+.card.off::after{background:#3A3A46;opacity:.5}
+</style>
+</head>
+<body>
+<div class="b">
+  <div class="g"></div><div class="glow"></div><div class="rule"></div>
+  <div class="in">
+    <h1>Fees in. Hours out.</h1>
+    <div class="sub">Trading fees, converted into RTX 5090 time</div>
+    <div class="line">robinhood chain · paired against tokenised NVDA · warponrh</div>
+  </div>
+  <div class="rack" id="rack"></div>
+</div>
+<script>
+const off = new Set([2,7,9,14,19,23]);
+let n = 0, html = "";
+for(let c=0;c<4;c++){
+  html += '<div class="col">';
+  for(let r=0;r<7;r++){ html += '<div class="card'+(off.has(n)?" off":"")+'"><i></i><i></i></div>'; n++; }
+  html += '</div>';
+}
+document.getElementById("rack").innerHTML = html;
+</script>
+</body>
+</html>
