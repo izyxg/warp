@@ -37,6 +37,47 @@ guaranteed.
 | Network | Robinhood Chain · 4663 |
 | Minted for rewards | 0 — compute is funded by fees, not issuance |
 
+## Configuration
+
+The site is one static file with a tiny build step whose only job is to turn
+environment variables into `config.js`. Set them on your host and redeploy — no
+code change, no rebuild of the page itself.
+
+| Variable | Fills | Default if unset |
+|---|---|---|
+| `WARP_CA` | The header chip, its copy button, the explorer link and the footer block | empty — the slot reads *not live yet* |
+| `WARP_X` | Every X link | `https://x.com/warponrh` |
+| `WARP_GITHUB` | Every GitHub link | `https://github.com/izyxg/warp` |
+| `WARP_EXPLORER` | The base URL the CA links to | `https://robinhoodchain.blockscout.com/address/` |
+
+**`WARP_CA` is the one that matters.** Setting it lights every contract-address
+slot on the site at once.
+
+### On Vercel
+
+```bash
+vercel env add WARP_CA production
+# paste 0x… when prompted, then
+vercel deploy --prod
+```
+
+Or add it under *Settings → Environment Variables* in the dashboard. The build
+command in `vercel.json` runs `node build.mjs` on every deploy.
+
+### On Netlify or Cloudflare Pages
+
+Build command `node build.mjs`, publish directory `.`, and set `WARP_CA` in the
+site's environment.
+
+### Locally
+
+```bash
+WARP_CA=0x… node build.mjs && python -m http.server 5173 --directory .
+```
+
+Running `node build.mjs` with nothing set rewrites `config.js` empty, which is the
+committed state.
+
 ## Running it
 
 No build step, no dependencies to install. It is one HTML file.
