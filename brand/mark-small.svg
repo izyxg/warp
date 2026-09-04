@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" role="img" aria-label="Warp">
+  <title>Warp</title>
+  <g fill="none" stroke="#8A6BFF" stroke-width="2.6" stroke-linecap="round">
+    <path d="M4 10 H28"/>
+    <path d="M4 22 H28"/>
+    <path d="M4 16.2 C12 16.2 13 12.6 17 12.6 C22 12.6 25 16.2 28 16.2" opacity=".55"/>
+  </g>
+  <circle cx="17" cy="19.6" r="3.4" fill="#8A6BFF"/>
+</svg>

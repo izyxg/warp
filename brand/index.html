@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Warp — brand kit</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,500;12..96,75..100,700;12..96,75..100,800&family=Public+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+:root{
+  --void:#0A0A0E; --panel:#111116; --sunk:#08080B; --edge:#22222C; --edge-2:#33343F;
+  --ink:#EDEDF3; --ink-2:#9494A4; --ink-3:#63636F;
+  --vio:#8A6BFF; --cyan:#31D2E0; --gold:#F2B341; --ok:#3FD79A;
+  --f-d:'Bricolage Grotesque','Helvetica Neue',Arial,sans-serif;
+  --f-u:'Public Sans',system-ui,sans-serif;
+  --f-m:'JetBrains Mono',ui-monospace,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:#050507;color:var(--ink);font-family:var(--f-u);font-size:15px;line-height:1.6}
+.page{max-width:1180px;margin:0 auto;padding:44px 28px 90px}
+h1,h2,h3{font-family:var(--f-d);margin:0;letter-spacing:-.03em;font-variation-settings:'wdth' 90}
+.lb{font-family:var(--f-m);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-3)}
+.sec{margin-top:56px}
+.sec>h2{font-size:26px;margin:8px 0 6px}
+.sec>p{color:var(--ink-2);max-width:64ch;margin:0 0 22px;font-size:14.5px}
+hr.iris{height:2px;border:0;margin:0;
+  background:linear-gradient(90deg,var(--vio),#4E7BFF 22%,var(--cyan) 46%,var(--ok) 62%,var(--gold) 82%,var(--vio));}
+
+/* ── logo bench ── */
+.bench{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+.cell{border:1px solid var(--edge);background:var(--panel);padding:26px;display:flex;
+  flex-direction:column;align-items:center;justify-content:center;gap:16px;min-height:190px}
+.cell.light{background:#F2F2F5}
+.cell .cap{font-family:var(--f-m);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3)}
+.cell.light .cap{color:#7C7C8A}
+.lock{display:flex;align-items:center;gap:14px}
+.lock .wm{font-family:var(--f-d);font-weight:800;font-size:38px;letter-spacing:-.05em;
+  font-variation-settings:'wdth' 82;line-height:1;color:var(--ink)}
+.cell.light .lock .wm{color:#0C0C12}
+.sizes{display:flex;align-items:flex-end;gap:20px}
+.swatches{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-top:14px}
+.sw{border:1px solid var(--edge);padding:12px}
+.sw i{display:block;height:44px;margin-bottom:9px}
+.sw b{font-family:var(--f-m);font-size:11px;display:block;color:var(--ink)}
+.sw span{font-family:var(--f-m);font-size:10px;color:var(--ink-3)}
+
+/* ── tweet cards ── */
+.shots{display:flex;flex-direction:column;gap:34px;margin-top:8px}
+.frame{width:100%;overflow:hidden;border:1px solid var(--edge)}
+.scaler{width:1600px;height:900px;transform-origin:top left}
+.card{width:1600px;height:900px;position:relative;background:var(--void);overflow:hidden;
+  display:flex;flex-direction:column;justify-content:center;padding:96px 104px}
+.card .grid{position:absolute;inset:0;opacity:.5;
+  background-image:linear-gradient(var(--edge) 1px,transparent 1px),linear-gradient(90deg,var(--edge) 1px,transparent 1px);
+  background-size:100px 100px}
+.card .glow{position:absolute;width:900px;height:900px;right:-260px;top:-200px;pointer-events:none;
+  background:radial-gradient(circle,rgba(138,107,255,.20),rgba(0,0,0,0) 62%)}
+.card .in{position:relative;z-index:2;max-width:930px}
+.card .kick{font-family:var(--f-m);font-size:21px;letter-spacing:.22em;text-transform:uppercase;color:var(--vio)}
+.card h3{font-size:104px;line-height:.94;font-weight:800;font-variation-settings:'wdth' 80;
+  letter-spacing:-.05em;margin:30px 0 0;color:#F7F7FA}
+.card h3.sm{font-size:82px}
+.card h3 em{font-style:normal;color:var(--vio)}
+.card h3 .mut{color:var(--ink-2)}
+.card .sub{font-size:30px;color:var(--ink-2);margin-top:30px;max-width:22ch;line-height:1.45}
+.card .sub b{color:var(--ink);font-weight:500}
+.card .foot{position:absolute;left:104px;bottom:78px;display:flex;align-items:center;gap:16px;z-index:2}
+.card .foot .wm{font-family:var(--f-d);font-weight:800;font-size:38px;letter-spacing:-.05em;
+  font-variation-settings:'wdth' 82;line-height:1}
+.card .foot .hand{font-family:var(--f-m);font-size:19px;color:var(--ink-3);letter-spacing:.06em}
+
+/* right-hand furniture */
+.art{position:absolute;right:96px;top:50%;transform:translateY(-50%);z-index:2}
+.flowbox{width:600px;border:1px solid var(--edge-2);background:var(--panel)}
+.flowbox .h{padding:20px 24px;border-bottom:1px solid var(--edge-2);font-family:var(--f-m);
+  font-size:17px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3)}
+.flowbox .r{display:flex;justify-content:space-between;gap:20px;padding:19px 24px;
+  border-bottom:1px solid var(--edge);font-family:var(--f-m);font-size:23px;color:var(--ink-3)}
+.flowbox .r:last-child{border-bottom:0}
+.flowbox .r b{color:var(--ink);font-weight:500}
+.flowbox .r b.v{color:var(--vio)}
+.flowbox .r.dim b{color:var(--ink-3)}
+.codebox{width:640px;border:1px solid var(--edge-2);background:var(--sunk);padding:28px 30px;
+  font-family:var(--f-m);font-size:22px;line-height:1.85;color:var(--ink-2)}
+.codebox .k{color:var(--vio)} .codebox .s{color:var(--ok)} .codebox .c{color:var(--ink-3)}
+.stack{display:flex;flex-direction:column;gap:16px;width:560px}
+.stack .row{display:flex;align-items:center;gap:18px;border:1px solid var(--edge-2);background:var(--panel);
+  padding:22px 26px;font-family:var(--f-m);font-size:24px;color:var(--ink)}
+.stack .row .x{color:var(--vio);font-size:26px}
+.stack .row.off{color:var(--ink-3);border-style:dashed}
+.dial{width:520px;height:520px;position:relative}
+.dial .ring{position:absolute;inset:0;border:2px solid var(--edge-2);border-radius:50%}
+.dial .arc{position:absolute;inset:0;border-radius:50%;
+  background:conic-gradient(from -90deg,var(--vio) 0turn,var(--vio) .72turn,rgba(0,0,0,0) .72turn);
+  -webkit-mask:radial-gradient(circle,transparent 60%,#000 61%);mask:radial-gradient(circle,transparent 60%,#000 61%)}
+.dial .mid{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
+.dial .mid .big{font-family:var(--f-d);font-weight:800;font-size:96px;letter-spacing:-.05em;
+  font-variation-settings:'wdth' 82;line-height:1}
+.dial .mid .cap{font-family:var(--f-m);font-size:18px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3)}
+.bars{display:flex;align-items:flex-end;gap:14px;height:420px}
+.bars i{width:52px;background:var(--edge-2);display:block}
+.bars i.on{background:var(--vio)}
+.tweettext{border:1px solid var(--edge);background:var(--panel);padding:20px 22px;margin-top:14px}
+.tweettext .lb{margin-bottom:9px;display:block}
+.tweettext p{margin:0;font-size:15px;color:var(--ink);white-space:pre-wrap;font-family:var(--f-u)}
+.tweettext .cnt{font-family:var(--f-m);font-size:11px;color:var(--ink-3);margin-top:10px}
+.hd{display:flex;align-items:baseline;justify-content:space-between;gap:14px;margin-bottom:10px;flex-wrap:wrap}
+.hd .n{font-family:var(--f-m);font-size:11px;color:var(--vio);letter-spacing:.14em}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <span class="lb">Brand kit</span>
+  <h1 style="font-size:52px;font-weight:800;font-variation-settings:'wdth' 82;margin:10px 0 12px">Warp</h1>
+  <p style="color:var(--ink-2);max-width:66ch;margin:0">The mark is four parallel lines bending around a mass. A warp is thirty-two GPU threads in lockstep, the warp is the fixed set of threads on a loom, and warping is what mass does to straight lines. One drawing holds all three.</p>
+  <hr class="iris" style="margin-top:26px">
+
+  <!-- ── LOGO ── -->
+  <section class="sec">
+    <span class="lb">01 · The mark</span>
+    <h2>Lockups</h2>
+    <p>The wordmark is Bricolage Grotesque at 800, width axis 82 — the same face and axis as the site's headlines, so a card and a page look like the same company.</p>
+    <div class="bench">
+      <div class="cell">
+        <div class="lock">
+          <svg viewBox="0 0 64 64" width="48" height="48" aria-hidden="true">
+            <g fill="none" stroke="#8A6BFF" stroke-width="4" stroke-linecap="round">
+              <path d="M6 14 H58"/><path d="M6 25 C24 25 26 21 34 21 C44 21 50 25 58 25"/>
+              <path d="M6 39 C24 39 26 43 34 43 C44 43 50 39 58 39"/><path d="M6 50 H58"/>
+            </g><circle cx="34" cy="32" r="6.5" fill="#8A6BFF"/>
+          </svg>
+          <span class="wm">WARP</span>
+        </div>
+        <span class="cap">Primary · horizontal</span>
+      </div>
+      <div class="cell light">
+        <div class="lock">
+          <svg viewBox="0 0 64 64" width="48" height="48" aria-hidden="true">
+            <g fill="none" stroke="#5B37E0" stroke-width="4" stroke-linecap="round">
+              <path d="M6 14 H58"/><path d="M6 25 C24 25 26 21 34 21 C44 21 50 25 58 25"/>
+              <path d="M6 39 C24 39 26 43 34 43 C44 43 50 39 58 39"/><path d="M6 50 H58"/>
+            </g><circle cx="34" cy="32" r="6.5" fill="#5B37E0"/>
+          </svg>
+          <span class="wm">WARP</span>
+        </div>
+        <span class="cap">On light</span>
+      </div>
+      <div class="cell">
+        <div class="sizes">
+          <svg viewBox="0 0 64 64" width="64" height="64" aria-hidden="true">
+            <g fill="none" stroke="#8A6BFF" stroke-width="4" stroke-linecap="round">
+              <path d="M6 14 H58"/><path d="M6 25 C24 25 26 21 34 21 C44 21 50 25 58 25"/>
+              <path d="M6 39 C24 39 26 43 34 43 C44 43 50 39 58 39"/><path d="M6 50 H58"/>
+            </g><circle cx="34" cy="32" r="6.5" fill="#8A6BFF"/>
+          </svg>
+          <svg viewBox="0 0 64 64" width="32" height="32" aria-hidden="true">
+            <g fill="none" stroke="#8A6BFF" stroke-width="4" stroke-linecap="round">
+              <path d="M6 14 H58"/><path d="M6 25 C24 25 26 21 34 21 C44 21 50 25 58 25"/>
+              <path d="M6 39 C24 39 26 43 34 43 C44 43 50 39 58 39"/><path d="M6 50 H58"/>
+            </g><circle cx="34" cy="32" r="6.5" fill="#8A6BFF"/>
+          </svg>
+          <svg viewBox="0 0 32 32" width="20" height="20" aria-hidden="true">
+            <g fill="none" stroke="#8A6BFF" stroke-width="2.6" stroke-linecap="round">
+              <path d="M4 10 H28"/><path d="M4 22 H28"/>
+              <path d="M4 16.2 C12 16.2 13 12.6 17 12.6 C22 12.6 25 16.2 28 16.2" opacity=".55"/>
+            </g><circle cx="17" cy="19.6" r="3.4" fill="#8A6BFF"/>
+          </svg>
+        </div>
+        <span class="cap">64 · 32 · 20 px — the small cut drops a line</span>
+      </div>
+      <div class="cell" style="background:#8A6BFF">
+        <div class="lock">
+          <svg viewBox="0 0 64 64" width="48" height="48" aria-hidden="true">
+            <g fill="none" stroke="#0A0A0E" stroke-width="4" stroke-linecap="round">
+              <path d="M6 14 H58"/><path d="M6 25 C24 25 26 21 34 21 C44 21 50 25 58 25"/>
+              <path d="M6 39 C24 39 26 43 34 43 C44 43 50 39 58 39"/><path d="M6 50 H58"/>
+            </g><circle cx="34" cy="32" r="6.5" fill="#0A0A0E"/>
+          </svg>
+          <span class="wm" style="color:#0A0A0E">WARP</span>
+        </div>
+        <span class="cap" style="color:rgba(10,10,14,.7)">Knocked out</span>
+      </div>
+    </div>
+
+    <div class="swatches">
+      <div class="sw"><i style="background:#8A6BFF"></i><b>Violet</b><span>#8A6BFF · accent</span></div>
+      <div class="sw"><i style="background:#0A0A0E;border:1px solid var(--edge-2)"></i><b>Void</b><span>#0A0A0E · ground</span></div>
+      <div class="sw"><i style="background:#31D2E0"></i><b>Cyan</b><span>#31D2E0 · data</span></div>
+      <div class="sw"><i style="background:#F2B341"></i><b>Gold</b><span>#F2B341 · caution</span></div>
+      <div class="sw"><i style="background:#3FD79A"></i><b>Green</b><span>#3FD79A · pass</span></div>
+      <div class="sw"><i style="background:#EDEDF3"></i><b>Ink</b><span>#EDEDF3 · type</span></div>
+    </div>
+  </section>
+
+  <hr class="iris" style="margin-top:44px">
+
+  <!-- ── CARDS ── -->
+  <section class="sec">
+    <span class="lb">02 · Social</span>
+    <h2>Six cards</h2>
+    <p>1600 × 900, the native ratio for an X post image. Each one is a fixed-size element on this page — screenshot it at 2× for a crisp upload, or open this file and export the node. The copy under each card is the post it goes with.</p>
+    <div class="shots" id="shots"></div>
+  </section>
+</div>
+
+<script>
+const CARDS = [
+{
+  kick:"Robinhood Chain",
+  h:'Fees in.<br>Hours out.',
+  sub:'Every WARP trade pays 3%. Two thirds of it buys <b>RTX 5090</b> time.',
+  art:`<div class="flowbox">
+    <div class="h">Per trade</div>
+    <div class="r"><span>Trading fee</span><b>3%</b></div>
+    <div class="r"><span>Creator tax → compute</span><b class="v">2%</b></div>
+    <div class="r dim"><span>Pons + operations</span><b>1%</b></div>
+    <div class="r"><span>Minted for rewards</span><b class="v">0</b></div>
+  </div>`,
+  tweet:`Fees in. Hours out.\n\nEvery WARP buy and sell pays 3%. Two thirds of it — the creator tax — buys RTX 5090 capacity at spot. Once an hour that capacity is split among holders as compute credits.\n\nNothing is minted to pay anyone. The fee is the only inflow.`
+},
+{
+  kick:"The arithmetic",
+  h:'$100 traded.<br><em>2h 14m</em> of 5090.',
+  sub:'At $0.89 an hour. Both of those numbers float, and neither one is ours.',
+  art:`<div class="flowbox">
+    <div class="h">Worked through</div>
+    <div class="r"><span>Traded</span><b>$100.00</b></div>
+    <div class="r"><span>Fee · 3%</span><b>$3.00</b></div>
+    <div class="r"><span>Buys compute · 2%</span><b class="v">$2.00</b></div>
+    <div class="r"><span>At $0.89 / hour</span><b class="v">2.25 h</b></div>
+  </div>`,
+  tweet:`$100 traded buys about 2 hours 14 minutes on an RTX 5090.\n\n$100 → $3.00 fee → $2.00 of compute → 2.25 hours at $0.89.\n\nVolume and GPU prices both move. Quiet market, fewer hours. Cheaper cards, more hours. We publish the arithmetic instead of a rate.`
+},
+{
+  kick:"What it isn't",
+  h:'No staking.<br>No lock-up.<br><span class="mut">No mint.</span>',
+  sub:'Your balance is read at a block and then left alone.',
+  art:`<div class="stack">
+    <div class="row"><span class="x">✕</span> staking contract</div>
+    <div class="row"><span class="x">✕</span> lock-up period</div>
+    <div class="row"><span class="x">✕</span> approval to sign</div>
+    <div class="row"><span class="x">✕</span> tokens minted for rewards</div>
+    <div class="row off">balance read at a block · that is all</div>
+  </div>`,
+  tweet:`No staking. No lock-up. No mint.\n\nThere is no contract to deposit into and nothing to approve. The distributor reads balances at a block and leaves them alone.\n\nSell whenever you want — it costs you the next snapshot, and nothing that is already in your ledger.`
+},
+{
+  kick:"Settlement",
+  h:'Every hour,<br>on the hour.',
+  sub:'Wallets holding <b>1,000 WARP</b> or more split what the tax bought.',
+  art:`<div class="dial">
+    <div class="ring"></div><div class="arc"></div>
+    <div class="mid"><span class="big">1h</span><span class="cap">Snapshot period</span></div>
+  </div>`,
+  tweet:`Every hour, on the hour.\n\nWallets holding at least 1,000 WARP are recorded, and the 5090 capacity bought in that window is split by share of eligible supply — not total supply. Wallets under the threshold neither receive nor dilute.\n\nCredits are fixed at the price of the hour they land.`
+},
+{
+  kick:"The gateway",
+  h:'Change the base URL.<br><span class="mut">That is the integration.</span>',
+  sub:'OpenAI-compatible. Your SDK does not know the difference.',
+  cls:"sm",
+  art:`<div class="codebox">
+    <span class="c"># nothing to rewrite</span><br>
+    <span class="k">export</span> OPENAI_BASE_URL=<span class="s">"https://gateway.warp…/v1"</span><br>
+    <span class="k">export</span> OPENAI_API_KEY=<span class="s">"wk_live_…"</span><br><br>
+    <span class="c"># or take the whole card</span><br>
+    <span class="k">warp</span> pod create --gpu 5090<br>
+    <span class="k">ssh</span> pod-9f2a1c@ssh.warp…
+  </div>`,
+  tweet:`Change the base URL. That's the integration.\n\nThe Warp gateway speaks the OpenAI chat protocol, so anything already pointed at that shape of API just works. Credits pay for the tokens.\n\nWant the whole card instead? Same credits launch a 5090 pod you SSH into.`
+},
+{
+  kick:"Plainly",
+  h:'It is not<br>a yield.',
+  sub:'No APY appears anywhere on this site. Credits are compute access, not cash.',
+  art:`<div class="bars">
+    <i class="on" style="height:38%"></i><i class="on" style="height:64%"></i>
+    <i class="on" style="height:22%"></i><i class="on" style="height:81%"></i>
+    <i class="on" style="height:47%"></i><i style="height:12%"></i>
+    <i class="on" style="height:70%"></i><i style="height:29%"></i>
+  </div>`,
+  tweet:`It is not a yield.\n\nNo APY appears anywhere on the Warp site — not in the docs, not in the estimator. A rate implies a promise about the future and there is no mechanism here that could keep one.\n\nYou get compute, in an amount set by volume and the price of a graphics card.`
+}
+];
+
+const MARK = `<svg viewBox="0 0 64 64" width="46" height="46" aria-hidden="true">
+  <g fill="none" stroke="#8A6BFF" stroke-width="4" stroke-linecap="round">
+    <path d="M6 14 H58"/><path d="M6 25 C24 25 26 21 34 21 C44 21 50 25 58 25"/>
+    <path d="M6 39 C24 39 26 43 34 43 C44 43 50 39 58 39"/><path d="M6 50 H58"/>
+  </g><circle cx="34" cy="32" r="6.5" fill="#8A6BFF"/></svg>`;
+
+const host = document.getElementById("shots");
+host.innerHTML = CARDS.map((c,i)=>`
+  <div>
+    <div class="hd"><span class="n">CARD ${String(i+1).padStart(2,"0")}</span><span class="lb">1600 × 900</span></div>
+    <div class="frame" data-frame>
+      <div class="scaler" data-scaler>
+        <div class="card">
+          <div class="grid"></div><div class="glow"></div>
+          <div class="in">
+            <span class="kick">${c.kick}</span>
+            <h3 class="${c.cls||""}">${c.h}</h3>
+            <p class="sub">${c.sub}</p>
+          </div>
+          <div class="art">${c.art}</div>
+          <div class="foot">${MARK}<span class="wm">WARP</span><span class="hand">@warponrh</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="tweettext">
+      <span class="lb">Post text</span>
+      <p>${c.tweet}</p>
+      <div class="cnt">${c.tweet.length} characters</div>
+    </div>
+  </div>`).join("");
+
+function fit(){
+  document.querySelectorAll("[data-frame]").forEach(f=>{
+    const s = f.querySelector("[data-scaler]");
+    const k = f.clientWidth / 1600;
+    s.style.transform = "scale("+k+")";
+    f.style.height = (900*k)+"px";
+  });
+}
+addEventListener("resize", fit); fit();
+addEventListener("load", fit);
+</script>
+</body>
+</html>
