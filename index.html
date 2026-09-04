@@ -333,6 +333,39 @@ a,button,summary,input{-webkit-tap-highlight-color:transparent}
   @keyframes fadein{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
 }
 
+/* -- ledger -- */
+.ldhead{display:flex;align-items:baseline;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-bottom:22px}
+.ldnext{font-family:var(--f-m);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);
+  display:inline-flex;align-items:center;gap:9px;white-space:nowrap}
+.ldnext b{color:var(--vio);font-weight:500}
+.ldnext .dot{width:7px;height:7px;border-radius:50%;background:var(--vio);animation:beat 2.2s ease-in-out infinite}
+.ldgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--edge);background:var(--panel)}
+@media(max-width:820px){.ldgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:460px){.ldgrid{grid-template-columns:1fr}}
+.ldc{padding:20px 22px;border-right:1px solid var(--edge)}
+.ldc:last-child{border-right:0}
+@media(max-width:820px){.ldc:nth-child(2n){border-right:0}.ldc:nth-child(-n+2){border-bottom:1px solid var(--edge)}}
+.ldc .v{font-family:var(--f-m);font-size:clamp(19px,2.4vw,25px);font-weight:500;margin-top:8px;
+  color:var(--ink-3);font-variant-numeric:tabular-nums;word-break:break-all}
+.ldc .v.on{color:var(--ink)}
+.ldc .v small{font-family:var(--f-u);font-size:.56em;color:var(--ink-3);margin-left:6px;font-weight:500}
+.ldbox{border:1px solid var(--edge);background:var(--panel);margin-top:16px;padding:26px}
+.ldbox h4{font-family:var(--f-d);font-weight:700;font-size:22px;letter-spacing:-.03em;margin:0 0 8px}
+.ldbox p{color:var(--ink-2);font-size:15px;max-width:62ch;margin:0 0 16px}
+.ldrow{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.ldnote{font-family:var(--f-m);font-size:11.5px;color:var(--ink-3);letter-spacing:.05em}
+.keyempty{padding:2px 0;color:var(--ink-3);font-size:14px;max-width:58ch}
+.stepsld{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--edge);
+  background:var(--panel);margin-top:16px}
+@media(max-width:900px){.stepsld{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:520px){.stepsld{grid-template-columns:1fr}}
+.stepsld .st{padding:22px 20px;border-right:1px solid var(--edge)}
+.stepsld .st:last-child{border-right:0}
+@media(max-width:900px){.stepsld .st{border-bottom:1px solid var(--edge)}}
+.stepsld .st .n{font-family:var(--f-m);font-size:10.5px;color:var(--vio);letter-spacing:.15em}
+.stepsld .st h5{font-family:var(--f-d);font-weight:700;font-size:19px;letter-spacing:-.025em;margin:9px 0 8px}
+.stepsld .st p{font-size:14px;color:var(--ink-2);margin:0;max-width:30ch}
+
 /* -- brand page -- */
 .bench{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
 .cellb{border:1px solid var(--edge);background:var(--panel);padding:30px;display:flex;flex-direction:column;
@@ -465,6 +498,7 @@ details.q p{padding:0 24px 22px;font-size:16px;color:var(--ink-2);max-width:70ch
           <button class="nl" data-view="home" aria-current="true">Home</button>
           <button class="nl" data-view="docs">Docs</button>
           <button class="nl" data-view="about">About</button>
+          <button class="nl" data-view="ledger">Ledger</button>
           <button class="nl" data-open="intake">Cluster</button>
         </span>
         <span class="ca empty" id="caChip"></span>
@@ -870,6 +904,52 @@ details.q p{padding:0 24px 22px;font-size:16px;color:var(--ink-2);max-width:70ch
 </section>
 </div>
 
+
+<!-- LEDGER -->
+<div class="view" id="view-ledger">
+<section class="bd">
+  <div class="wrap">
+    <div class="ldhead">
+      <div class="hd" style="margin:0"><span class="lb">Your ledger</span><h2>What you hold, and what you can claim.</h2></div>
+      <span class="ldnext"><span class="dot"></span>next settlement in <b id="ldNext">&mdash;</b></span>
+    </div>
+
+    <div class="ldgrid">
+      <div class="ldc"><span class="lb">Wallet</span><div class="v" id="ldWallet">not connected</div></div>
+      <div class="ldc"><span class="lb">$WARP balance</span><div class="v" id="ldBal">&mdash;</div></div>
+      <div class="ldc"><span class="lb">Credits added</span><div class="v" id="ldAdded">&mdash;</div></div>
+      <div class="ldc"><span class="lb">Claimable</span><div class="v" id="ldClaim">&mdash;</div></div>
+    </div>
+
+    <div class="ldbox" id="ldPanel"></div>
+
+    <div class="ldbox">
+      <h4>Your keys</h4>
+      <p>A key holds up to <b style="color:var(--ink)">40</b> RTX 5090 hours. Anyone holding one can spend its balance,
+      so keep it in a secret manager or an env file &mdash; never in code. Revoke a key and whatever is left on it
+      returns to your ledger.</p>
+      <div id="ldKeys"></div>
+    </div>
+
+    <h3 style="font-family:var(--f-d);font-weight:700;font-size:26px;letter-spacing:-.03em;margin:44px 0 0">How a settlement works</h3>
+    <div class="stepsld">
+      <div class="st"><span class="n">01</span><h5>Top of every hour</h5>
+        <p>Every address holding at least 1,000 WARP is read from the chain at the first block after the hour.</p></div>
+      <div class="st"><span class="n">02</span><h5>Fees are converted</h5>
+        <p>The fees collected in that hour are split. Two thirds &mdash; the creator tax &mdash; buys RTX 5090 hours at the current rate.</p></div>
+      <div class="st"><span class="n">03</span><h5>Credits are added</h5>
+        <p>Each eligible address gets hours by its share of eligible WARP. No transaction is needed and nothing moves on-chain.</p></div>
+      <div class="st"><span class="n">04</span><h5>Claim when you want</h5>
+        <p>Move up to 40 hours onto a key. Nothing expires, and revoking a key returns the remainder.</p></div>
+    </div>
+
+    <div class="callout" style="margin-top:24px"><p><b>Reading your ledger asks your wallet to sign a short message.</b>
+    The signature proves you control the address and expires within the hour. It is not a transaction, it moves nothing,
+    and it grants no approval &mdash; there is no contract here that could spend anything of yours.</p></div>
+  </div>
+</section>
+</div>
+
 <hr class="iris">
 <footer class="ft"><div class="wrap">
   <div class="ftg">
@@ -883,6 +963,7 @@ details.q p{padding:0 24px 22px;font-size:16px;color:var(--ink-2);max-width:70ch
       <a href="#" data-view="home">Overview</a>
       <a href="#" data-open="desk">The cluster</a>
       <a href="#" data-view="home" data-jump="est">Estimator</a>
+      <a href="#" data-view="ledger">Your ledger</a>
       <a href="#" data-view="docs" data-jump="d7">Gateway</a>
       <a href="#" data-view="docs" data-jump="d8">Pods</a></div>
     <div><h5>Docs</h5>
@@ -1014,6 +1095,7 @@ function paintWallet(){
     (W.chain ? ` on chain ${W.chain}${W.chain!==CHAIN?` — not Robinhood Chain (${CHAIN})`:""}` : "") +
     `. No token is deployed on this build, so a balance cannot be fetched. Type one above.`;
   calc();
+  renderLedger();
 }
 $("#wbtn").addEventListener("click", connect);
 
@@ -1554,6 +1636,45 @@ if(!reduce){
   secs.forEach(x=> spy.observe(x));
 })();
 
+
+/* ════════ the ledger ════════ */
+function renderLedger(){
+  const wal = $("#ldWallet"), bal = $("#ldBal"), add = $("#ldAdded"), clm = $("#ldClaim");
+  if(!wal) return;
+  const on = !!W.addr;
+  wal.textContent = on ? shortA(W.addr) : "not connected";
+  wal.className = "v" + (on ? " on" : "");
+  // no token is deployed, so there is no balance to read and no settlement has ever run
+  bal.innerHTML = on ? '0<small>WARP</small>' : "—";
+  add.innerHTML = on ? '0.00<small>hours</small>' : "—";
+  clm.innerHTML = on ? '0.00<small>hours</small>' : "—";
+  [bal, add, clm].forEach(e=> e.className = "v");
+
+  const pan = $("#ldPanel");
+  pan.innerHTML = on
+    ? `<h4>Nothing has settled yet</h4>
+       <p>Your address is read. There is no contract deployed, so no snapshot has ever run and no credit has ever
+       been added — for you or for anyone. This page will fill from the first settlement onward.</p>
+       <div class="ldrow">
+         <button class="b2" style="height:44px" disabled title="No credits to claim">Claim to a key</button>
+         <span class="ldnote">disabled — claimable is 0.00 hours</span>
+       </div>`
+    : `<h4>Connect the wallet that holds WARP</h4>
+       <p>Read only. Connecting asks for a signature to prove the address is yours; it never asks you to approve
+       a contract, and it sends no transaction.</p>
+       <div class="ldrow">
+         <button class="b1" style="height:44px" id="ldConnect">Connect wallet</button>
+         <span class="ldnote">sign to read · nothing is spent</span>
+       </div>`;
+  const c = $("#ldConnect");
+  if(c) c.onclick = connect;
+
+  $("#ldKeys").innerHTML = on
+    ? `<div class="keyempty">No keys yet. One appears here after your first claim, shown once and never stored
+       in plain text.</div>`
+    : `<div class="keyempty">Connect a wallet to see its keys.</div>`;
+}
+
 /* ════════ enter / exit ════════ */
 function openStage(k){
   stage.classList.add("open"); document.body.classList.add("locked");
@@ -1690,6 +1811,7 @@ function clockTick(){
   const t2 = $("#tkHrs");   if(t2) t2.textContent = hrs;
   const t3 = $("#tkPrice"); if(t3) t3.textContent = "$"+E.price.toFixed(2)+"/h";
   const t4 = $("#tkVol");   if(t4) t4.textContent = usd(E.vol);
+  const l1 = $("#ldNext");  if(l1) l1.textContent = m+"m "+String(sec).padStart(2,"0")+"s";
 }
 setInterval(clockTick, 1000);
 
@@ -1708,6 +1830,7 @@ paintWallet();
 calc();
 clockTick();
 tick();
+renderLedger();
 show("home");
 
 </script>
