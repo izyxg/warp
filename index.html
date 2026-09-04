@@ -1,0 +1,1447 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<meta name="description" content="WARP — every trade pays a 3% fee. Two thirds of it buys RTX 5090 capacity, divided hourly among holders as compute credits.">
+<meta property="og:title" content="Warp — Fees in. Hours out.">
+<meta property="og:description" content="Trading fees, converted into time on an RTX 5090. On Robinhood Chain, paired against tokenised NVDA.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230A0A0E'/%3E%3Crect x='4' y='9' width='24' height='14' rx='1' fill='none' stroke='%23EDEDF3' stroke-width='1.8'/%3E%3Ccircle cx='11.5' cy='16' r='3.2' fill='none' stroke='%238A6BFF' stroke-width='1.8'/%3E%3Ccircle cx='20.5' cy='16' r='3.2' fill='none' stroke='%238A6BFF' stroke-width='1.8'/%3E%3C/svg%3E">
+<title>Warp</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,500;12..96,75..100,700;12..96,75..100,800&family=Public+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+:root{
+  --void:#0A0A0E; --panel:#111116; --sunk:#08080B; --edge:#22222C; --edge-2:#33343F;
+  --ink:#EDEDF3; --ink-2:#9494A4; --ink-3:#63636F;
+  --vio:#8A6BFF; --vio-soft:#191234; --cyan:#31D2E0; --gold:#F2B341;
+  --ok:#3FD79A; --bad:#FF5F58; --glass:rgba(10,10,14,.74);
+  --f-d:'Bricolage Grotesque','Helvetica Neue',Arial,sans-serif;
+  --f-u:'Public Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --f-m:'JetBrains Mono',ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: light){ :root:not([data-theme="dark"]){
+  --void:#F2F2F5; --panel:#FBFBFD; --sunk:#E6E6EC; --edge:#DBDBE3; --edge-2:#B9B9C6;
+  --ink:#0C0C12; --ink-2:#4E4E5C; --ink-3:#7C7C8A;
+  --vio:#5B37E0; --vio-soft:#EAE4FF; --cyan:#0E8E9C; --gold:#9B6C08;
+  --ok:#1F8F62; --bad:#C7382F; --glass:rgba(242,242,245,.78); } }
+:root[data-theme="light"]{
+  --void:#F2F2F5; --panel:#FBFBFD; --sunk:#E6E6EC; --edge:#DBDBE3; --edge-2:#B9B9C6;
+  --ink:#0C0C12; --ink-2:#4E4E5C; --ink-3:#7C7C8A;
+  --vio:#5B37E0; --vio-soft:#EAE4FF; --cyan:#0E8E9C; --gold:#9B6C08;
+  --ok:#1F8F62; --bad:#C7382F; --glass:rgba(242,242,245,.78); }
+
+*{box-sizing:border-box}
+body{background:var(--void); color:var(--ink); font-family:var(--f-u); font-size:18.5px; line-height:1.58;
+  -webkit-font-smoothing:antialiased}
+body.locked{overflow:hidden}
+h1,h2,h3,h4{font-family:var(--f-d); margin:0; text-wrap:balance; font-weight:700; letter-spacing:-.025em;
+  font-variation-settings:'wdth' 92}
+p{margin:0}
+a{color:inherit}
+button{font-family:inherit; font-size:inherit; color:inherit; cursor:pointer}
+:focus-visible{outline:2px solid var(--vio); outline-offset:3px}
+.m{font-family:var(--f-m); font-variant-numeric:tabular-nums}
+.lb{font-family:var(--f-m); font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--ink-3)}
+.wrap{max-width:1120px; margin:0 auto; padding:0 30px}
+@media(max-width:640px){ .wrap{padding:0 18px} }
+/* the one motif: a wafer-diffraction hairline */
+.iris{height:2px; border:0; margin:0;
+  background:linear-gradient(90deg,var(--vio) 0%,#4E7BFF 22%,var(--cyan) 46%,var(--ok) 62%,var(--gold) 82%,var(--vio) 100%);
+  opacity:.85}
+
+/* ── nav ── */
+header.site{position:sticky; top:0; z-index:50; background:var(--glass);
+  -webkit-backdrop-filter:blur(16px) saturate(1.4); backdrop-filter:blur(16px) saturate(1.4);
+  border-bottom:1px solid transparent; transition:border-color .2s}
+header.site.stuck{border-bottom-color:var(--edge)}
+nav.bar{display:flex; align-items:center; justify-content:space-between; gap:18px; padding:13px 0; flex-wrap:wrap}
+.brand{cursor:pointer}
+.navlinks{display:flex; align-items:center; gap:2px}
+.nl{position:relative}
+.nl[aria-current="true"]{color:var(--ink); border-color:transparent}
+.nl[aria-current="true"]::after{content:""; position:absolute; left:11px; right:11px; bottom:1px; height:2px;
+  background:var(--vio)}
+.tgl{width:34px; height:30px; display:inline-flex; align-items:center; justify-content:center;
+  border:1px solid var(--edge-2); background:transparent; color:var(--ink-2); padding:0}
+.tgl:hover{border-color:var(--ink); color:var(--ink)}
+.tgl svg{width:15px; height:15px; display:block}
+@media(max-width:700px){
+  nav.bar{gap:10px; padding:10px 0}
+  .navlinks{order:3; width:100%; border-top:1px solid var(--edge); padding-top:6px}
+  .nl{flex:1; text-align:center}
+}
+.brand{display:flex; align-items:center; gap:12px}
+.brand svg{width:30px;height:30px;flex:none}
+.brand .n{font-family:var(--f-d); font-weight:800; font-size:26px; letter-spacing:-.04em; line-height:1;
+  font-variation-settings:'wdth' 84}
+.brand .t{font-family:var(--f-m); font-size:12px; color:var(--ink-3)}
+.navr{display:flex; align-items:center; gap:7px; flex-wrap:wrap}
+.nl{font-family:var(--f-m); font-size:11.5px; letter-spacing:.13em; text-transform:uppercase; color:var(--ink-3);
+  background:transparent; border:1px solid transparent; padding:6px 11px; text-decoration:none}
+.nl:hover{color:var(--ink)}
+.nl[aria-current="true"]{color:var(--vio); border-color:var(--edge-2)}
+.chip{font-family:var(--f-m); font-size:11px; letter-spacing:.13em; text-transform:uppercase;
+  border:1px solid var(--edge-2); padding:6px 11px; color:var(--ink-2); background:transparent;
+  display:inline-flex; align-items:center; gap:7px}
+.chip:hover{border-color:var(--ink); color:var(--ink)}
+.chip.pv{border-color:var(--gold); color:var(--gold)}
+.chip.pv i{width:5px;height:5px;background:var(--gold);display:inline-block}
+.chip.w{border-color:var(--vio); color:var(--vio)}
+.chip.w i{width:5px;height:5px;background:var(--vio);display:inline-block;border-radius:50%}
+
+/* ── views ── */
+.view{display:none} .view.on{display:block}
+
+/* ── hero ── */
+.hero{position:relative; overflow:hidden}
+#heroSlot{position:absolute; inset:0; pointer-events:none}
+#glhost{position:absolute; inset:0}
+#glhost canvas{display:block; width:100%; height:100%; outline:none}
+.veil{position:absolute; inset:0; pointer-events:none;
+  background:linear-gradient(97deg,var(--void) 0%,var(--void) 31%,rgba(0,0,0,0) 80%)}
+@media(max-width:820px){ .veil{background:linear-gradient(180deg,var(--void) 0%,rgba(0,0,0,0) 50%,var(--void) 100%)} }
+.heroin{position:relative; z-index:2; padding:60px 0 54px; min-height:clamp(400px,62vh,560px);
+  display:flex; flex-direction:column; justify-content:center}
+.kick{font-family:var(--f-m); font-size:12px; letter-spacing:.19em; text-transform:uppercase; color:var(--vio)}
+h1.hh{font-size:clamp(50px,8vw,98px); line-height:.93; margin:18px 0 0; max-width:13ch;
+  font-weight:800; font-variation-settings:'wdth' 82; letter-spacing:-.045em}
+.lede{margin-top:20px; max-width:46ch; font-size:clamp(17px,1.8vw,20px); color:var(--ink-2)}
+.cta{display:flex; align-items:center; gap:14px; margin-top:30px; flex-wrap:wrap}
+.b1{background:var(--ink); color:var(--void); border:1px solid var(--ink); padding:15px 32px; font-weight:600; font-size:16.5px}
+.b1:hover{background:transparent; color:var(--ink)}
+.b2{background:transparent; border:1px solid var(--edge-2); color:var(--ink-2); padding:15px 28px; font-size:15.5px}
+.b2:hover{border-color:var(--ink); color:var(--ink)}
+.hint{font-family:var(--f-m); font-size:10.5px; color:var(--ink-3)}
+
+/* ── spec strip ── */
+.spec{border-top:1px solid var(--edge); border-bottom:1px solid var(--edge); background:var(--panel)}
+.spec .g{display:grid; grid-template-columns:repeat(4,minmax(0,1fr))}
+@media(max-width:760px){ .spec .g{grid-template-columns:repeat(2,minmax(0,1fr))} }
+.sc{padding:20px 24px; border-right:1px solid var(--edge)}
+.sc:last-child{border-right:0}
+@media(max-width:760px){ .sc:nth-child(2n){border-right:0} .sc:nth-child(-n+2){border-bottom:1px solid var(--edge)} }
+.sc .v{font-family:var(--f-d); font-weight:700; font-size:clamp(25px,3.3vw,35px); line-height:1.06;
+  letter-spacing:-.035em; font-variation-settings:'wdth' 88; margin-top:6px}
+.sc .v em{font-style:normal; color:var(--vio)}
+.sc .s{font-size:13.5px; color:var(--ink-3); margin-top:5px}
+.note{background:var(--sunk); border-bottom:1px solid var(--edge)}
+.note .wrap{display:flex; gap:11px; align-items:center; flex-wrap:wrap; padding:10px 28px;
+  font-family:var(--f-m); font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3)}
+.note b{color:var(--gold); font-weight:500}
+
+section.bd{padding:64px 0; border-bottom:1px solid var(--edge)}
+.hd{display:flex; align-items:baseline; gap:15px; margin-bottom:12px; flex-wrap:wrap}
+.hd h2{font-size:clamp(30px,4.1vw,46px); line-height:1.04}
+.sub{max-width:62ch; color:var(--ink-2); font-size:17px; margin-bottom:28px}
+
+/* ── loop ── */
+.loop{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); border:1px solid var(--edge); background:var(--panel)}
+@media(max-width:900px){ .loop{grid-template-columns:repeat(2,minmax(0,1fr))} }
+@media(max-width:520px){ .loop{grid-template-columns:1fr} }
+.lp{padding:24px 22px 26px; border-right:1px solid var(--edge); position:relative}
+.lp:last-child{border-right:0}
+@media(max-width:900px){ .lp{border-bottom:1px solid var(--edge)} }
+.lp .n{font-family:var(--f-m); font-size:10.5px; color:var(--vio); letter-spacing:.15em}
+.lp h3{font-size:24.5px; margin:9px 0 9px; letter-spacing:-.03em}
+.lp p{font-size:15.5px; color:var(--ink-2); max-width:32ch}
+.lp .tag{font-family:var(--f-m); font-size:10.5px; color:var(--ink-3); margin-top:13px; display:block;
+  padding-top:11px; border-top:1px solid var(--edge)}
+.lp:hover{background:var(--sunk)}
+
+/* ── estimator ── */
+.est{display:grid; grid-template-columns:minmax(0,340px) minmax(0,1fr); border:1px solid var(--edge); background:var(--panel)}
+@media(max-width:880px){ .est{grid-template-columns:1fr} }
+.est .in{padding:24px; border-right:1px solid var(--edge); display:flex; flex-direction:column; gap:19px}
+@media(max-width:880px){ .est .in{border-right:0; border-bottom:1px solid var(--edge)} }
+.fld label{display:block; font-family:var(--f-m); font-size:10px; letter-spacing:.15em; text-transform:uppercase;
+  color:var(--ink-3); margin-bottom:7px}
+.fld .row{display:flex; align-items:center; gap:10px}
+.fld input[type=range]{flex:1; accent-color:var(--vio); min-width:0}
+.fld .rd{font-family:var(--f-m); font-size:15px; font-weight:500; min-width:9ch; text-align:right}
+.fld input[type=number]{width:100%; background:var(--sunk); border:1px solid var(--edge-2); color:var(--ink);
+  font-family:var(--f-m); font-size:15px; padding:11px 13px}
+.est .out{padding:24px; display:flex; flex-direction:column; gap:0}
+.big{font-family:var(--f-d); font-weight:800; font-size:clamp(42px,6.6vw,70px); line-height:1;
+  letter-spacing:-.05em; font-variation-settings:'wdth' 82}
+.big em{font-style:normal; color:var(--vio)}
+.big small{font-family:var(--f-u); font-size:.24em; font-weight:600; color:var(--ink-3); letter-spacing:0; margin-left:10px}
+.orow{display:flex; align-items:baseline; justify-content:space-between; gap:14px; padding:12px 0;
+  border-bottom:1px solid var(--edge); font-family:var(--f-m); font-size:13px; color:var(--ink-3)}
+.orow:last-of-type{border-bottom:0}
+.orow b{color:var(--ink); font-weight:500; font-size:14px}
+.orow b.v{color:var(--vio)}
+.caveat{font-size:13.5px; color:var(--ink-3); margin-top:16px; border-left:2px solid var(--edge-2); padding-left:12px; max-width:52ch}
+
+/* ── runtime ── */
+.two{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0; border:1px solid var(--edge); background:var(--panel)}
+@media(max-width:860px){ .two{grid-template-columns:1fr} }
+.hf{padding:26px; border-right:1px solid var(--edge)}
+.hf:last-child{border-right:0}
+@media(max-width:860px){ .hf{border-right:0; border-bottom:1px solid var(--edge)} .hf:last-child{border-bottom:0} }
+.hf h3{font-size:26px; letter-spacing:-.03em; margin-bottom:8px}
+.hf p{font-size:15.5px; color:var(--ink-2); max-width:40ch; margin-bottom:14px}
+pre{background:var(--sunk); border:1px solid var(--edge); padding:15px 16px; overflow-x:auto; margin:0;
+  font-family:var(--f-m); font-size:12.8px; line-height:1.75; color:var(--ink-2)}
+pre b{color:var(--vio); font-weight:500} pre i{color:var(--ink-3); font-style:normal}
+pre .s{color:var(--ok)}
+.ul{list-style:none; padding:0; margin:14px 0 0; display:flex; flex-direction:column; gap:7px}
+.ul li{font-family:var(--f-m); font-size:13px; color:var(--ink-3); display:flex; gap:9px}
+.ul li::before{content:"—"; color:var(--vio)}
+
+/* ── tables / docs ── */
+.tb{width:100%; border-collapse:collapse; font-size:14.5px}
+.tb th{text-align:left; font-family:var(--f-m); font-size:9.5px; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--ink-3); border-bottom:1px solid var(--edge-2); padding:7px 14px 7px 0; font-weight:500}
+.tb td{padding:9px 14px 9px 0; border-bottom:1px solid var(--edge); color:var(--ink-2); vertical-align:top}
+.tb td:first-child{color:var(--ink); font-family:var(--f-m); font-size:13.5px; white-space:nowrap}
+.sx{overflow-x:auto}
+.doc{display:grid; grid-template-columns:200px minmax(0,1fr); gap:44px; align-items:start}
+@media(max-width:900px){ .doc{grid-template-columns:1fr; gap:22px} }
+.toc{position:sticky; top:20px; display:flex; flex-direction:column; gap:2px}
+@media(max-width:900px){ .toc{position:static; flex-direction:row; flex-wrap:wrap} }
+.toc a{font-family:var(--f-m); font-size:12px; color:var(--ink-3); text-decoration:none; padding:5px 9px;
+  border-left:2px solid var(--edge)}
+@media(max-width:900px){ .toc a{border-left:0; border:1px solid var(--edge)} }
+.toc a:hover{color:var(--ink); border-color:var(--vio)}
+.doc article h3{font-size:27px; margin:0 0 10px; letter-spacing:-.03em}
+.doc article h4{font-family:var(--f-u); font-size:15.5px; font-weight:600; margin:22px 0 6px}
+.doc article p{color:var(--ink-2); font-size:16px; max-width:64ch; margin-bottom:11px}
+.doc article section{padding-bottom:38px; margin-bottom:34px; border-bottom:1px solid var(--edge)}
+.doc article section:last-child{border-bottom:0}
+.doc article code{font-family:var(--f-m); font-size:12.5px; background:var(--sunk); border:1px solid var(--edge);
+  padding:1px 5px; color:var(--vio)}
+.callout{border:1px solid var(--edge-2); border-left-width:3px; border-left-color:var(--gold);
+  padding:14px 16px; background:var(--panel); margin:16px 0; max-width:66ch}
+.callout b{color:var(--ink)}
+.callout p{margin:0; font-size:15px}
+
+/* ── about ── */
+.ab{display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:34px}
+.ab h4{font-family:var(--f-u); font-size:15.5px; font-weight:600; margin-bottom:7px}
+.ab p{font-size:15.5px; color:var(--ink-2); max-width:44ch; margin-bottom:9px}
+.mono-box{font-family:var(--f-m); font-size:12px; background:var(--sunk); border:1px solid var(--edge);
+  padding:11px 13px; word-break:break-all; color:var(--ink-2)}
+.mono-box.warn{color:var(--gold); border-color:var(--gold)}
+
+/* ── footer ── */
+footer.ft{padding:0 0 60px}
+.ftg{display:grid; grid-template-columns:minmax(0,1.4fr) repeat(3,minmax(0,1fr)); gap:36px; padding:44px 0 34px}
+@media(max-width:820px){ .ftg{grid-template-columns:1fr 1fr; gap:28px} }
+@media(max-width:480px){ .ftg{grid-template-columns:1fr} }
+.ftg h5{font-family:var(--f-m); font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--ink-3);
+  margin:0 0 13px; font-weight:500}
+.ftg a, .ftg .li{display:block; font-size:15px; color:var(--ink-2); text-decoration:none; padding:3px 0}
+.ftg a:hover{color:var(--vio)}
+.ftbot{display:flex; justify-content:space-between; gap:18px; flex-wrap:wrap; padding-top:20px;
+  border-top:1px solid var(--edge); font-family:var(--f-m); font-size:10.5px; color:var(--ink-3);
+  letter-spacing:.1em; text-transform:uppercase}
+.ftbrand{font-family:var(--f-d); font-weight:800; font-size:38px; letter-spacing:-.05em;
+  font-variation-settings:'wdth' 82; line-height:1; margin-bottom:12px}
+.ftbrand + p{font-size:15px; color:var(--ink-2); max-width:34ch}
+
+/* ── the hall ── */
+#stage{position:fixed; inset:0; z-index:60; background:var(--void); display:none}
+#stage.open{display:block}
+#stageSlot{position:absolute; inset:0}
+#stage #glhost canvas{cursor:grab; touch-action:none}
+#stage #glhost.drag canvas{cursor:grabbing}
+#tags{position:absolute; inset:0; pointer-events:none}
+.tag{position:absolute; transform:translate(-50%,-50%); pointer-events:auto; white-space:nowrap;
+  font-family:var(--f-m); font-size:10px; letter-spacing:.15em; text-transform:uppercase;
+  background:var(--panel); border:1px solid var(--edge-2); color:var(--ink-2); padding:5px 10px}
+.tag:hover,.tag.on{border-color:var(--vio); color:var(--vio)}
+.tag i{display:inline-block; width:4px;height:4px;background:currentColor; margin-right:7px; vertical-align:2px}
+.hud{position:absolute; top:0; left:0; right:0; display:flex; align-items:flex-start; justify-content:space-between;
+  gap:14px; padding:15px 18px; flex-wrap:wrap; pointer-events:none;
+  background:linear-gradient(180deg,var(--void) 22%,rgba(0,0,0,0))}
+.hud>*{pointer-events:auto}
+.hstat{display:flex; gap:17px; flex-wrap:wrap; font-family:var(--f-m); font-size:10.5px; color:var(--ink-3);
+  letter-spacing:.1em; text-transform:uppercase; align-items:center}
+.hstat b{color:var(--ink); font-weight:500}
+.hstat b.v{color:var(--vio)} .hstat b.g{color:var(--gold)} .hstat b.o{color:var(--ok)}
+.xb{background:transparent; border:1px solid var(--edge-2); color:var(--ink-2); font-family:var(--f-m);
+  font-size:10.5px; letter-spacing:.13em; text-transform:uppercase; padding:6px 12px; flex:none}
+.xb:hover{border-color:var(--ink); color:var(--ink)}
+.xb.on{border-color:var(--vio); color:var(--vio)}
+.xb:disabled{opacity:.34; cursor:not-allowed}
+#panel{position:absolute; top:0; right:0; bottom:0; width:min(440px,100%); background:var(--panel);
+  border-left:1px solid var(--edge); overflow-y:auto; transform:translateX(101%); transition:transform .26s ease; z-index:5}
+#panel.open{transform:none}
+#panel .ph{display:flex; align-items:flex-start; justify-content:space-between; gap:14px;
+  padding:24px 24px 17px; border-bottom:1px solid var(--edge)}
+#panel h3{font-size:25px; line-height:1.08; max-width:14ch; letter-spacing:-.035em}
+#panel .pb{padding:21px 24px 60px; display:flex; flex-direction:column; gap:13px}
+#panel .pb p{font-size:14.5px; color:var(--ink-2); max-width:56ch}
+#panel .pb p b{color:var(--ink); font-weight:600}
+#panel .pb .lead{color:var(--ink); font-size:16px}
+#panel .pb .fl{border-left:3px solid var(--gold); padding-left:14px}
+#panel .pb pre{font-size:11.5px}
+.mini{border:1px solid var(--edge); background:var(--sunk)}
+.mini .mh{padding:8px 13px; border-bottom:1px solid var(--edge); font-family:var(--f-m); font-size:9.5px;
+  letter-spacing:.16em; text-transform:uppercase; color:var(--ink-3)}
+.mini .mr{display:flex; justify-content:space-between; gap:12px; padding:8px 13px; border-bottom:1px solid var(--edge);
+  font-family:var(--f-m); font-size:11.5px; color:var(--ink-3)}
+.mini .mr:last-child{border-bottom:0}
+.mini .mr b{color:var(--ink); font-weight:500}
+.mini .mr b.v{color:var(--vio)}
+@media(max-width:820px){ #panel{width:100%} }
+@media(prefers-reduced-motion:reduce){ *{transition:none!important} }
+</style>
+<style>
+/* ── motion ── */
+.iris{background-size:220% 100%;animation:drift 22s linear infinite}
+@keyframes drift{to{background-position:220% 0}}
+header.site{transform:translateY(0);transition:transform .28s ease,border-color .2s}
+header.site.away{transform:translateY(-102%)}
+.lp{transition:background .16s ease,transform .18s ease}
+.lp:hover{transform:translateY(-3px)}
+.sc{transition:background .18s ease}
+.sc:hover{background:var(--sunk)}
+.b1,.b2,.chip,.xb,.tgl{transition:transform .14s ease,background .16s ease,color .16s ease,border-color .16s ease}
+.b1:active,.b2:active,.chip:active,.xb:active,.tgl:active{transform:translateY(1px)}
+.tag{transition:transform .14s ease,border-color .16s ease,color .16s ease}
+.tag:hover{transform:translate(-50%,-50%) scale(1.06)}
+.toc a{transition:border-color .16s ease,color .16s ease,padding-left .16s ease}
+.toc a:hover{padding-left:13px}
+.big em,.orow b,.sc .v em{transition:color .2s ease}
+.tick{display:inline-block}
+.pulseit{animation:pop .5s ease}
+@keyframes pop{0%{color:var(--vio)}100%{color:inherit}}
+.livebar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:22px;
+  font-family:var(--f-m);font-size:12px;color:var(--ink-3);letter-spacing:.06em}
+.livebar b{color:var(--ink);font-weight:500}
+.livebar b.v{color:var(--vio)}
+.livebar .dot{width:6px;height:6px;border-radius:50%;background:var(--vio);animation:beat 2.2s ease-in-out infinite}
+@keyframes beat{0%,100%{opacity:.25;transform:scale(.8)}50%{opacity:1;transform:scale(1.25)}}
+@media(prefers-reduced-motion:reduce){.iris,.livebar .dot{animation:none}.lp:hover{transform:none}}
+
+html,body{margin:0}html{scroll-padding-top:74px}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+
+<style>
+.seg2{display:flex;border:1px solid var(--edge-2)}
+.seg2 button{background:transparent;border:0;border-right:1px solid var(--edge-2);padding:8px 14px;flex:1;
+  font-family:var(--f-m);font-size:11px;letter-spacing:.08em;color:var(--ink-3)}
+.seg2 button:last-child{border-right:0}
+.seg2 button[aria-pressed="true"]{background:var(--vio-soft);color:var(--vio)}
+.faq{border:1px solid var(--edge);background:var(--panel)}
+details.q{border-bottom:1px solid var(--edge)}
+details.q:last-child{border-bottom:0}
+details.q summary{cursor:pointer;list-style:none;padding:19px 24px;font-family:var(--f-d);font-weight:700;
+  font-size:19.5px;letter-spacing:-.025em;display:flex;justify-content:space-between;gap:16px;align-items:baseline}
+details.q summary::-webkit-details-marker{display:none}
+details.q summary::after{content:"+";font-family:var(--f-m);font-size:15px;color:var(--vio);font-weight:400}
+details.q[open] summary::after{content:"2"}
+details.q summary:hover{background:var(--sunk)}
+details.q p{padding:0 24px 22px;font-size:16px;color:var(--ink-2);max-width:70ch;margin:0}
+#flow{font-size:11px;line-height:1.6;white-space:pre}
+@media(max-width:520px){ #flow{font-size:9px} }
+</style>
+<header class="site" id="siteHeader"><div class="wrap">
+<nav class="bar">
+      <div class="brand">
+        <svg viewBox="0 0 32 32" aria-hidden="true">
+          <rect x="3" y="8" width="26" height="16" rx="1" fill="none" stroke="var(--ink)" stroke-width="1.7"/>
+          <circle cx="11" cy="16" r="3.6" fill="none" stroke="var(--vio)" stroke-width="1.7"/>
+          <circle cx="21" cy="16" r="3.6" fill="none" stroke="var(--vio)" stroke-width="1.7"/>
+          <path d="M7 24v4M25 24v4" stroke="var(--ink)" stroke-width="1.7"/>
+          <path d="M3 11h-2M3 16h-2M3 21h-2" stroke="var(--ink)" stroke-width="1.7"/>
+        </svg>
+        <div class="n">WARP</div><span class="t">/ NVDA</span>
+      </div>
+      <div class="navr">
+        <span class="navlinks">
+          <button class="nl" data-view="home" aria-current="true">Home</button>
+          <button class="nl" data-view="docs">Docs</button>
+          <button class="nl" data-view="about">About</button>
+          <button class="nl" data-open="intake">Cluster</button>
+        </span>
+        <button class="tgl" id="themeBtn" title="Switch theme" aria-label="Switch between light and dark"></button>
+        <button class="chip w" id="wbtn"><i></i>Connect</button>
+      </div>
+    </nav>
+</div></header>
+
+<div class="hero" id="heroWrap">
+  <div id="heroSlot"><div id="glhost"><canvas id="gl"></canvas></div></div>
+  <div class="veil"></div>
+  <div class="wrap">
+    <div class="heroin view on" id="v-hero">
+      <span class="kick">Robinhood Chain · paired against tokenised NVDA</span>
+      <h1 class="hh">Fees in.<br>Hours out.</h1>
+      <p class="lede">Every WARP buy and sell pays a 3% fee. Two thirds of it — the creator tax — is priced in dollars off the Chainlink NVDA feed and spent on RTX&nbsp;5090 capacity. Once an hour that capacity is divided among holders as compute credits, measured in 5090&nbsp;hours and fixed at the price of the hour they were credited.</p>
+      <div class="cta">
+        <button class="b1" data-open="intake">Enter the cluster</button>
+        <button class="b2" data-view="home" data-jump="est">Estimate your compute</button>
+        <span class="hint">drag to look · scroll to zoom</span>
+      </div>
+      <div class="livebar">
+        <span class="dot"></span>
+        <span>settlement <b id="lbSet">every hour</b></span><span>·</span>
+        <span>next in <b class="v" id="lbNext">—</b></span><span>·</span>
+        <span>this hour buys <b id="lbHrs">—</b></span><span>·</span>
+        <span>5090 <b id="lbPrice">—</b></span>
+      </div>
+    </div>
+  </div>
+</div>
+<hr class="iris">
+
+<div class="view on" id="view-home">
+
+<div class="spec"><div class="wrap" style="padding:0"><div class="g">
+  <div class="sc"><span class="lb">Trading fee</span><div class="v"><em>3%</em> per trade</div>
+    <div class="s">2% creator tax, 1% Pons. On buys and on sells.</div></div>
+  <div class="sc"><span class="lb">Funds compute</span><div class="v">The <em>creator tax</em></div>
+    <div class="s">Two thirds of the fee. Nothing is minted to pay anyone.</div></div>
+  <div class="sc"><span class="lb">Settlement</span><div class="v">Every <em>hour</em></div>
+    <div class="s">Wallets holding 1,000 WARP or more are eligible.</div></div>
+  <div class="sc"><span class="lb">You receive</span><div class="v">RTX <em>5090</em> hours</div>
+    <div class="s">Access to a machine. Not cash, not a rate.</div></div>
+</div></div></div>
+
+<!-- 01 -->
+<section class="bd">
+  <div class="wrap">
+    <div class="hd"><span class="lb">01 · The loop</span><h2>How trading funds compute.</h2></div>
+    <p class="sub">Four steps, and none of them mint anything. The only inflow is a fee somebody already paid on a trade that already happened, and the only thing it ever buys is time on a graphics card.</p>
+    <div class="loop">
+      <button class="lp" data-open="intake"><span class="n">01</span><h3>A trade pays a fee</h3>
+        <p>Every buy and sell on the Pons curve pays 3% of its value in NVDA, the token WARP is paired against. It is charged per side, not per round trip.</p>
+        <span class="tag">→ the intake</span></button>
+      <button class="lp" data-open="desk"><span class="n">02</span><h3>The tax buys capacity</h3>
+        <p>The 2% creator tax is priced in dollars with the Chainlink NVDA feed and spent on RTX 5090 capacity at the current rate. The remaining 1% funds the launchpad and operations.</p>
+        <span class="tag">→ the desk</span></button>
+      <button class="lp" data-open="shutter"><span class="n">03</span><h3>It is divided hourly</h3>
+        <p>Once an hour, purchased capacity is allocated to qualifying wallets by their share of eligible WARP. A wallet must hold at least 1,000 to be counted.</p>
+        <span class="tag">→ the shutter</span></button>
+      <button class="lp" data-open="ledger"><span class="n">04</span><h3>Credits land in your ledger</h3>
+        <p>Your allocation is added as compute credits in 5090 hours, fixed at the price in effect that hour. Claim them onto an API key, or launch a pod.</p>
+        <span class="tag">→ the ledger</span></button>
+    </div>
+
+    <div class="hd" style="margin-top:44px"><span class="lb">The split</span><h2 style="font-size:24px">For every dollar traded.</h2></div>
+    <div class="two" style="grid-template-columns:minmax(0,320px) minmax(0,1fr)">
+      <div class="hf">
+        <div class="seg2" id="amtSeg">
+          <button data-a="100" aria-pressed="true">$100</button>
+          <button data-a="1000">$1k</button>
+          <button data-a="10000">$10k</button>
+          <button data-a="100000">$100k</button>
+        </div>
+        <div class="orow" style="margin-top:16px"><span>Trading fee · 3%</span><b id="f1">$2.00</b></div>
+        <div class="orow"><span>Holder compute · 2%</span><b class="v" id="f2">$1.00</b></div>
+        <div class="orow"><span>Pons &amp; operations · 1%</span><b id="f3">$1.00</b></div>
+        <div class="orow"><span>Bought at <span id="f5">$0.89</span>/hour</span><b class="v" id="f4">1.12 h</b></div>
+        <div class="orow"><span>Equivalent time</span><b id="f6">about 1 h 07</b></div>
+      </div>
+      <div class="hf">
+        <pre id="flow"></pre>
+        <p style="margin-top:14px">The fee is charged in NVDA and converted at the Chainlink feed price, so the dollar figure is the same number the purchase is made against. Two thirds of it leaves as compute. The remaining third is not a rake on your credits — it never enters the compute pool at all.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 -->
+<section class="bd" id="est">
+  <div class="wrap">
+    <div class="hd"><span class="lb">02 · The estimate</span><h2>Work out your own share.</h2></div>
+    <p class="sub">Arithmetic on numbers you type. Not a rate, not a projection, and not read from anywhere — put in a balance and a market and it tells you exactly what the rule produces, including when that is close to nothing.</p>
+    <div class="est">
+      <div class="in">
+        <div class="fld"><label for="eBal">Your balance · WARP</label>
+          <input type="number" id="eBal" value="250000" min="0" step="1000"></div>
+        <div class="fld"><label for="eVol">30-day trading volume · USD</label>
+          <div class="row"><input type="range" id="eVol" min="0" max="1000000" step="5000" value="120000">
+            <span class="rd" id="eVolR">$120k</span></div></div>
+        <div class="fld"><label for="ePrice">RTX 5090 · USD per hour</label>
+          <div class="row"><input type="range" id="ePrice" min="0.2" max="2.5" step="0.01" value="0.89">
+            <span class="rd" id="ePriceR">$0.89</span></div></div>
+        <div class="fld"><label for="eSupply">Eligible WARP supply</label>
+          <input type="number" id="eSupply" value="1000000000" min="1000" step="1000000"></div>
+      </div>
+      <div class="out">
+        <span class="lb">Your compute · per 30 days</span>
+        <div class="big" style="margin:8px 0 4px"><em id="oHrs">0.00</em><small>RTX 5090 hours</small></div>
+        <div style="font-size:14px;color:var(--ink-2);margin-bottom:16px" id="oMin">about 0 min</div>
+        <div class="orow"><span>Fees collected</span><b id="oFee">$0</b></div>
+        <div class="orow"><span>Of which buys compute · 2%</span><b id="oTax">$0</b></div>
+        <div class="orow"><span>Hours purchased, all holders</span><b id="oBought">0</b></div>
+        <div class="orow"><span>Your share of eligible supply</span><b class="v" id="oShare">0%</b></div>
+        <div class="orow"><span>Per hourly settlement</span><b id="oPer">0.000 h</b></div>
+        <div class="orow"><span>Per 1,000,000 WARP held</span><b class="v" id="oPerM">0.00 h</b></div>
+        <p class="caveat" id="eNote"></p>
+        <p class="caveat">An estimate, not a fixed rate. What you actually receive depends on trading volume, on eligible supply at each snapshot, and on the 5090 price at the hour you are credited. Credits are access to compute — not cash, and no amount is guaranteed.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 -->
+<section class="bd">
+  <div class="wrap">
+    <div class="hd"><span class="lb">03 · The runtime</span><h2>Two ways to spend an hour.</h2></div>
+    <p class="sub">Claim credits from your ledger to create a key. The gateway speaks the OpenAI chat protocol, so an existing application needs a different base URL and nothing else. For work that wants the whole machine, the same credits launch a pod with a shell on it.</p>
+    <div class="two">
+      <div class="hf">
+        <h3>The gateway</h3>
+        <p>Send the key as a bearer token. The seconds a request occupies a GPU are deducted from its balance.</p>
+        <pre><b>curl</b> https://gateway.warp.example/v1/chat/completions \
+  -H <span class="s">"Authorization: Bearer $WARP_KEY"</span> \
+  -H <span class="s">"Content-Type: application/json"</span> \
+  -d <span class="s">'{"model":"qwen2.5-7b","messages":[{"role":"user","content":"hello"}]}'</span></pre>
+        <ul class="ul"><li>OpenAI-compatible — change the base URL, keep the SDK</li>
+          <li>each key holds up to 40 RTX 5090 hours</li>
+          <li>keys are revocable; revoking detaches a balance, never burns it</li>
+          <li>anyone with the key can spend it — keep it private</li></ul>
+      </div>
+      <div class="hf">
+        <h3>The pod</h3>
+        <p>A whole 5090 with SSH. Bring an image, mount a volume, and it bills by the second it is up.</p>
+        <pre><b>warp</b> pod create --gpu 5090 --image pytorch:2.6-cu126
+<i>→ pod-9f2a1c  starting…  ready in 34s</i>
+
+<b>ssh</b> pod-9f2a1c@ssh.warp.example
+<i>→ NVIDIA GeForce RTX 5090 · 32GB · driver 570.xx</i></pre>
+        <ul class="ul"><li>root shell, persistent volume, your own container</li>
+          <li>a stopped pod bills nothing</li>
+          <li>same credits, same ledger, different surface</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 -->
+<section class="bd">
+  <div class="wrap">
+    <div class="hd"><span class="lb">04 · The variables</span><h2>What sets your allocation.</h2></div>
+    <p class="sub">Your compute is not fixed, and three things decide it. None of them is a dial anyone here can turn.</p>
+    <div class="loop" style="grid-template-columns:repeat(3,minmax(0,1fr))">
+      <div class="lp"><span class="n">a</span><h3>Trading volume</h3>
+        <p>More volume collects more fees, so more capacity is purchased. A quiet month purchases little, and the split divides little.</p></div>
+      <div class="lp"><span class="n">b</span><h3>Eligible supply</h3>
+        <p>Capacity is divided across all eligible WARP. Your portion is your share of that supply at each hourly snapshot — not of total supply.</p></div>
+      <div class="lp"><span class="n">c</span><h3>The 5090 price</h3>
+        <p>When the price rises, each dollar buys fewer hours. When it falls, more. Hours already credited never change — they are fixed at the price of their hour.</p></div>
+    </div>
+
+    <div class="hd" style="margin-top:44px"><span class="lb">Parameters</span><h2 style="font-size:24px">What is fixed, and what floats.</h2></div>
+    <div class="sx">
+      <table class="tb">
+        <thead><tr><th>Parameter</th><th>Value</th><th>Moves?</th></tr></thead>
+        <tbody>
+          <tr><td>Trading fee</td><td>3% on buys and sells — 2% creator tax, 1% Pons</td><td>No</td></tr>
+          <tr><td>Holder allocation</td><td>The creator tax · two thirds of collected fees</td><td>No</td></tr>
+          <tr><td>Pons &amp; operations</td><td>The Pons fee · one third of collected fees</td><td>No</td></tr>
+          <tr><td>Minimum balance</td><td>1,000 WARP</td><td>Published if it ever does</td></tr>
+          <tr><td>Balance snapshot</td><td>Once per hour</td><td>Published if it ever does</td></tr>
+          <tr><td>Pricing feed</td><td>Chainlink NVDA</td><td>No</td></tr>
+          <tr><td>RTX 5090 price</td><td>Updated weekly · hours fixed when credited</td><td>Yes</td></tr>
+          <tr><td>Credit expiry</td><td>None</td><td>No</td></tr>
+          <tr><td>Credit transfer</td><td>Not transferable between addresses</td><td>No</td></tr>
+          <tr><td>Key capacity</td><td>Up to 40 RTX 5090 hours per key</td><td>Published if it ever does</td></tr>
+          <tr><td>Network</td><td>Robinhood Chain · 4663</td><td>No</td></tr>
+          <tr><td>Tokens minted for rewards</td><td>0 — compute is funded by fees, not issuance</td><td>No</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout"><p><b>Selling changes your allocation from the next hourly snapshot onward.</b> Compute already added to your ledger stays there. Nothing is staked, so nothing has to be unstaked, and there is no exit queue because there was never an entry.</p></div>
+  </div>
+</section>
+
+<!-- 05 -->
+<section class="bd">
+  <div class="wrap">
+    <div class="hd"><span class="lb">05 · Questions</span><h2>The ones people actually ask.</h2></div>
+    <div class="faq" id="faq"></div>
+  </div>
+</section>
+</div>
+
+<!-- ════════ DOCS ════════ -->
+<div class="view" id="view-docs">
+<section class="bd">
+  <div class="wrap">
+    <div class="hd"><span class="lb">Documentation</span><h2>How a trade becomes an hour.</h2></div>
+    <p class="sub">Everything the system does, in the order it does it. If a sentence here and a number anywhere else disagree, this page is the one that is wrong, and it gets fixed.</p>
+    <div class="doc">
+      <div class="toc">
+        <a href="#d1">The fee</a><a href="#d2">Buying capacity</a><a href="#d3">The hourly settlement</a>
+        <a href="#d4">Eligibility</a><a href="#d5">The ledger</a><a href="#d6">Keys</a>
+        <a href="#d7">The gateway</a><a href="#d8">Pods</a><a href="#d9">What credits are not</a>
+        <a href="#d10">Risks</a><a href="#d11">Glossary</a>
+      </div>
+      <article>
+        <section id="d1"><h3>The fee</h3>
+          <p>WARP trades against tokenised NVDA on a Pons curve. Every buy and every sell pays <code>3%</code> of its value, charged in NVDA. That 3% splits two ways: a <code>2%</code> creator tax, which is the only thing that funds holder compute, and a <code>1%</code> Pons fee, which funds the launchpad and operations.</p>
+          <h4>Per side, not per round trip</h4>
+          <p>A round trip is two events and the curve charges each. Someone who buys and later sells has paid twice. The headline number is the one people quote; the effective number is the one people feel, so both are printed.</p>
+          <div class="callout"><p><b>The creator tax is the only inflow to compute.</b> No tokens are issued to fund it, there is no treasury of WARP to sell, and there is no emission schedule. If nobody trades, nothing is collected and the hourly settlement divides zero.</p></div>
+        </section>
+
+        <section id="d2"><h3>Buying capacity</h3>
+          <p>The 2% creator tax arrives in NVDA. It is priced in dollars using the <b>Chainlink NVDA feed</b>, so the figure the purchase is made against is the same figure anyone else can read, and it is then spent on RTX 5090 capacity at the current rate.</p>
+          <p>The 5090 price is updated weekly. Hours are <b>fixed at the price in effect when they are credited</b> — a later price change does not revalue an hour already in your ledger, in either direction.</p>
+          <h4>Why compute and not cash</h4>
+          <p>Paying holders cash in proportion to their holdings is the shape of a security nearly everywhere anyone is reading this. Compute is a good: you receive access to a machine, priced at what the machine costs. That distinction is not a wrapper around the same thing — it is the load-bearing wall of the entire design, and everything else is built to keep it true.</p>
+        </section>
+
+        <section id="d3"><h3>The hourly settlement</h3>
+          <p>Once per hour, every wallet holding at least <code>1,000 WARP</code> is recorded, and the capacity purchased in that window is allocated by each wallet's share of <b>eligible</b> WARP — the sum of balances at or above the threshold, not total supply.</p>
+          <p>Wallets under the threshold are not in the denominator. They neither receive nor dilute.</p>
+          <h4>Why a snapshot rather than a stream</h4>
+          <p>A balance that flickers inside the hour cannot be paid twice, and the arithmetic can be checked afterwards against a block. An hour is short enough that buying in does not mean waiting a week, and long enough that the distributor is not writing constantly.</p>
+          <div class="callout"><p><b>Nothing is staked.</b> No deposit, no lock-up, no escrow, no approval to sign. Balances are read at a block and left alone. Sell in the same minute if you want — you are simply not in the next snapshot, and what is already in your ledger stays there.</p></div>
+        </section>
+
+        <section id="d4"><h3>Eligibility</h3>
+          <p>The threshold is <code>1,000 WARP</code>, measured at the snapshot block. It exists so the ledger is not filled with wallets owed a millionth of a second, which costs more to record than it is worth.</p>
+          <p>There is no upper cap and no tier ladder. A wallet holding a hundred times more receives a hundred times more, because the allocation is a proportion and dressing it up as anything else would be a lie about what proportion means.</p>
+        </section>
+
+        <section id="d5"><h3>The ledger</h3>
+          <p>Credits accrue to your address, denominated in RTX 5090 hours. They do not expire. They are not pushed anywhere. They are not transferable between addresses. They stay in the ledger until you claim them onto a key.</p>
+        </section>
+
+        <section id="d6"><h3>Keys</h3>
+          <p>Claiming attaches credits to an API key. Each key holds up to <code>40</code> RTX 5090 hours. You can hold several, name them, and revoke any of them — revoking detaches a balance, it never burns one.</p>
+          <div class="callout"><p><b>Anyone holding a key can spend its balance.</b> There is no second factor on a bearer token. Treat it the way you would treat any other API key with money behind it.</p></div>
+        </section>
+
+        <section id="d7"><h3>The gateway</h3>
+          <p>The gateway speaks the OpenAI chat protocol. If your application already talks to that shape of API, changing the base URL and the key is the whole integration.</p>
+          <pre><b>curl</b> https://gateway.warp.example/v1/chat/completions \
+  -H <span class="s">"Authorization: Bearer $WARP_KEY"</span> \
+  -H <span class="s">"Content-Type: application/json"</span> \
+  -d <span class="s">'{"model":"qwen2.5-7b","messages":[{"role":"user","content":"hello"}]}'</span></pre>
+          <p>The seconds a request occupies a GPU are deducted from the key's balance. There is no card on file, no minimum and no monthly commitment, because there is nothing to bill — you are spending an hour a trade already paid for.</p>
+        </section>
+
+        <section id="d8"><h3>Pods</h3>
+          <p>A pod is a whole 5090 with a root shell. Choose an image, it boots, you SSH in, and it bills by the second it is running.</p>
+          <pre><b>warp</b> pod create --gpu 5090 --image pytorch:2.6-cu126
+<b>ssh</b> pod-9f2a1c@ssh.warp.example</pre>
+          <p>A stopped pod bills nothing, and a persistent volume survives a stop so you are not re-downloading weights each session. Pods are the right surface when you want the card rather than an endpoint — training, a custom kernel, anything the gateway's model list does not cover.</p>
+        </section>
+
+        <section id="d9"><h3>What credits are not</h3>
+          <p>They are not cash and cannot be redeemed for it. They are not transferable. They are not a yield, an APY, a dividend, or a claim on revenue. Nothing about them is minted, and none of them is an NFT.</p>
+          <p>They are a prepaid balance on a machine, funded by fees somebody already paid. The amount depends on trading volume, on eligible supply, and on the price of a graphics card — and all three can move to a level where the answer is close to nothing.</p>
+          <div class="callout"><p><b>No APY appears anywhere on this site.</b> Not in the docs, not in the estimator, not in a post. A rate implies a promise about the future and there is no mechanism here that could keep one.</p></div>
+        </section>
+
+        <section id="d10"><h3>Risks, stated plainly</h3>
+          <h4>Volume is the only inflow</h4>
+          <p>A quiet month collects little and purchases little. That is the design working exactly as written, not a failure.</p>
+          <h4>GPU prices move against you</h4>
+          <p>The same tax buys fewer hours when 5090 rental gets more expensive. You are exposed to an input cost nobody here controls.</p>
+          <h4>The venue holds a lever</h4>
+          <p>A launchpad can generally redirect its own share of trading fees by an owner action on its factory. Where that is true it belongs here, with the notice period and who can execute it, rather than in a contract nobody reads.</p>
+          <h4>The compute has to actually exist</h4>
+          <p>An hour is only worth something if the gateway and the pods are up. That is an operational dependency on real machines, and it is the part of this system that is not on a chain and cannot be.</p>
+                  </section>
+
+        <section id="d11"><h3>Glossary</h3>
+          <div class="sx"><table class="tb">
+            <thead><tr><th>Term</th><th>Means</th></tr></thead>
+            <tbody>
+              <tr><td>Creator tax</td><td>The 2% of each trade that funds holder compute. Two thirds of the 3% fee.</td></tr>
+              <tr><td>Pons fee</td><td>The remaining 1%. Funds the launchpad and operations. It never enters the compute pool.</td></tr>
+              <tr><td>Eligible WARP</td><td>The sum of all balances at or above 1,000 WARP at the snapshot block.</td></tr>
+              <tr><td>Settlement</td><td>The hourly allocation of purchased capacity to eligible wallets.</td></tr>
+              <tr><td>Credit</td><td>One unit of prepaid compute, denominated in RTX 5090 hours, fixed at the price of its hour.</td></tr>
+              <tr><td>Claim</td><td>Attaching credits from your ledger to an API key. Your action.</td></tr>
+              <tr><td>Gateway</td><td>The OpenAI-compatible endpoint credits are spent through.</td></tr>
+              <tr><td>Pod</td><td>A dedicated RTX 5090 with SSH, billed by the second while running.</td></tr>
+            </tbody>
+          </table></div>
+        </section>
+      </article>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ════════ ABOUT ════════ -->
+<div class="view" id="view-about">
+<section class="bd">
+  <div class="wrap">
+    <div class="hd"><span class="lb">About</span><h2>Why it is built this way.</h2></div>
+    <p class="sub">Most tokens that promise holders something either print the thing they are promising, or pay it in cash and hope nobody asks what that makes it. This does neither, and the whole design falls out of refusing both.</p>
+    <div class="ab">
+      <div><h4>It converts, it does not issue</h4>
+        <p>No WARP is minted to fund compute. There is no emission schedule because there is nothing to emit — the only inflow is a fee on trades that already happened.</p>
+        <p>That makes the payout small when the market is quiet. It also makes it impossible for the payout to be a lie, because there is no printer to hide behind.</p></div>
+      <div><h4>Compute instead of cash</h4>
+        <p>Cash paid to holders in proportion to their holdings is the shape of a security, and pretending otherwise has ended badly for a long list of projects.</p>
+        <p>Compute is a good. You get access to a machine at what the machine costs. Different in kind, not in packaging.</p></div>
+      <div><h4>Nothing leaves your wallet</h4>
+        <p>No staking contract, no lock-up, no escrow, no approval. Balances are read at a block. Selling costs you the next snapshot and nothing that is already yours.</p></div>
+      <div><h4>The floating parts stay visible</h4>
+        <p>Volume, eligible supply and the 5090 price all move, and all three decide what you get. None is smoothed into a headline or expressed as a rate — the estimator asks you for them so the answer is yours, not marketing.</p></div>
+    </div>
+
+    <h3 id="stands" style="margin:46px 0 14px; font-size:26px">The moving parts</h3>
+    <div class="sx">
+      <table class="tb">
+        <thead><tr><th>Piece</th><th>State</th><th>What it means for you</th></tr></thead>
+        <tbody>
+          <tr><td>Fee → compute</td><td>Automatic</td><td>No action from you. The tax is spent as it is collected.</td></tr>
+          <tr><td>Settlement</td><td>Hourly</td><td>Balances are read at a block. Nothing is staked.</td></tr>
+          <tr><td>Wallet</td><td>Read only</td><td>Reads an address and a chain id. Never asks you to sign or approve anything.</td></tr>
+          <tr><td>Credits</td><td>Non-transferable</td><td>Attached to the address that earned them, and the keys it creates.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout" style="margin-top:26px"><p><b>Not investment advice, and not an offer of securities.</b> This describes a mechanism. It promises no return, prints no rate, and what it allocates is access to compute — an amount that depends on trading volume, eligible supply and the price of a graphics card, all of which can fall to where the answer is nothing.</p></div>
+  </div>
+</section>
+</div>
+
+<hr class="iris">
+<footer class="ft"><div class="wrap">
+  <div class="ftg">
+    <div>
+      <div class="ftbrand">WARP</div>
+      <p>Trading fees, converted into time on an RTX 5090. On Robinhood Chain, paired against tokenised NVDA.</p>
+    </div>
+    <div><h5>Product</h5>
+      <a href="#" data-view="home">Overview</a>
+      <a href="#" data-open="desk">The cluster</a>
+      <a href="#" data-view="home" data-jump="est">Estimator</a>
+      <a href="#" data-view="docs" data-jump="d7">Gateway</a>
+      <a href="#" data-view="docs" data-jump="d8">Pods</a></div>
+    <div><h5>Docs</h5>
+      <a href="#" data-view="docs" data-jump="d1">The fee</a>
+      <a href="#" data-view="docs" data-jump="d3">Hourly settlement</a>
+      <a href="#" data-view="docs" data-jump="d6">Keys</a>
+      <a href="#" data-view="docs" data-jump="d9">What credits are not</a>
+      <a href="#" data-view="docs" data-jump="d10">Risks</a></div>
+    <div><h5>Project</h5>
+      <a href="#" data-view="about">About</a>
+      <a href="#" data-view="about" data-jump="stands">Where this stands</a>
+      <span class="li">Robinhood Chain · 4663</span>
+      <span class="li">Paired against NVDA</span>
+      <span class="li">Chainlink NVDA feed</span></div>
+  </div>
+  <div class="ftbot">
+    <span>Warp — Robinhood Chain 4663 · paired against tokenised NVDA</span>
+    <span>Credits are compute access, not cash · no APY appears on this site</span>
+  </div>
+</div></footer>
+
+<div id="stage" role="dialog" aria-modal="true" aria-label="The cluster">
+  <div id="stageSlot"></div>
+  <div id="tags"></div>
+  <div class="hud">
+    <div class="hstat" id="hud"></div>
+    <button class="xb" id="close">Exit ✕</button>
+  </div>
+  <aside id="panel">
+    <div class="ph"><h3 id="ptitle">—</h3><button class="xb" id="pclose">Close</button></div>
+    <div class="pb" id="pbody"></div>
+  </aside>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+"use strict";
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+
+/* the protocol's fixed parameters */
+const FEE = 0.03, TO_COMPUTE = 2/3, MIN_HOLD = 1000, KEY_CAP = 40, CHAIN = 4663;
+
+const usd = v => v >= 1e6 ? "$"+(v/1e6).toFixed(2)+"m" : v >= 1e3 ? "$"+(v/1e3).toFixed(v>=1e4?0:1)+"k"
+  : v >= 10 ? "$"+v.toFixed(0) : "$"+v.toFixed(2);
+const num = (v,d)=> (+v).toLocaleString("en-US",{minimumFractionDigits:d||0, maximumFractionDigits:d||0});
+const hm = h => {
+  const m = Math.round(h*60);
+  if(m < 1) return "under a minute";
+  if(m < 60) return "about "+m+" min";
+  return "about "+Math.floor(m/60)+" h "+String(m%60).padStart(2,"0");
+};
+
+/* ════════ views ════════ */
+function show(v, jump){
+  $$(".view").forEach(e=> e.classList.toggle("on", e.id === "view-"+v || e.id === "v-hero"));
+  $("#heroWrap").style.display = v === "home" ? "" : "none";
+  $$("nav .nl").forEach(b=> b.setAttribute("aria-current", String(b.dataset.view === v)));
+  if(jump){ const t = document.getElementById(jump);
+    if(t) setTimeout(()=> t.scrollIntoView({behavior:reduce?"auto":"smooth", block:"start"}), 50); }
+  else window.scrollTo({top:0, behavior:"auto"});
+  if(typeof HALL !== "undefined" && HALL) HALL.resize();
+}
+$$("[data-view]").forEach(b=> b.addEventListener("click", e=>{ e.preventDefault(); show(b.dataset.view, b.dataset.jump); }));
+
+/* ════════ wallet — read only, never signs ════════ */
+const W = {addr:null, chain:null};
+const shortA = a => a.slice(0,6)+"…"+a.slice(-4);
+async function connect(){
+  const btn = $("#wbtn"), eth = window.ethereum;
+  if(W.addr){ W.addr = null; W.chain = null; paintWallet(); return; }
+  if(eth && eth.request){
+    try{
+      const [a] = await eth.request({method:"eth_requestAccounts"});
+      if(a){ W.addr = a;
+        try{ W.chain = parseInt(await eth.request({method:"eth_chainId"}), 16); }catch(e){}
+        paintWallet(); return; }
+    }catch(err){ /* declined, or the frame blocks injection — fall through */ }
+  }
+  const box = document.createElement("input");
+  box.type = "text"; box.placeholder = "paste an address · 0x…"; box.className = "chip";
+  box.style.cssText = "width:236px;color:var(--ink);letter-spacing:0;text-transform:none;font-size:11px";
+  btn.replaceWith(box); box.focus();
+  const done = ()=>{
+    const v = box.value.trim();
+    if(/^0x[a-fA-F0-9]{40}$/.test(v)) W.addr = v;
+    box.replaceWith(btn); paintWallet();
+  };
+  box.addEventListener("keydown", e=>{ if(e.key==="Enter") done();
+    if(e.key==="Escape"){ box.replaceWith(btn); paintWallet(); } });
+  box.addEventListener("blur", done);
+}
+function paintWallet(){
+  const b = $("#wbtn");
+  b.innerHTML = W.addr ? "<i></i>"+shortA(W.addr) : "<i></i>Connect";
+  b.title = W.addr ? "Read only. Click to disconnect." : "Read only — no signature is ever requested";
+  const n = $("#eNote");
+  if(n) n.innerHTML = !W.addr ? "" :
+    `Reading <b style="color:var(--vio)">${shortA(W.addr)}</b>` +
+    (W.chain ? ` on chain ${W.chain}${W.chain!==CHAIN?` — not Robinhood Chain (${CHAIN})`:""}` : "") +
+    `. No token is deployed on this build, so a balance cannot be fetched. Type one above.`;
+  calc();
+}
+$("#wbtn").addEventListener("click", connect);
+
+/* ════════ estimator ════════ */
+const E = {bal:250000, vol:120000, price:0.89, supply:1e9};
+function calc(){
+  E.bal    = Math.max(0, +$("#eBal").value || 0);
+  E.vol    = +$("#eVol").value;
+  E.price  = +$("#ePrice").value;
+  E.supply = Math.max(1000, +$("#eSupply").value || 1000);
+
+  $("#eVolR").textContent   = usd(E.vol);
+  $("#ePriceR").textContent = "$"+E.price.toFixed(2);
+
+  const fees   = E.vol * FEE;
+  const toBuy  = fees * TO_COMPUTE;
+  const bought = E.price > 0 ? toBuy/E.price : 0;
+  const share  = E.bal >= MIN_HOLD ? Math.min(1, E.bal/E.supply) : 0;
+  const yours  = bought * share;
+  const perM   = bought * Math.min(1, 1e6/E.supply);
+
+  roll($("#oHrs"), yours, v=> v >= 100 ? num(v) : v.toFixed(2));
+  $("#oMin").textContent    = yours > 0 ? hm(yours) : "nothing at this volume";
+  roll($("#oFee"), fees, usd);
+  roll($("#oTax"), toBuy, usd);
+  roll($("#oBought"), bought, v=> num(v)+" h");
+  $("#oShare").textContent  = E.bal < MIN_HOLD ? "below 1,000 — not eligible" : (share*100).toFixed(4)+"%";
+  $("#oShare").className    = E.bal < MIN_HOLD ? "" : "v";
+  $("#oPer").textContent    = (yours/720).toFixed(4)+" h";
+  roll($("#oPerM"), perM, v=> v.toFixed(2)+" h");
+  drawSplit();
+  if(typeof HALL !== "undefined" && HALL) HALL.setBusy(Math.min(1, E.vol/400000));
+}
+["eBal","eVol","ePrice","eSupply"].forEach(id=> $("#"+id).addEventListener("input", calc));
+
+/* ════════ the $100 split ════════ */
+let AMT = 100;
+function drawSplit(){
+  const fee = AMT*FEE, comp = fee*TO_COMPUTE, tre = fee-comp;
+  const hrs = E.price > 0 ? comp/E.price : 0;
+  $("#f1").textContent = usd(fee);
+  $("#f2").textContent = usd(comp);
+  $("#f3").textContent = usd(tre);
+  $("#f4").textContent = hrs.toFixed(2)+" h";
+  $("#f5").textContent = "$"+E.price.toFixed(2);
+  $("#f6").textContent = hm(hrs);
+  const pad = s => String(s).padEnd(26," ");
+  $("#flow").textContent =
+    `${usd(AMT)} traded\n` +
+    `      │\n` +
+    `${usd(fee)} fee  ·  3%\n` +
+    `      │\n` +
+    `┌──────────────────────────┬──────────────────────────┐\n` +
+    `│ ${pad(usd(comp)+" holder compute")}│ ${pad(usd(tre)+" Pons + ops")}│\n` +
+    `│ ${pad(hm(hrs).replace("about ","")+" of RTX 5090")}│ ${pad("never enters the pool")}│\n` +
+    `└──────────────────────────┴──────────────────────────┘`;
+}
+$$("#amtSeg button").forEach(b=> b.addEventListener("click", ()=>{
+  AMT = +b.dataset.a;
+  $$("#amtSeg button").forEach(x=> x.setAttribute("aria-pressed", String(x === b)));
+  drawSplit();
+}));
+
+/* ════════ questions ════════ */
+const QA = [
+["Do I need to stake my WARP?","No. Eligible balances are counted automatically at each hourly snapshot. There is no staking transaction, no lock-up, and nothing to unstake later."],
+["Do I need to sell to receive credits?","No. Credits are allocated to your address whether you ever trade again or not. Selling does not trigger anything — it simply removes you from later snapshots."],
+["What happens when I sell?","Your allocation changes from the next hourly settlement onward. Compute already added to your ledger stays exactly where it is."],
+["What exactly is an RTX 5090 hour?","One hour of one RTX 5090, priced at the rate in effect when it was credited. A later change in the 5090 price does not revalue an hour you already hold."],
+["Do credits expire?","No. They sit in the ledger until you claim them onto a key, and then in the key until you spend them."],
+["Can I transfer credits?","No. Credits are attached to the address that earned them and to the keys that address creates. They are compute access, not a bearer asset."],
+["Why is there a 1,000 WARP minimum?","So the ledger is not filled with wallets owed a millionth of a second, which costs more to record than it is worth. Balances under the threshold are not in the denominator either — they neither receive nor dilute."],
+["Where does the remaining 1% go?","To Pons and to operations. It never enters the compute pool, so it is not a rake taken out of your credits — it is a separate third of the fee that was never yours."],
+["What if nobody is trading?","Then almost nothing is collected and almost nothing is purchased. There is no reserve to smooth it and no issuance to fake it. A quiet month is a quiet month."],
+["Is this a yield?","No, and no rate appears anywhere on this site. You receive access to a machine, in an amount set by volume, eligible supply and the price of a graphics card. None of those is a promise."]
+];
+$("#faq").innerHTML = QA.map((q,i)=>
+  `<details class="q"${i===0?" open":""}><summary>${q[0]}</summary><p>${q[1]}</p></details>`).join("");
+
+/* ════════ the cluster ════════ */
+const glhost = $("#glhost"), heroSlot = $("#heroSlot"), stageSlot = $("#stageSlot");
+const tagsEl = $("#tags"), stage = $("#stage"), panel = $("#panel");
+
+const SPOT = {
+  intake:  {p:[-10.6, 2.6,   0], tag:"The intake",  t:"The tax is the only inflow"},
+  desk:    {p:[  0,   4.0,-10.4], tag:"The desk",    t:"Hours are bought at spot"},
+  shutter: {p:[  0,   6.6,   0], tag:"The shutter",  t:"Every hour, a snapshot"},
+  ledger:  {p:[  0,   3.6, 10.4], tag:"The ledger",  t:"Credits sit until you claim"},
+  gateway: {p:[ 10.4, 3.0, -4.6], tag:"The gateway", t:"An OpenAI-compatible endpoint"},
+  pod:     {p:[ 10.4, 2.6,  4.6], tag:"The pod",     t:"One card, and a shell on it"}
+};
+
+const HALL = (function(){
+  if(typeof THREE === "undefined"){ glhost.style.display = "none"; return null; }
+  const canvas = $("#gl");
+  const R = new THREE.WebGLRenderer({canvas, antialias:true});
+  R.setPixelRatio(Math.min(window.devicePixelRatio||1, 2));
+  R.shadowMap.enabled = true; R.shadowMap.type = THREE.PCFSoftShadowMap;
+  R.toneMapping = THREE.ACESFilmicToneMapping; R.toneMappingExposure = 1.2;
+
+  const scene = new THREE.Scene();
+  const cam = new THREE.PerspectiveCamera(40, 1, .4, 280);
+  const C = {};
+  const readC = ()=>{
+    C.void=new THREE.Color(css("--void")); C.sunk=new THREE.Color(css("--sunk"));
+    C.edge=new THREE.Color(css("--edge-2")); C.vio=new THREE.Color(css("--vio"));
+    C.cyan=new THREE.Color(css("--cyan")); C.gold=new THREE.Color(css("--gold"));
+    C.ok=new THREE.Color(css("--ok")); C.ink=new THREE.Color(css("--ink"));
+    // the chassis has to read against whichever ground it is standing on
+    C.dark = (C.void.r + C.void.g + C.void.b)/3 < .5;
+    C.metal=new THREE.Color(css("--edge-2")).multiplyScalar(C.dark ? 1.7 : .72);
+  };
+  readC();
+  scene.background = C.void.clone();
+  scene.fog = new THREE.FogExp2(C.void.getHex(), .036);
+
+  /* fan blades, drawn once into a texture */
+  const fanTex = (()=>{
+    const c = document.createElement("canvas"); c.width = c.height = 128;
+    const g = c.getContext("2d");
+    g.clearRect(0,0,128,128);
+    g.translate(64,64);
+    g.fillStyle = "rgba(255,255,255,.92)";
+    for(let i=0;i<9;i++){
+      g.rotate(Math.PI*2/9);
+      g.beginPath(); g.moveTo(9,0);
+      g.quadraticCurveTo(38,-13, 57,-4);
+      g.quadraticCurveTo(38, 5, 12, 8);
+      g.closePath(); g.fill();
+    }
+    g.beginPath(); g.arc(0,0,13,0,7); g.fillStyle = "rgba(255,255,255,1)"; g.fill();
+    const t = new THREE.CanvasTexture(c); t.needsUpdate = true; return t;
+  })();
+  const finTex = (()=>{
+    const c = document.createElement("canvas"); c.width = 64; c.height = 40;
+    const g = c.getContext("2d");
+    g.fillStyle = "#8c8c96"; g.fillRect(0,0,64,40);
+    g.fillStyle = "#5a5a66";
+    for(let i=0;i<16;i++) g.fillRect(i*4+1, 4, 2, 32);
+    g.fillStyle = "#2a2a33"; g.fillRect(0,0,64,4); g.fillRect(0,36,64,4);
+    const t = new THREE.CanvasTexture(c); t.needsUpdate = true; return t;
+  })();
+  const haloTex = (()=>{
+    const c = document.createElement("canvas"); c.width = c.height = 96;
+    const x = c.getContext("2d");
+    const g = x.createRadialGradient(48,48,0,48,48,48);
+    g.addColorStop(0,"rgba(255,255,255,1)"); g.addColorStop(.3,"rgba(255,255,255,.38)");
+    g.addColorStop(1,"rgba(255,255,255,0)");
+    x.fillStyle = g; x.fillRect(0,0,96,96);
+    const t = new THREE.CanvasTexture(c); t.needsUpdate = true; return t;
+  })();
+
+  const M = {
+    deck : new THREE.MeshStandardMaterial({color:C.sunk, roughness:.92, metalness:.08}),
+    metal: new THREE.MeshStandardMaterial({color:C.metal, roughness:.55, metalness:.55}),
+    dark : new THREE.MeshStandardMaterial({color:C.void, roughness:.8, metalness:.3}),
+    card : new THREE.MeshStandardMaterial({map:finTex, color:0xffffff, roughness:.42, metalness:.62}),
+    fan  : new THREE.MeshBasicMaterial({map:fanTex, transparent:true, opacity:.34, color:0xffffff,
+             depthWrite:false, toneMapped:false}),
+    lamp : new THREE.MeshBasicMaterial({color:0xffffff, toneMapped:false}),
+    halo : new THREE.MeshBasicMaterial({map:haloTex, transparent:true, opacity:.7, color:0xffffff,
+             blending:THREE.AdditiveBlending, depthWrite:false, toneMapped:false})
+  };
+  const lit = c => new THREE.MeshBasicMaterial({color:c, toneMapped:false});
+
+  const deck = new THREE.Mesh(new THREE.PlaneGeometry(140,140), M.deck);
+  deck.rotation.x = -Math.PI/2; deck.receiveShadow = true; scene.add(deck);
+  const grid = new THREE.GridHelper(120,120, C.edge.getHex(), C.edge.getHex());
+  grid.material.transparent = true; grid.material.opacity = .10; grid.position.y = .01; scene.add(grid);
+
+  const hemi = new THREE.HemisphereLight(C.ink.getHex(), C.void.getHex(), C.dark ? .5 : .32); scene.add(hemi);
+  const key = new THREE.DirectionalLight(0xffffff, C.dark ? .72 : .42);
+  key.position.set(12,22,14); key.castShadow = true; key.shadow.mapSize.set(1024,1024);
+  const d = 22, sc = key.shadow.camera;
+  sc.left=-d; sc.right=d; sc.top=d; sc.bottom=-d; sc.near=1; sc.far=64; sc.updateProjectionMatrix();
+  scene.add(key);
+  const rim = new THREE.DirectionalLight(C.vio.getHex(), C.dark ? .75 : .55); rim.position.set(-16,9,-14); scene.add(rim);
+
+  /* ── the racks ── */
+  const NROW = 2, NRACK = 4, SHELF = 5, PERSH = 3;
+  const NCARD = NROW*NRACK*SHELF*PERSH, NFAN = NCARD*2;
+  const RACK_W = 2.35, RACK_H = 4.5, RACK_D = 1.25, RACK_GAP = 2.95, AISLE = 3.35;
+
+  const cards = new THREE.InstancedMesh(new THREE.BoxGeometry(.60,.36,.34), M.card, NCARD);
+  const strips= new THREE.InstancedMesh(new THREE.PlaneGeometry(.60,.035), M.lamp, NCARD);
+  const glows = new THREE.InstancedMesh(new THREE.PlaneGeometry(1.5,.9), M.halo, NCARD);
+  const fans  = new THREE.InstancedMesh(new THREE.PlaneGeometry(.30,.30), M.fan, NFAN);
+  scene.add(cards, glows, strips, fans);
+
+  const dm = new THREE.Object3D();
+  const CARD = [], FAN = [];
+  let ci = 0, fi = 0;
+  for(let row=0; row<NROW; row++){
+    const fwd = row === 0 ? 1 : -1;
+    const z0 = fwd === 1 ? -AISLE : AISLE;
+    for(let rk=0; rk<NRACK; rk++){
+      const x0 = (rk-(NRACK-1)/2)*RACK_GAP;
+      const body = new THREE.Mesh(new THREE.BoxGeometry(RACK_W, RACK_H, RACK_D), M.metal);
+      body.position.set(x0, RACK_H/2, z0); body.castShadow = true; scene.add(body);
+      const foot = new THREE.Mesh(new THREE.BoxGeometry(RACK_W+.16,.12,RACK_D+.2), M.dark);
+      foot.position.set(x0,.06,z0); scene.add(foot);
+      for(let sh=0; sh<SHELF; sh++){
+        const y = .62 + sh*.80;
+        const rail = new THREE.Mesh(new THREE.BoxGeometry(RACK_W-.10,.05,.06), M.dark);
+        rail.position.set(x0, y-.26, z0 + fwd*(RACK_D/2+.01)); scene.add(rail);
+        for(let k=0;k<PERSH;k++){
+          const x = x0 + (k-(PERSH-1)/2)*.68;
+          const z = z0 + fwd*(RACK_D/2 + .012);
+          const ry = fwd === 1 ? 0 : Math.PI;
+          dm.position.set(x,y,z); dm.rotation.set(0,ry,0); dm.updateMatrix();
+          cards.setMatrixAt(ci, dm.matrix);
+          dm.position.set(x, y+.205, z+fwd*.175); dm.updateMatrix();
+          strips.setMatrixAt(ci, dm.matrix);
+          dm.position.set(x, y+.06, z+fwd*.22); dm.updateMatrix();
+          glows.setMatrixAt(ci, dm.matrix);
+          CARD.push({x,y,z,fwd,phase:(ci*0.7)%6.283, off:(ci%17)===3});
+          for(let f=0; f<2; f++){
+            FAN.push({x:x+(f?-.145:.145), y:y-.03, z:z+fwd*.18, ry, spin:(fi%5)*.7, rate:.9+((fi*37)%11)/22});
+            fi++;
+          }
+          ci++;
+        }
+      }
+    }
+  }
+  cards.instanceMatrix.needsUpdate = strips.instanceMatrix.needsUpdate = glows.instanceMatrix.needsUpdate = true;
+
+  /* overhead trays */
+  for(let row=0; row<2; row++){
+    const z = row ? AISLE : -AISLE;
+    const tray = new THREE.Mesh(new THREE.BoxGeometry(NRACK*RACK_GAP+2.4,.14,.42), M.metal);
+    tray.position.set(0, 5.3, z); scene.add(tray);
+  }
+  for(let row=0; row<NROW; row++) for(let rk=0; rk<NRACK; rk++){
+    const gl = new THREE.Mesh(new THREE.PlaneGeometry(3.0,2.0), M.halo.clone());
+    gl.material.color = C.vio.clone(); gl.material.opacity = .13;
+    gl.rotation.x = -Math.PI/2;
+    gl.position.set((rk-(NRACK-1)/2)*RACK_GAP, .02, (row?1:-1)*AISLE + (row?-1:1)*.9);
+    scene.add(gl);
+  }
+  const PULSE = [];
+  for(let i=0;i<9;i++){
+    const m = new THREE.Mesh(new THREE.PlaneGeometry(.85,.85), M.halo.clone());
+    m.material.color = (i%3===0 ? C.cyan : C.vio).clone(); m.material.opacity = .0;
+    scene.add(m); PULSE.push({m, t:i/9});
+  }
+  const spine = new THREE.Mesh(new THREE.BoxGeometry(.42,.14, AISLE*2+1.2), M.metal);
+  spine.position.set(0,5.3,0); scene.add(spine);
+  for(let i=-3;i<=3;i++){
+    const s = new THREE.Mesh(new THREE.PlaneGeometry(.34, AISLE*2), lit(C.ink));
+    s.material.transparent = true; s.material.opacity = .16;
+    s.rotation.x = Math.PI/2; s.position.set(i*1.45, 5.05, 0); scene.add(s);
+  }
+
+  /* ── landmarks ── */
+  const box = (w,h,dp,x,y,z,m)=>{ const b = new THREE.Mesh(new THREE.BoxGeometry(w,h,dp), m||M.metal);
+    b.position.set(x,y,z); b.castShadow = true; scene.add(b); return b; };
+
+  box(1.5,3.4,4.6, -10.6,1.7,0);                                     // intake — the busbar
+  const busbars = [-1,0,1].map(k=>{
+    const b = box(1.62,.20,4.2, -10.6,1.15+k*.8,0, lit(C.gold));
+    b.material.transparent = true; b.material.opacity = .55; return b;
+  });
+
+  box(7.2,2.6,.4, 0,2.4,-10.4);                                       // desk — the price board
+  const deskBoard = new THREE.Mesh(new THREE.PlaneGeometry(6.6,2.0), lit(C.cyan));
+  deskBoard.material.transparent = true; deskBoard.material.opacity = .30;
+  deskBoard.position.set(0,2.4,-10.18); scene.add(deskBoard);
+
+  const shutterRing = new THREE.Mesh(new THREE.TorusGeometry(1.5,.10,10,42), lit(C.vio));
+  shutterRing.rotation.x = Math.PI/2; shutterRing.position.set(0,6.0,0); scene.add(shutterRing);
+  const shutterDisc = new THREE.Mesh(new THREE.CircleGeometry(1.42,42), M.halo.clone());
+  shutterDisc.material.color = C.vio.clone(); shutterDisc.material.opacity = 0;
+  shutterDisc.rotation.x = -Math.PI/2; shutterDisc.position.set(0,5.97,0); scene.add(shutterDisc);
+  for(let i=0;i<8;i++){
+    const a = i/8*Math.PI*2;
+    const sp = box(.08,.08,1.0, Math.cos(a)*1.5, 6.0, Math.sin(a)*1.5, M.metal);
+    sp.rotation.y = -a;
+  }
+
+  box(6.4,2.4,.4, 0,2.2,10.4);                                        // ledger
+  const ledgerBoard = new THREE.Mesh(new THREE.PlaneGeometry(5.8,1.8), lit(C.ok));
+  ledgerBoard.material.transparent = true; ledgerBoard.material.opacity = .26;
+  ledgerBoard.position.set(0,2.2,10.18); ledgerBoard.rotation.y = Math.PI; scene.add(ledgerBoard);
+
+  box(1.6,3.0,2.2, 10.4,1.5,-4.6);                                    // gateway — switch stack
+  const ports = [];
+  for(let r2=0;r2<4;r2++) for(let c2=0;c2<6;c2++){
+    const p = box(.06,.06,.06, 9.58, .9+r2*.42, -5.4+c2*.32, lit(C.cyan));
+    ports.push(p);
+  }
+  box(1.4,2.6,1.6, 10.4,1.3,4.6);                                     // pod
+  const podLamp = box(1.44,.12,1.64, 10.4,2.5,4.6, lit(C.ok));
+
+  /* ── camera ── */
+  const AISLE_AZ = -1.42;   // look straight down the cold aisle, at the card faces
+  const K = {az:AISLE_AZ, pol:.20, dist:18.5, ty:2.2, tAz:AISLE_AZ, tPol:.20, tDist:18.5};
+  const tgt = new THREE.Vector3();
+  function pose(){
+    K.az += (K.tAz-K.az)*.11; K.pol += (K.tPol-K.pol)*.11; K.dist += (K.tDist-K.dist)*.11;
+    tgt.set(0, K.ty, 0);
+    cam.position.set(tgt.x + K.dist*Math.cos(K.pol)*Math.sin(K.az),
+                     tgt.y + K.dist*Math.sin(K.pol),
+                     tgt.z + K.dist*Math.cos(K.pol)*Math.cos(K.az));
+    cam.lookAt(tgt);
+  }
+  let mode = "hero", W = 0, H = 0, busy = .45, hourT = 0, pulse = 0;
+  function resize(){
+    const r = glhost.getBoundingClientRect();
+    if(!r.width || !r.height) return;
+    W = r.width; H = r.height; R.setSize(W,H,false);
+    cam.aspect = W/H; cam.updateProjectionMatrix();
+  }
+  const vv = new THREE.Vector3();
+  function placeTags(){
+    if(mode !== "stage"){ tagsEl.style.display = "none"; return; }
+    tagsEl.style.display = "";
+    for(const el of tagsEl.children){
+      const sp = SPOT[el.dataset.k];
+      vv.set(sp.p[0],sp.p[1],sp.p[2]).project(cam);
+      if(vv.z > 1){ el.style.display = "none"; continue; }
+      el.style.display = "";
+      el.style.left = ((vv.x*.5+.5)*W)+"px"; el.style.top = ((-vv.y*.5+.5)*H)+"px";
+    }
+  }
+  const cc = new THREE.Color(), c2 = new THREE.Color();
+  let last = 0, running = true, snaps = 0;
+  function frame(t){
+    requestAnimationFrame(frame);
+    if(!W){ resize(); return; }
+    if(!running) return;
+    const dt = Math.min(50, t-last||16); last = t;
+    if(mode === "hero" && !reduce) K.tAz = AISLE_AZ + .34*Math.sin(t*.00011);
+
+    hourT += dt;
+    if(hourT > 4200){ hourT = 0; pulse = 1; snaps++; onSnap && onSnap(snaps); }
+    pulse = Math.max(0, pulse - dt*.0013);
+
+    /* cards breathe with activity; the snapshot runs a wave down the rows */
+    for(let i=0;i<CARD.length;i++){
+      const c = CARD[i];
+      if(c.off){ strips.setColorAt(i, c2.setRGB(.06,.06,.08)); glows.setColorAt(i, c2.setRGB(0,0,0)); continue; }
+      const w = Math.max(0, 1 - Math.abs((1-pulse)*22 - (c.x+6)) * .55);
+      const a = .30 + .70*busy*(0.55 + 0.45*Math.sin(t*.0013 + c.phase));
+      cc.copy(C.vio).lerp(C.cyan, .35 + .35*Math.sin(c.phase)).lerp(C.ink, w*.8);
+      strips.setColorAt(i, cc);
+      glows.setColorAt(i, c2.copy(cc).multiplyScalar(.10 + .30*a + w*.5));
+    }
+    if(strips.instanceColor) strips.instanceColor.needsUpdate = true;
+    if(glows.instanceColor) glows.instanceColor.needsUpdate = true;
+
+    /* the fans actually turn */
+    const sp = (reduce ? 0 : dt*.0075) * (0.45 + busy);
+    for(let i=0;i<FAN.length;i++){
+      const f = FAN[i]; f.spin += sp*f.rate;
+      dm.position.set(f.x,f.y,f.z); dm.rotation.set(0,f.ry,f.spin); dm.updateMatrix();
+      fans.setMatrixAt(i, dm.matrix);
+    }
+    fans.instanceMatrix.needsUpdate = true;
+
+    for(const q of PULSE){
+      q.t += dt*.00013*(.5+busy);
+      if(q.t > 1) q.t -= 1;
+      const u = q.t;
+      if(u < .5){ const k = u/.5; q.m.position.set(-10.6 + k*10.6, 5.3, 0); }
+      else { const k = (u-.5)/.5; q.m.position.set(0, 5.3 - k*1.4, k*10.4); }
+      q.m.lookAt(cam.position);
+      q.m.material.opacity = (.30 + .45*busy) * Math.sin(u*Math.PI);
+    }
+    shutterRing.material.color.copy(C.vio).lerp(C.ink, pulse*.9);
+    shutterDisc.material.opacity = pulse*.55;
+    shutterDisc.scale.setScalar(1 + (1-pulse)*.9);
+    busbars.forEach((b,k)=> b.material.opacity = .28 + .5*busy*(0.5+0.5*Math.sin(t*.002 + k)));
+    deskBoard.material.opacity = .18 + .3*busy;
+    ledgerBoard.material.opacity = .16 + .34*Math.min(1, pulse+ .2);
+    ports.forEach((p,k)=> p.material.color.copy(((t*.004+k)%7) < 3 ? C.cyan : C.edge));
+    podLamp.material.color.copy(C.ok);
+
+    pose(); R.render(scene, cam); placeTags();
+  }
+  let onSnap = null;
+  function setMode(m){
+    mode = m;
+    if(m === "stage"){ K.tAz = AISLE_AZ; }
+    K.tPol = m === "hero" ? .20 : .17;
+    K.tDist = m === "hero" ? 18.5 : 17;
+    K.ty = 2.2;
+    resize();
+  }
+  function applyTheme(){
+    readC(); scene.background.copy(C.void); scene.fog.color.copy(C.void);
+    M.deck.color.copy(C.sunk); M.metal.color.copy(C.metal); M.dark.color.copy(C.void);
+    grid.material.color.copy(C.edge); hemi.color.copy(C.ink); hemi.groundColor.copy(C.void);
+    rim.color.copy(C.vio);
+    hemi.intensity = C.dark ? .5 : .32; key.intensity = C.dark ? .72 : .42;
+    rim.intensity = C.dark ? .75 : .55;
+  }
+  resize(); pose(); requestAnimationFrame(frame);
+  addEventListener("resize", resize);
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", applyTheme);
+  new IntersectionObserver(e=>{ running = (mode === "stage") || e[0].isIntersecting; }, {threshold:0})
+    .observe($("#heroWrap"));
+
+  const ray = new THREE.Raycaster(), ndc = new THREE.Vector2();
+  function pickCard(cx, cy){
+    const r = glhost.getBoundingClientRect();
+    ndc.x = ((cx-r.left)/r.width)*2-1; ndc.y = -((cy-r.top)/r.height)*2+1;
+    ray.setFromCamera(ndc, cam);
+    const h = ray.intersectObject(cards, false)[0];
+    return h && h.instanceId !== undefined ? h.instanceId : -1;
+  }
+  return {K, setMode, resize, pickCard, nCards:NCARD, applyTheme,
+          setBusy:v=>{busy = .18 + .82*v;}, onSnap:f=>{onSnap = f;}, snaps:()=>snaps,
+          running:b=>{running = b;}};
+})();
+
+
+
+/* ════════ panels ════════ */
+const P = {
+intake:[["lead","Every buy and every sell of WARP pays 3% of its value, charged in NVDA on the Pons curve. It splits two ways: a 2% creator tax, which is the only thing that funds holder compute, and a 1% Pons fee, which funds the launchpad and operations."],
+["","It is charged per side, not per round trip. Someone who buys and later sells has paid twice. <b>The creator tax is the only inflow.</b> No WARP is issued to fund compute, so if nobody trades, nothing is collected and the hourly settlement divides zero."],
+["fl","The busbars here brighten with volume. Move the volume slider in the estimator and watch them — this room and that number are the same variable."]],
+
+desk:[["lead","The creator tax arrives in NVDA. It is priced in dollars using the <b>Chainlink NVDA feed</b> — the same figure anyone else can read — and spent on RTX 5090 capacity at the current rate."],
+["","The 5090 price is updated weekly, and hours are fixed at the price in effect when they are credited. A later price change never revalues an hour already in your ledger, in either direction."],
+["","<b>Why compute and not cash.</b> Cash paid to holders in proportion to their holdings is the shape of a security nearly everywhere. Compute is a good: access to a machine, at what the machine costs. That is the load-bearing wall of this design, not a wrapper around the same thing."]],
+
+shutter:[["lead","Once an hour, every wallet holding at least 1,000 WARP is recorded, and the capacity purchased in that window is allocated by each wallet's share of <b>eligible</b> WARP — the sum of balances at or above the threshold, not total supply."],
+["","Wallets under the threshold are not in the denominator. They neither receive nor dilute. Nothing is staked, deposited or escrowed to be counted: balances are read at a block and left alone."],
+["fl","The ring above the aisle fires on every settlement and a wave runs down the rows as credits are written. It is on a four-second clock here so you can watch it happen."]],
+
+ledger:[["lead","Credits accrue to your address in RTX 5090 hours. They do not expire, they are never pushed anywhere, and they are not transferable between addresses."],
+["","Claiming attaches them to an API key. Each key holds up to 40 hours; you can run several, name them, and revoke any of them — revoking detaches a balance, it never burns one."],
+["","Selling changes your allocation from the next settlement onward. What is already in the ledger stays in the ledger."]],
+
+gateway:[["lead","The gateway speaks the OpenAI chat protocol. If your application already talks to that shape of API, changing the base URL and the key is the whole integration."],
+["","<pre><b>curl</b> https://gateway.warp.example/v1/chat/completions \\\n  -H <span class='s'>\"Authorization: Bearer $WARP_KEY\"</span> \\\n  -d <span class='s'>'{\"model\":\"qwen2.5-7b\",…}'</span></pre>"],
+["","The seconds a request occupies a GPU are deducted from the key. No card on file, no minimum, no monthly — there is nothing to bill, because you are spending an hour a trade already paid for."],
+["fl","Anyone holding a key can spend its balance. There is no second factor on a bearer token."]],
+
+pod:[["lead","A pod is a whole RTX 5090 with a root shell. Choose an image, it boots, you SSH in, and it bills by the second it is running."],
+["","<pre><b>warp</b> pod create --gpu 5090 --image pytorch:2.6-cu126\n<b>ssh</b> pod-9f2a1c@ssh.warp.example</pre>"],
+["","A stopped pod bills nothing, and a persistent volume survives a stop. Pods are the right surface when you want the card rather than an endpoint — training, a custom kernel, anything the gateway's model list does not cover."]]
+};
+const LIVE = {
+  intake:()=>{ const f = E.vol*FEE; return [
+    ["Fee per trade","3%","v"],["30-day volume · yours",usd(E.vol),""],
+    ["Fees collected",usd(f),""],["To compute · 2%",usd(f*TO_COMPUTE),"v"],["Issued to fund it","0 WARP","o"]]; },
+  desk:()=>{ const b = E.price>0 ? E.vol*FEE*TO_COMPUTE/E.price : 0; return [
+    ["5090 · per hour","$"+E.price.toFixed(2),""],["Hours purchased · 30d",num(b)+" h","v"],
+    ["Priced by","Chainlink NVDA feed",""],["Price updated","weekly",""],["Credited hours","fixed at their hour","o"]]; },
+  shutter:()=>[["Period","1 hour","v"],["Threshold",num(MIN_HOLD)+" WARP",""],
+    ["Eligible supply",num(E.supply/1e6)+"M WARP",""],
+    ["Settlements this session",(typeof HALL!=="undefined"&&HALL)?HALL.snaps():0,"v"],["Staking required","none","o"]],
+  ledger:()=>{ const b = E.price>0 ? E.vol*FEE*TO_COMPUTE/E.price : 0;
+    const sh = E.bal>=MIN_HOLD ? Math.min(1,E.bal/E.supply) : 0; return [
+    ["Your share",E.bal<MIN_HOLD?"below threshold":(sh*100).toFixed(4)+"%","v"],
+    ["Your compute · 30d",(b*sh).toFixed(2)+" h",""],
+    ["Per 1,000,000 WARP",(b*Math.min(1,1e6/E.supply)).toFixed(2)+" h","v"],
+    ["Expiry","none","o"],["Transferable","no",""]]; },
+  gateway:()=>[["Protocol","OpenAI-compatible","v"],["Metered","GPU seconds per request",""],
+    ["Key capacity",KEY_CAP+" RTX 5090 hours","v"],["Card on file","none","o"],["Minimum spend","none","o"]],
+  pod:()=>[["Card","RTX 5090 · 32GB","v"],["Access","root shell over SSH",""],
+    ["Billing","per second, while running",""],["Stopped","bills nothing","o"],["Volume","persists across stops",""]]
+};
+
+Object.entries(SPOT).forEach(([k,sp])=>{
+  const b = document.createElement("button");
+  b.className = "tag"; b.dataset.k = k; b.innerHTML = "<i></i>"+sp.tag;
+  b.onclick = ()=> openPanel(k);
+  tagsEl.appendChild(b);
+});
+let cur = null;
+function openPanel(k){
+  cur = k;
+  $("#ptitle").textContent = SPOT[k].t;
+  $("#pbody").innerHTML = P[k].map(r=>`<p class="${r[0]}">${r[1]}</p>`).join("") +
+    `<div class="mini"><div class="mh">Reading now · from your inputs</div><div id="mrows"></div></div>`;
+  panel.classList.add("open");
+  for(const el of tagsEl.children) el.classList.toggle("on", el.dataset.k === k);
+  tick();
+}
+$("#pclose").onclick = ()=>{ panel.classList.remove("open"); cur = null;
+  for(const el of tagsEl.children) el.classList.remove("on"); };
+
+function tick(){
+  const bought = E.price>0 ? E.vol*FEE*TO_COMPUTE/E.price : 0;
+  const share  = E.bal>=MIN_HOLD ? Math.min(1,E.bal/E.supply) : 0;
+  $("#hud").innerHTML = [
+    ["cards",(typeof HALL!=="undefined"&&HALL)?HALL.nCards:0,""],
+    ["30d volume",usd(E.vol),"g"],
+    ["5090",  "$"+E.price.toFixed(2)+"/h",""],
+    ["hours bought",num(bought),"v"],
+    ["your share",E.bal<MIN_HOLD?"—":(share*100).toFixed(4)+"%","v"],
+    ["your hours",(bought*share).toFixed(2),"o"],
+    ["settlements",(typeof HALL!=="undefined"&&HALL)?HALL.snaps():0,""],
+    ["wallet",W.addr?shortA(W.addr):"not connected",W.addr?"v":""]
+  ].map(r=>`<span>${r[0]} <b class="${r[2]}">${r[1]}</b></span>`).join("");
+  const rows = $("#mrows");
+  if(rows && cur) rows.innerHTML = LIVE[cur]().map(r=>`<div class="mr"><span>${r[0]}</span><b class="${r[2]}">${r[1]}</b></div>`).join("");
+}
+if(typeof HALL !== "undefined" && HALL) HALL.onSnap(()=> tick());
+setInterval(tick, 800);
+
+/* ════════ enter / exit ════════ */
+function openStage(k){
+  stage.classList.add("open"); document.body.classList.add("locked");
+  stageSlot.appendChild(glhost);
+  if(HALL){ HALL.running(true); HALL.setMode("stage"); }
+  if(k) openPanel(k); else tick();
+}
+function closeStage(){
+  stage.classList.remove("open"); document.body.classList.remove("locked");
+  panel.classList.remove("open"); cur = null;
+  heroSlot.appendChild(glhost);
+  if(HALL) HALL.setMode("hero");
+}
+$("#close").onclick = closeStage;
+addEventListener("keydown", e=>{
+  if(e.key !== "Escape" || !stage.classList.contains("open")) return;
+  if(panel.classList.contains("open")) $("#pclose").click(); else closeStage();
+});
+$$("[data-open]").forEach(b=> b.addEventListener("click", e=>{ e.preventDefault(); openStage(b.dataset.open); }));
+
+/* ════════ orbit + dolly ════════ */
+(function(){
+  const el = $("#gl");
+  let drag = false, moved = 0, px = 0, py = 0;
+  el.addEventListener("pointerdown", e=>{
+    if(!HALL || !stage.classList.contains("open")) return;
+    drag = true; moved = 0; px = e.clientX; py = e.clientY;
+    glhost.classList.add("drag"); el.setPointerCapture(e.pointerId);
+  });
+  el.addEventListener("pointermove", e=>{
+    if(!drag || !HALL) return;
+    moved += Math.abs(e.clientX-px)+Math.abs(e.clientY-py);
+    HALL.K.tAz -= (e.clientX-px)*.0055;
+    HALL.K.tPol = Math.min(1.25, Math.max(.03, HALL.K.tPol - (e.clientY-py)*.0042));
+    px = e.clientX; py = e.clientY;
+  });
+  el.addEventListener("pointerup", e=>{
+    glhost.classList.remove("drag");
+    if(drag && moved < 6 && HALL && HALL.pickCard(e.clientX, e.clientY) >= 0) openPanel("shutter");
+    drag = false;
+  });
+  el.addEventListener("pointercancel", ()=>{ drag = false; glhost.classList.remove("drag"); });
+  el.addEventListener("wheel", e=>{
+    if(!HALL || !stage.classList.contains("open")) return;
+    e.preventDefault();
+    HALL.K.tDist = Math.min(58, Math.max(7, HALL.K.tDist*(e.deltaY<0 ? 1/1.11 : 1.11)));
+  }, {passive:false});
+})();
+
+/* ════════ day / night ════════ */
+const SUN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 1.8v2.4M12 19.8v2.4M4.0 4.0l1.7 1.7M18.3 18.3l1.7 1.7M1.8 12h2.4M19.8 12h2.4M4.0 20.0l1.7-1.7M18.3 5.7l1.7-1.7"/></svg>';
+const MOON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 14.4A8.6 8.6 0 1 1 9.6 3.5a6.9 6.9 0 0 0 10.9 10.9Z"/></svg>';
+const TH = {
+  read(){ try{ return localStorage.getItem("warp.theme"); }catch(e){ return null; } },
+  write(v){ try{ v ? localStorage.setItem("warp.theme", v) : localStorage.removeItem("warp.theme"); }catch(e){} },
+  sysDark(){ return matchMedia("(prefers-color-scheme: dark)").matches; },
+  isDark(){ const v = TH.read(); return v ? v === "dark" : TH.sysDark(); },
+  apply(v){
+    const r = document.documentElement;
+    if(v) r.setAttribute("data-theme", v); else r.removeAttribute("data-theme");
+    TH.write(v);
+    const dark = TH.isDark();
+    const b = $("#themeBtn");
+    b.innerHTML = dark ? SUN : MOON;
+    b.title = dark ? "Switch to day" : "Switch to night";
+    if(typeof HALL !== "undefined" && HALL) requestAnimationFrame(HALL.applyTheme);
+  }
+};
+$("#themeBtn").addEventListener("click", ()=> TH.apply(TH.isDark() ? "light" : "dark"));
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ()=>{ if(!TH.read()) TH.apply(null); });
+TH.apply(TH.read());
+
+/* ════════ rolling counters ════════ */
+function roll(el, to, fmtFn, ms){
+  if(!el) return;
+  const from = el._v === undefined ? to : el._v;
+  el._v = to;
+  if(reduce || from === to){ el.textContent = fmtFn(to); return; }
+  const t0 = performance.now(), d = ms || 380;
+  cancelAnimationFrame(el._raf);
+  const step = t=>{
+    const k = Math.min(1, (t-t0)/d), e = 1-Math.pow(1-k,3);
+    el.textContent = fmtFn(from + (to-from)*e);
+    if(k < 1) el._raf = requestAnimationFrame(step);
+  };
+  el._raf = requestAnimationFrame(step);
+}
+
+/* ════════ the settlement clock ════════ */
+function clockTick(){
+  const now = new Date();
+  const left = 3600 - (now.getUTCMinutes()*60 + now.getUTCSeconds());
+  const m = Math.floor(left/60), sec = left%60;
+  const n = $("#lbNext"); if(n) n.textContent = m+"m "+String(sec).padStart(2,"0")+"s";
+  const p = $("#lbPrice"); if(p) p.textContent = "$"+E.price.toFixed(2)+"/h";
+  const h = $("#lbHrs");
+  if(h){ const b = E.price>0 ? E.vol*FEE*TO_COMPUTE/E.price/720 : 0;
+    h.textContent = b >= 1 ? b.toFixed(1)+" h" : (b*60).toFixed(0)+" min"; }
+}
+setInterval(clockTick, 1000);
+
+/* ════════ sticky header ════════ */
+const HDR = $("#siteHeader");
+let lastY = 0;
+const onScroll = ()=>{
+  const y = window.scrollY;
+  HDR.classList.toggle("stuck", y > 6);
+  HDR.classList.toggle("away", y > 220 && y > lastY + 4);
+  lastY = y;
+};
+addEventListener("scroll", onScroll, {passive:true}); onScroll();
+
+paintWallet();
+calc();
+clockTick();
+tick();
+show("home");
+
+</script>
+
+</body>
+</html>
