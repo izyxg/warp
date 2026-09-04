@@ -110,10 +110,17 @@ h1.hh{font-size:clamp(50px,8vw,98px); line-height:.93; margin:18px 0 0; max-widt
   font-weight:800; font-variation-settings:'wdth' 82; letter-spacing:-.045em}
 .lede{margin-top:20px; max-width:46ch; font-size:clamp(17px,1.8vw,20px); color:var(--ink-2)}
 .cta{display:flex; align-items:center; gap:14px; margin-top:30px; flex-wrap:wrap}
-.b1{background:var(--ink); color:var(--void); border:1px solid var(--ink); padding:15px 32px; font-weight:600; font-size:16.5px}
+.b1,.b2,.bx{height:54px; display:inline-flex; align-items:center; justify-content:center; padding:0 28px; line-height:1}
+.b1{background:var(--ink); color:var(--void); border:1px solid var(--ink); font-weight:600; font-size:16.5px}
 .b1:hover{background:transparent; color:var(--ink)}
-.b2{background:transparent; border:1px solid var(--edge-2); color:var(--ink-2); padding:15px 28px; font-size:15.5px}
+.b2{background:transparent; border:1px solid var(--edge-2); color:var(--ink-2); font-size:15.5px}
 .b2:hover{border-color:var(--ink); color:var(--ink)}
+.bx{gap:11px; background:transparent; border:1px solid var(--vio);
+  color:var(--vio); font-size:16.5px; font-weight:600; text-decoration:none;
+  transition:background .16s ease, color .16s ease, transform .14s ease}
+.bx svg{width:15px; height:15px; fill:currentColor; display:block}
+.bx:hover{background:var(--vio); color:var(--void)}
+.bx:active{transform:translateY(1px)}
 .hint{font-family:var(--f-m); font-size:10.5px; color:var(--ink-3)}
 
 /* ── spec strip ── */
@@ -445,8 +452,11 @@ details.q p{padding:0 24px 22px;font-size:16px;color:var(--ink-2);max-width:70ch
       <p class="lede">Every WARP buy and sell pays a 3% fee. Two thirds of it — the creator tax — is priced in dollars off the Chainlink NVDA feed and spent on RTX&nbsp;5090 capacity. Once an hour that capacity is divided among holders as compute credits, measured in 5090&nbsp;hours and fixed at the price of the hour they were credited.</p>
       <div class="cta">
         <button class="b1" data-open="intake">Enter the cluster</button>
+        <a class="bx" id="xHero" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          Follow on X
+        </a>
         <button class="b2" data-view="home" data-jump="est">Estimate your compute</button>
-        <span class="hint">drag to look · scroll to zoom</span>
       </div>
       <div class="livebar">
         <span class="dot"></span>
@@ -1572,7 +1582,7 @@ TH.apply(TH.read());
 /* ════════ links & the contract slot ════════ */
 function paintLinks(){
   ["#ghLink","#ghLink2","#ghLink3","#ghLink4"].forEach(q=>{ const e = $(q); if(e) e.href = LINKS.github; });
-  const x = $("#xLink"); if(x) x.href = LINKS.x;
+  ["#xLink","#xHero"].forEach(q=>{ const e = $(q); if(e) e.href = LINKS.x; });
   const chip = $("#caChip"), foot = $("#caFoot");
   if(LINKS.ca){
     const shortCa = LINKS.ca.slice(0,6)+"…"+LINKS.ca.slice(-4);
