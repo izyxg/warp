@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="dark light">
-<meta name="description" content="WARP — every trade pays a 3% fee. Two thirds of it buys RTX 5090 capacity, divided hourly among holders as compute credits.">
+<meta name="description" content="WARP — every trade pays a 2% fee. Half of it buys RTX 5090 capacity, divided hourly among holders as compute credits.">
 <meta property="og:title" content="Warp — Fees in. Hours out.">
 <meta property="og:description" content="Trading fees, converted into time on an RTX 5090. On Robinhood Chain, paired against tokenised NVDA.">
 <meta property="og:type" content="website">
@@ -537,7 +537,7 @@ details.q p{padding:0 24px 22px;font-size:16px;color:var(--ink-2);max-width:70ch
     <div class="heroin view on" id="v-hero">
       <span class="kick">Robinhood Chain · paired against tokenised NVDA</span>
       <h1 class="hh">Fees in.<br>Hours out.</h1>
-      <p class="lede">Every WARP buy and sell pays a 3% fee. Two thirds of it — the creator tax — is priced in dollars off the Chainlink NVDA feed and spent on RTX&nbsp;5090 capacity. Once an hour that capacity is divided among holders as compute credits, measured in 5090&nbsp;hours and fixed at the price of the hour they were credited.</p>
+      <p class="lede">Every WARP buy and sell pays a 2% fee. Half of it — the creator tax — is priced in dollars off the Chainlink NVDA feed and spent on RTX&nbsp;5090 capacity. Once an hour that capacity is divided among holders as compute credits, measured in 5090&nbsp;hours and fixed at the price of the hour they were credited.</p>
       <div class="caslot" id="caSlot"></div>
       <div class="cta">
         <button class="b1" data-open="intake">Enter the cluster</button>
@@ -562,10 +562,10 @@ details.q p{padding:0 24px 22px;font-size:16px;color:var(--ink-2);max-width:70ch
 <div class="view on" id="view-home">
 
 <div class="spec"><div class="wrap" style="padding:0"><div class="g">
-  <div class="sc"><span class="lb">Trading fee</span><div class="v"><em>3%</em> per trade</div>
-    <div class="s">2% creator tax, 1% Pons. On buys and on sells.</div></div>
+  <div class="sc"><span class="lb">Trading fee</span><div class="v"><em>2%</em> per trade</div>
+    <div class="s">1% creator tax, 1% Pons. On buys and on sells.</div></div>
   <div class="sc"><span class="lb">Funds compute</span><div class="v">The <em>creator tax</em></div>
-    <div class="s">Two thirds of the fee. Nothing is minted to pay anyone.</div></div>
+    <div class="s">Half the fee. Nothing is minted to pay anyone.</div></div>
   <div class="sc"><span class="lb">Settlement</span><div class="v">Every <em>hour</em></div>
     <div class="s">Wallets holding 1,000 WARP or more are eligible.</div></div>
   <div class="sc"><span class="lb">You receive</span><div class="v">RTX <em>5090</em> hours</div>
@@ -579,10 +579,10 @@ details.q p{padding:0 24px 22px;font-size:16px;color:var(--ink-2);max-width:70ch
     <p class="sub">Four steps, and none of them mint anything. The only inflow is a fee somebody already paid on a trade that already happened, and the only thing it ever buys is time on a graphics card.</p>
     <div class="loop">
       <button class="lp" data-open="intake"><span class="n">01</span><h3>A trade pays a fee</h3>
-        <p>Every buy and sell on the Pons curve pays 3% of its value in NVDA, the token WARP is paired against. It is charged per side, not per round trip.</p>
+        <p>Every buy and sell on the Pons curve pays 2% of its value in NVDA, the token WARP is paired against. It is charged per side, not per round trip.</p>
         <span class="tag">→ the intake</span></button>
       <button class="lp" data-open="desk"><span class="n">02</span><h3>The tax buys capacity</h3>
-        <p>The 2% creator tax is priced in dollars with the Chainlink NVDA feed and spent on RTX 5090 capacity at the current rate. The remaining 1% funds the launchpad and operations.</p>
+        <p>The 1% creator tax is priced in dollars with the Chainlink NVDA feed and spent on RTX 5090 capacity at the current rate. The other 1% funds the launchpad and operations.</p>
         <span class="tag">→ the desk</span></button>
       <button class="lp" data-open="shutter"><span class="n">03</span><h3>It is divided hourly</h3>
         <p>Once an hour, purchased capacity is allocated to qualifying wallets by their share of eligible WARP. A wallet must hold at least 1,000 to be counted.</p>
@@ -601,15 +601,15 @@ details.q p{padding:0 24px 22px;font-size:16px;color:var(--ink-2);max-width:70ch
           <button data-a="10000">$10k</button>
           <button data-a="100000">$100k</button>
         </div>
-        <div class="orow" style="margin-top:16px"><span>Trading fee · 3%</span><b id="f1">$2.00</b></div>
-        <div class="orow"><span>Holder compute · 2%</span><b class="v" id="f2">$1.00</b></div>
+        <div class="orow" style="margin-top:16px"><span>Trading fee · 2%</span><b id="f1">$2.00</b></div>
+        <div class="orow"><span>Holder compute · 1%</span><b class="v" id="f2">$1.00</b></div>
         <div class="orow"><span>Pons &amp; operations · 1%</span><b id="f3">$1.00</b></div>
         <div class="orow"><span>Bought at <span id="f5">$0.89</span>/hour</span><b class="v" id="f4">1.12 h</b></div>
         <div class="orow"><span>Equivalent time</span><b id="f6">about 1 h 07</b></div>
       </div>
       <div class="hf">
         <pre id="flow"></pre>
-        <p style="margin-top:14px">The fee is charged in NVDA and converted at the Chainlink feed price, so the dollar figure is the same number the purchase is made against. Two thirds of it leaves as compute. The remaining third is not a rake on your credits — it never enters the compute pool at all.</p>
+        <p style="margin-top:14px">The fee is charged in NVDA and converted at the Chainlink feed price, so the dollar figure is the same number the purchase is made against. Half of it leaves as compute. The other half is not a rake on your credits — it never enters the compute pool at all.</p>
       </div>
     </div>
   </div>
@@ -638,7 +638,7 @@ details.q p{padding:0 24px 22px;font-size:16px;color:var(--ink-2);max-width:70ch
         <div class="big" style="margin:8px 0 4px"><em id="oHrs">0.00</em><small>RTX 5090 hours</small></div>
         <div style="font-size:14px;color:var(--ink-2);margin-bottom:16px" id="oMin">about 0 min</div>
         <div class="orow"><span>Fees collected</span><b id="oFee">$0</b></div>
-        <div class="orow"><span>Of which buys compute · 2%</span><b id="oTax">$0</b></div>
+        <div class="orow"><span>Of which buys compute · 1%</span><b id="oTax">$0</b></div>
         <div class="orow"><span>Hours purchased, all holders</span><b id="oBought">0</b></div>
         <div class="orow"><span>Your share of eligible supply</span><b class="v" id="oShare">0%</b></div>
         <div class="orow"><span>Per hourly settlement</span><b id="oPer">0.000 h</b></div>
@@ -704,9 +704,9 @@ details.q p{padding:0 24px 22px;font-size:16px;color:var(--ink-2);max-width:70ch
       <table class="tb">
         <thead><tr><th>Parameter</th><th>Value</th><th>Moves?</th></tr></thead>
         <tbody>
-          <tr><td>Trading fee</td><td>3% on buys and sells — 2% creator tax, 1% Pons</td><td>No</td></tr>
-          <tr><td>Holder allocation</td><td>The creator tax · two thirds of collected fees</td><td>No</td></tr>
-          <tr><td>Pons &amp; operations</td><td>The Pons fee · one third of collected fees</td><td>No</td></tr>
+          <tr><td>Trading fee</td><td>2% on buys and sells — 1% creator tax, 1% Pons</td><td>No</td></tr>
+          <tr><td>Holder allocation</td><td>The creator tax · half of collected fees</td><td>No</td></tr>
+          <tr><td>Pons &amp; operations</td><td>The Pons fee · half of collected fees</td><td>No</td></tr>
           <tr><td>Minimum balance</td><td>1,000 WARP</td><td>Published if it ever does</td></tr>
           <tr><td>Balance snapshot</td><td>Once per hour</td><td>Published if it ever does</td></tr>
           <tr><td>Pricing feed</td><td>Chainlink NVDA</td><td>No</td></tr>
@@ -747,14 +747,14 @@ details.q p{padding:0 24px 22px;font-size:16px;color:var(--ink-2);max-width:70ch
       </div>
       <article>
         <section id="d1"><h3>The fee</h3>
-          <p>WARP trades against tokenised NVDA on a Pons curve. Every buy and every sell pays <code>3%</code> of its value, charged in NVDA. That 3% splits two ways: a <code>2%</code> creator tax, which is the only thing that funds holder compute, and a <code>1%</code> Pons fee, which funds the launchpad and operations.</p>
+          <p>WARP trades against tokenised NVDA on a Pons curve. Every buy and every sell pays <code>2%</code> of its value, charged in NVDA. That 2% splits in half: a <code>1%</code> creator tax, which is the only thing that funds holder compute, and a <code>1%</code> Pons fee, which funds the launchpad and operations.</p>
           <h4>Per side, not per round trip</h4>
           <p>A round trip is two events and the curve charges each. Someone who buys and later sells has paid twice. The headline number is the one people quote; the effective number is the one people feel, so both are printed.</p>
           <div class="callout"><p><b>The creator tax is the only inflow to compute.</b> No tokens are issued to fund it, there is no treasury of WARP to sell, and there is no emission schedule. If nobody trades, nothing is collected and the hourly settlement divides zero.</p></div>
         </section>
 
         <section id="d2"><h3>Buying capacity</h3>
-          <p>The 2% creator tax arrives in NVDA. It is priced in dollars using the <b>Chainlink NVDA feed</b>, so the figure the purchase is made against is the same figure anyone else can read, and it is then spent on RTX 5090 capacity at the current rate.</p>
+          <p>The 1% creator tax arrives in NVDA. It is priced in dollars using the <b>Chainlink NVDA feed</b>, so the figure the purchase is made against is the same figure anyone else can read, and it is then spent on RTX 5090 capacity at the current rate.</p>
           <p>The 5090 price is updated weekly. Hours are <b>fixed at the price in effect when they are credited</b> — a later price change does not revalue an hour already in your ledger, in either direction.</p>
           <h4>Why compute and not cash</h4>
           <p>Paying holders cash in proportion to their holdings is the shape of a security nearly everywhere anyone is reading this. Compute is a good: you receive access to a machine, priced at what the machine costs. That distinction is not a wrapper around the same thing — it is the load-bearing wall of the entire design, and everything else is built to keep it true.</p>
@@ -819,8 +819,8 @@ details.q p{padding:0 24px 22px;font-size:16px;color:var(--ink-2);max-width:70ch
           <div class="sx"><table class="tb">
             <thead><tr><th>Term</th><th>Means</th></tr></thead>
             <tbody>
-              <tr><td>Creator tax</td><td>The 2% of each trade that funds holder compute. Two thirds of the 3% fee.</td></tr>
-              <tr><td>Pons fee</td><td>The remaining 1%. Funds the launchpad and operations. It never enters the compute pool.</td></tr>
+              <tr><td>Creator tax</td><td>The 1% of each trade that funds holder compute. Half of the 2% fee.</td></tr>
+              <tr><td>Pons fee</td><td>The other 1%. Funds the launchpad and operations. It never enters the compute pool.</td></tr>
               <tr><td>Eligible WARP</td><td>The sum of all balances at or above 1,000 WARP at the snapshot block.</td></tr>
               <tr><td>Settlement</td><td>The hourly allocation of purchased capacity to eligible wallets.</td></tr>
               <tr><td>Credit</td><td>One unit of prepaid compute, denominated in RTX 5090 hours, fixed at the price of its hour.</td></tr>
@@ -908,7 +908,7 @@ details.q p{padding:0 24px 22px;font-size:16px;color:var(--ink-2);max-width:70ch
       <div class="t"><span class="n">Display</span><span class="d">Bricolage Grotesque</span>
         <span class="u" style="margin-left:auto">800 &middot; width axis 82</span></div>
       <div class="t"><span class="n">Text</span><span class="u" style="font-size:24px;color:var(--ink)">Public Sans &mdash; everything you read as a sentence.</span></div>
-      <div class="t"><span class="n">Data</span><span class="m">JetBrains Mono &middot; 0x9dd5&hellip;6302 &middot; 2,697 h &middot; $0.89</span></div>
+      <div class="t"><span class="n">Data</span><span class="m">JetBrains Mono &middot; 0x9dd5&hellip;6302 &middot; 1,348 h &middot; $0.89</span></div>
       <div class="t"><span class="n">Rule</span><span class="u">If it is a figure, it is monospaced. No exceptions anywhere on the site.</span></div>
     </div>
 
@@ -957,7 +957,7 @@ details.q p{padding:0 24px 22px;font-size:16px;color:var(--ink-2);max-width:70ch
       <div class="st"><span class="n">01</span><h5>Top of every hour</h5>
         <p>Every address holding at least 1,000 WARP is read from the chain at the first block after the hour.</p></div>
       <div class="st"><span class="n">02</span><h5>Fees are converted</h5>
-        <p>The fees collected in that hour are split. Two thirds &mdash; the creator tax &mdash; buys RTX 5090 hours at the current rate.</p></div>
+        <p>The fees collected in that hour are split. Half &mdash; the creator tax &mdash; buys RTX 5090 hours at the current rate.</p></div>
       <div class="st"><span class="n">03</span><h5>Credits are added</h5>
         <p>Each eligible address gets hours by its share of eligible WARP. No transaction is needed and nothing moves on-chain.</p></div>
       <div class="st"><span class="n">04</span><h5>Claim when you want</h5>
@@ -1055,7 +1055,7 @@ const LINKS = {
   ca:       window.__WARP_CA__       || "",                  // ← set WARP_CA to fill every slot
   explorer: window.__WARP_EXPLORER__ || "https://robinhoodchain.blockscout.com/address/"
 };
-const FEE = 0.03, TO_COMPUTE = 2/3, MIN_HOLD = 1000, KEY_CAP = 40, CHAIN = 4663;
+const FEE = 0.02, TO_COMPUTE = 0.5, MIN_HOLD = 1000, KEY_CAP = 40, CHAIN = 4663;
 
 const usd = v => v >= 1e6 ? "$"+(v/1e6).toFixed(2)+"m" : v >= 1e3 ? "$"+(v/1e3).toFixed(v>=1e4?0:1)+"k"
   : v >= 10 ? "$"+v.toFixed(0) : "$"+v.toFixed(2);
@@ -1169,7 +1169,7 @@ function drawSplit(){
   $("#flow").textContent =
     `${usd(AMT)} traded\n` +
     `      │\n` +
-    `${usd(fee)} fee  ·  3%\n` +
+    `${usd(fee)} fee  ·  2%\n` +
     `      │\n` +
     `┌──────────────────────────┬──────────────────────────┐\n` +
     `│ ${pad(usd(comp)+" holder compute")}│ ${pad(usd(tre)+" Pons + ops")}│\n` +
@@ -1608,11 +1608,11 @@ const HALL = (function(){
 
 /* ════════ panels ════════ */
 const P = {
-intake:[["lead","Every buy and every sell of WARP pays 3% of its value, charged in NVDA on the Pons curve. It splits two ways: a 2% creator tax, which is the only thing that funds holder compute, and a 1% Pons fee, which funds the launchpad and operations."],
+intake:[["lead","Every buy and every sell of WARP pays 2% of its value, charged in NVDA on the Pons curve. It splits in half: a 1% creator tax, which is the only thing that funds holder compute, and a 1% Pons fee, which funds the launchpad and operations."],
 ["","It is charged per side, not per round trip. Someone who buys and later sells has paid twice. <b>The creator tax is the only inflow.</b> No WARP is issued to fund compute, so if nobody trades, nothing is collected and the hourly settlement divides zero."],
 ["fl","The busbars here brighten with volume. Move the volume slider in the estimator and watch them — this room and that number are the same variable."]],
 
-desk:[["lead","The creator tax arrives in NVDA. It is priced in dollars using the <b>Chainlink NVDA feed</b> — the same figure anyone else can read — and spent on RTX 5090 capacity at the current rate."],
+desk:[["lead","The 1% creator tax arrives in NVDA. It is priced in dollars using the <b>Chainlink NVDA feed</b> — the same figure anyone else can read — and spent on RTX 5090 capacity at the current rate."],
 ["","The 5090 price is updated weekly, and hours are fixed at the price in effect when they are credited. A later price change never revalues an hour already in your ledger, in either direction."],
 ["","<b>Why compute and not cash.</b> Cash paid to holders in proportion to their holdings is the shape of a security nearly everywhere. Compute is a good: access to a machine, at what the machine costs. That is the load-bearing wall of this design, not a wrapper around the same thing."]],
 
@@ -1635,8 +1635,8 @@ pod:[["lead","A pod is a whole RTX 5090 with a root shell. Choose an image, it b
 };
 const LIVE = {
   intake:()=>{ const f = E.vol*FEE; return [
-    ["Fee per trade","3%","v"],["30-day volume · yours",usd(E.vol),""],
-    ["Fees collected",usd(f),""],["To compute · 2%",usd(f*TO_COMPUTE),"v"],["Issued to fund it","0 WARP","o"]]; },
+    ["Fee per trade","2%","v"],["30-day volume · yours",usd(E.vol),""],
+    ["Fees collected",usd(f),""],["To compute · 1%",usd(f*TO_COMPUTE),"v"],["Issued to fund it","0 WARP","o"]]; },
   desk:()=>{ const b = E.price>0 ? E.vol*FEE*TO_COMPUTE/E.price : 0; return [
     ["5090 · per hour","$"+E.price.toFixed(2),""],["Hours purchased · 30d",num(b)+" h","v"],
     ["Priced by","Chainlink NVDA feed",""],["Price updated","weekly",""],["Credited hours","fixed at their hour","o"]]; },

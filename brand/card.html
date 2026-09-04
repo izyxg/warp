@@ -95,11 +95,11 @@ const CARDS = [
 {
   k:"The fee",
   h:'Fees in.<br>Hours out.',
-  s:'3% a trade. Two thirds of it buys <b>RTX 5090</b> time at spot.',
+  s:'2% a trade. Half of it buys <b>RTX 5090</b> time at spot.',
   a:`<div class="pan">
       <div class="ph"><span>Per trade</span><span>NVDA pair · Pons</span></div>
-      <div class="row"><span>trading fee</span><b>3.00%</b></div>
-      <div class="row"><span>creator tax → compute</span><b class="v">2.00%</b></div>
+      <div class="row"><span>trading fee</span><b>2.00%</b></div>
+      <div class="row"><span>creator tax → compute</span><b class="v">1.00%</b></div>
       <div class="row"><span>pons + operations</span><b class="d">1.00%</b></div>
       <div class="row"><span>minted for rewards</span><b class="o">0</b></div>
       <div class="row big"><span>inflow to compute</span><b class="v">the tax, and nothing else</b></div>
@@ -107,14 +107,14 @@ const CARDS = [
 },
 {
   k:"The arithmetic",
-  h:'$100 traded.<br><em>2h&nbsp;14m</em> of 5090.',
+  h:'$100 traded.<br><em>1h&nbsp;07m</em> of 5090.',
   s:'Priced off the Chainlink NVDA feed. Both inputs float.',
   a:`<div class="pan eq">
       <div class="st"><span class="op">traded</span>$100.00</div>
-      <div class="st"><span class="op">× 3%</span>fee<span class="out">$3.00</span></div>
-      <div class="st"><span class="op">× 2/3</span>creator tax<span class="out">$2.00</span></div>
-      <div class="st"><span class="op">÷ $0.89</span>per GPU-hour<span class="out">2.25 h</span></div>
-      <div class="st f"><span class="op">=</span>on one 5090<span class="out">2h 14m</span></div>
+      <div class="st"><span class="op">× 2%</span>fee<span class="out">$2.00</span></div>
+      <div class="st"><span class="op">× 1/2</span>creator tax<span class="out">$1.00</span></div>
+      <div class="st"><span class="op">÷ $0.89</span>per GPU-hour<span class="out">1.12 h</span></div>
+      <div class="st f"><span class="op">=</span>on one 5090<span class="out">1h 07m</span></div>
     </div>`
 },
 {
@@ -122,12 +122,12 @@ const CARDS = [
   h:'Every hour,<br>on the hour.',
   s:'Split by share of <b>eligible</b> supply. Nothing is staked.',
   a:`<div class="pan">
-      <div class="ph"><span>Snapshot · block 7 000 611</span><span>2 697 h</span></div>
+      <div class="ph"><span>Snapshot · block 7 000 611</span><span>1 348 h</span></div>
       <table>
         <tr><th>wallet</th><th>balance</th><th>share</th><th>hours</th></tr>
-        <tr><td class="hi">0x76a3…d784</td><td>12,400,000</td><td class="v">1.240%</td><td class="hi">33.44</td></tr>
-        <tr><td class="hi">0x00e3…ff12</td><td>3,150,000</td><td class="v">0.315%</td><td class="hi">8.49</td></tr>
-        <tr><td class="hi">0x9e8e…5535</td><td>250,000</td><td class="v">0.025%</td><td class="hi">0.67</td></tr>
+        <tr><td class="hi">0x76a3…d784</td><td>12,400,000</td><td class="v">1.240%</td><td class="hi">16.72</td></tr>
+        <tr><td class="hi">0x00e3…ff12</td><td>3,150,000</td><td class="v">0.315%</td><td class="hi">4.25</td></tr>
+        <tr><td class="hi">0x9e8e…5535</td><td>250,000</td><td class="v">0.025%</td><td class="hi">0.34</td></tr>
         <tr><td class="d">0x4c11…a0b8</td><td class="d">840</td><td class="d">—</td><td class="d">under 1,000</td></tr>
       </table>
     </div>`

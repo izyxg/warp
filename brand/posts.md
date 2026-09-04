@@ -11,7 +11,7 @@ as the site: no APY, no rate, nothing promised that the mechanism could not keep
 
 Meet Warp.
 
-Every trade pays a 3% fee. Two thirds of it buys RTX 5090 capacity. Once an hour that capacity is split among holders as compute credits — GPU hours you spend through an OpenAI-compatible API, or a pod you SSH into.
+Every trade pays a 2% fee. Half of it buys RTX 5090 capacity. Once an hour that capacity is split among holders as compute credits — GPU hours you spend through an OpenAI-compatible API, or a pod you SSH into.
 
 Trading fees, turned into compute.
 
@@ -57,15 +57,15 @@ Hold the token, spend the compute. Nothing else to sign.
 
 Fees in. Hours out.
 
-Every WARP buy and sell pays 3%. Two thirds of it — the creator tax — buys RTX 5090 capacity at spot. Once an hour that capacity is split among holders as compute credits.
+Every WARP buy and sell pays 2%. Half of it — the creator tax — buys RTX 5090 capacity at spot. Once an hour that capacity is split among holders as compute credits.
 
 Nothing is minted to pay anyone. The fee is the only inflow.
 
 ### 07 · The arithmetic — `warp-card-02.png`
 
-$100 traded buys about 2 hours 14 minutes on an RTX 5090.
+$100 traded buys about 1 hour 7 minutes on an RTX 5090.
 
-$100 → $3.00 fee → $2.00 of compute → 2.25 hours at $0.89.
+$100 → $2.00 fee → $1.00 of compute → 1.12 hours at $0.89.
 
 Volume and GPU prices both move. Quiet market, fewer hours. Cheaper cards, more hours. We publish the arithmetic instead of a rate.
 

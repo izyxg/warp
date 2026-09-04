@@ -3,7 +3,7 @@
 **Fees in. Hours out.**
 
 A token on Robinhood Chain, paired against tokenised NVDA. Every buy and sell pays a
-3% fee — a 2% creator tax and a 1% Pons fee. The creator tax is priced in dollars
+2% fee — a 1% creator tax and a 1% Pons fee. The creator tax is priced in dollars
 against the Chainlink NVDA feed and spent on RTX 5090 capacity. Once an hour that
 capacity is divided among holders as compute credits, measured in 5090 hours and
 fixed at the price of the hour they were credited.
@@ -16,8 +16,8 @@ guaranteed.
 
 | Step | What happens |
 |---|---|
-| **Trade** | Every buy and sell on the Pons curve pays 3% of its value in NVDA. Per side, not per round trip. |
-| **Buy capacity** | The 2% creator tax is priced via Chainlink NVDA and spent on RTX 5090 hours at the current rate. |
+| **Trade** | Every buy and sell on the Pons curve pays 2% of its value in NVDA. Per side, not per round trip. |
+| **Buy capacity** | The 1% creator tax is priced via Chainlink NVDA and spent on RTX 5090 hours at the current rate. |
 | **Settle** | Once an hour, wallets holding ≥ 1,000 WARP are recorded and capacity is split by share of *eligible* supply. |
 | **Claim** | Credits sit in your ledger until you attach them to an API key. Nothing expires, nothing is pushed. |
 
@@ -25,8 +25,8 @@ guaranteed.
 
 | Parameter | Value |
 |---|---|
-| Trading fee | 3% per side — 2% creator tax, 1% Pons |
-| Holder allocation | The creator tax, two thirds of collected fees |
+| Trading fee | 2% per side — 1% creator tax, 1% Pons |
+| Holder allocation | The creator tax, half of collected fees |
 | Minimum balance | 1,000 WARP |
 | Settlement | Hourly |
 | Pricing feed | Chainlink NVDA |
